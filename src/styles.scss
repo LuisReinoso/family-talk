@@ -1,1 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  box-sizing: border-box;
+  margin: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #3e34a6;
+  padding: 10px;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
+}
+
+@import "./styles/button.scss";
+@import "./styles/players.scss";
+@import "./styles/logo.scss";

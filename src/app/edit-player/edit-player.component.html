@@ -1,0 +1,62 @@
+<div class="header">
+  <img class="logo" src="./assets/icons/family-talk-icon.png" />
+  <div class="title">Editar jugadores</div>
+</div>
+
+<div class="container">
+  <section class="players">
+    <div
+      *ngFor="let player of players | keyvalue; let i = index"
+      [ngClass]="{
+        'selected-player': player.value.id === selectedUserId
+      }"
+      [id]="player.key"
+    >
+      <div
+        class="player"
+        [style.background]="player.value.color"
+        (click)="selectPlayer(player.key)"
+      >
+        <div class="player__name">{{ player.value.name }}</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section *ngIf="selectedUserId">
+  <form [formGroup]="form">
+    <input formControlName="name" type="text" />
+  </form>
+</section>
+
+<section *ngIf="hasToDisplayAddUser">
+  <form class="add-player" [formGroup]="form">
+    <input formControlName="name" type="text" />
+    <div class="color-container">
+      <div
+        (click)="selectColor(color)"
+        [ngClass]="{ 'selected-color': selectedColor === color }"
+        *ngFor="let color of colors"
+        class="color"
+        [style.background]="color"
+      ></div>
+    </div>
+  </form>
+</section>
+
+<div class="footer">
+  <ng-container *ngIf="!!selectedUserId; else backActionTemplate">
+    <button class="primary" (click)="saveUser()">Guardar</button>
+    <button class="danger" (click)="deleteUser()">Eliminar</button>
+  </ng-container>
+  <ng-template #backActionTemplate>
+    <ng-container *ngIf="!hasToDisplayAddUser; else addUserTemplateTemplate">
+      <button class="primary" (click)="backToGame()">Regresar</button>
+      <button class="info" (click)="displayAddUser()">Agregar</button>
+    </ng-container>
+    <ng-template #addUserTemplateTemplate>
+      <button class="primary" (click)="addUser()">Guardar</button>
+      <button class="info" (click)="cancelCreateUser()">Cancelar</button>
+    </ng-template>
+  </ng-template>
+</div>

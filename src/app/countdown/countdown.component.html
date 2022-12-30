@@ -1,0 +1,57 @@
+<div class="header">
+  <img class="logo" src="./assets/icons/family-talk-icon.png" />
+
+  <div class="selected-question" (click)="stopCountdown()">
+    <ng-container *ngIf="selectedPlayer">
+      <b>Pregunta:</b>
+      <div class="question">{{ selectedQuestion }}</div>
+    </ng-container>
+  </div>
+</div>
+
+<div class="container">
+  <section class="players">
+    <div
+      *ngFor="let player of players | keyvalue; let i = index"
+      [ngClass]="{
+        'selected-player-random': player.value.id === selectedUserId,
+        'has-answered':
+          player.value.hasAnswer || player.value.timeRemaining <= 0
+      }"
+      [id]="player.key"
+    >
+      <div class="player" [style.background]="player.value.color">
+        <div class="player__name">{{ player.value.name }}</div>
+        <div class="player__time">
+          ⏳: {{ player.value.timeRemaining | secondsToMinutes }}
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="selected-player" *ngIf="selectedPlayer">
+  <ng-container *ngIf="!isSelectingRandomUser">
+    {{ selectedPlayer.name }} |
+    {{ selectedPlayer.timeRemaining | secondsToMinutes }}
+
+    <ng-container *ngIf="selectedPlayer.timeRemaining > 0">
+      <button *ngIf="this.intervalId" class="pause" (click)="stopCountdown()">
+        ⏸️
+      </button>
+      <button
+        *ngIf="!this.intervalId"
+        class="resume"
+        (click)="startCountdown()"
+      >
+        ⏯
+      </button>
+    </ng-container>
+  </ng-container>
+</section>
+<section class="footer">
+  <button class="primary" (click)="selectRandomUserAndStart()">
+    Aleatorio
+  </button>
+  <button class="info" (click)="navigateToEditPlayer()">Editar</button>
+</section>

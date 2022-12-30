@@ -1,0 +1,67 @@
+<div class="container">
+  <svg xmlns="https://www.w3.org/2000/svg" width="400" height="400">
+    <circle
+      cx="200"
+      cy="200"
+      r="180"
+      stroke="#000"
+      stroke-width="4"
+      fill="#000"
+    />
+    <g #roulette>
+      <g
+        *ngFor="let item of items; index as i"
+        [style.transform-origin]="'200px 200px'"
+        [style.transform]="'rotate(' + screenRotation * i + 'deg)'"
+      >
+        <polygon
+          points="50,100 20,200 200,200"
+          stroke="#000"
+          stroke-width="1"
+          [style.fill]="item.color"
+        />
+      </g>
+
+      <g
+        *ngFor="let item of items; index as i"
+        [style.transform-origin]="'200px 200px'"
+        [style.transform]="'rotate(' + screenRotation * i + 'deg)'"
+      >
+        <g>
+          <rect
+            x="60"
+            y="140"
+            width="40"
+            height="40"
+            [style.fill]="item.color"
+          ></rect>
+
+          <text
+            fill="#222"
+            x="80"
+            y="170"
+            text-anchor="middle"
+            fill="#fff"
+            stroke="#000"
+            stroke-width="0.2"
+            font-size="30px"
+            font-weight="bold"
+          >
+            {{ item.name | slice : 0 : 2 }}
+          </text>
+        </g>
+      </g>
+    </g>
+  </svg>
+</div>
+
+<div class="footer">
+  <button class="primary" *ngIf="!isRotating" (click)="startRotation()">
+    Empezar
+  </button>
+  <button class="secondary" *ngIf="isRotating" (click)="stopRotation()">
+    Detener
+  </button>
+
+  <button class="info" (click)="returnToCountdown()">Regresar</button>
+</div>
