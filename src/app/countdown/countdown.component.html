@@ -4,7 +4,7 @@
   <div class="selected-question" (click)="stopCountdown()">
     <ng-container *ngIf="selectedPlayer">
       <b>Pregunta:</b>
-      <div class="question">{{ selectedQuestion }}</div>
+      <div class="question">{{ selectedQuestion$ | async }}</div>
     </ng-container>
   </div>
 </div>
@@ -54,4 +54,11 @@
     Aleatorio
   </button>
   <button class="info" (click)="navigateToEditPlayer()">Editar</button>
+  <button
+    *ngIf="selectedPlayer"
+    class="warning"
+    (click)="selectRandomQuestion()"
+  >
+    ❓
+  </button>
 </section>

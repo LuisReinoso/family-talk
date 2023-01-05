@@ -1,7 +1,7 @@
 import { CommonModule, ViewportScroller } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { interval, take, tap } from 'rxjs';
+import { BehaviorSubject, interval, take, tap } from 'rxjs';
 import { Player } from 'src/app/models/player';
 import { SecondsToMinutesPipe } from 'src/app/pipes/seconds-to-minutes.pipe';
 import { questions } from 'src/app/models/questions';
@@ -18,7 +18,7 @@ import { PlayerService } from 'src/app/services/player.service';
 export class CountdownComponent implements OnInit {
   selectedPlayer!: Player;
   selectedUserId: string = '';
-  selectedQuestion: string = '';
+  selectedQuestion$: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   maxAnswerPerQuestion = 4;
   answerPerQuestion = 0;
@@ -127,8 +127,9 @@ export class CountdownComponent implements OnInit {
   }
 
   selectRandomQuestion() {
-    this.selectedQuestion =
-      questions[Math.floor(Math.random() * questions.length)];
+    this.selectedQuestion$.next(
+      questions[Math.floor(Math.random() * questions.length)]
+    );
   }
 
   scrollToDiv() {
