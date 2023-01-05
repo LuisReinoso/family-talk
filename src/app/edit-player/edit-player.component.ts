@@ -30,7 +30,14 @@ export class EditPlayerComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (
+      !this.playerService.players ||
+      Object.values(this.playerService.players).length === 0
+    ) {
+      this.playerService.loadPlayers();
+    }
+  }
 
   selectPlayer(playerId: Player['id']): void {
     if (this.selectedUserId === playerId) {
@@ -43,6 +50,7 @@ export class EditPlayerComponent implements OnInit {
   }
 
   backToGame(): void {
+    this.playerService.savePlayers();
     this.router.navigate(['']);
   }
 
