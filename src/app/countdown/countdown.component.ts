@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, interval, take, tap } from 'rxjs';
 import { Player } from 'src/app/models/player';
 import { SecondsToMinutesPipe } from 'src/app/pipes/seconds-to-minutes.pipe';
-import { questions } from 'src/app/models/questions';
 import { DOCUMENT } from '@angular/common';
 import { PlayerService } from 'src/app/services/player.service';
+import { QuestionsService } from 'src/app/services/questions.service';
 
 @Component({
   selector: 'app-countdown',
@@ -20,7 +20,7 @@ export class CountdownComponent implements OnInit {
   selectedUserId: string = '';
   selectedQuestion$: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
-  maxAnswerPerQuestion = 4;
+  maxAnswerPerQuestion = 5;
   answerPerQuestion = 0;
 
   players: { [key: string]: Player } = this.playerService.players;
@@ -33,6 +33,7 @@ export class CountdownComponent implements OnInit {
   constructor(
     private router: Router,
     private playerService: PlayerService,
+    private questionsService: QuestionsService,
     @Inject(DOCUMENT) private document: Document
   ) {
     this.selectRandomQuestion();
@@ -40,7 +41,7 @@ export class CountdownComponent implements OnInit {
 
   ngOnInit(): void {
     const totalPlayers = Object.values(this.players).length;
-    this.maxAnswerPerQuestion = totalPlayers > 4 ? 4 : totalPlayers;
+    this.maxAnswerPerQuestion = totalPlayers > 6 ? 6 : totalPlayers;
   }
 
   selectPlayer(player: Player) {
@@ -127,9 +128,12 @@ export class CountdownComponent implements OnInit {
   }
 
   selectRandomQuestion() {
-    this.selectedQuestion$.next(
-      questions[Math.floor(Math.random() * questions.length)]
-    );
+    const questions = this.questionsService.questions;
+    const selectedQuestionIndex = Math.floor(Math.random() * questions.length);
+
+    this.selectedQuestion$.next(questions[selectedQuestionIndex]);
+    this.questionsService.removeQuestion(selectedQuestionIndex);
+    this.questionsService.saveQuestions();
   }
 
   scrollToDiv() {
