@@ -60,6 +60,7 @@ export class CountdownComponent implements OnInit {
   stopCountdown() {
     clearInterval(this.intervalId);
     this.intervalId = null as unknown as NodeJS.Timer;
+    this.savePlayers();
   }
 
   selectRandomUser() {
@@ -93,6 +94,7 @@ export class CountdownComponent implements OnInit {
     }
 
     this.stopCountdown();
+    this.savePlayers();
 
     if (Object.values(this.players).every((player) => player.hasAnswer)) {
       this.players = Object.values(this.players)
@@ -133,6 +135,7 @@ export class CountdownComponent implements OnInit {
 
     this.selectedQuestion$.next(questions[selectedQuestionIndex]);
     this.questionsService.removeQuestion(selectedQuestionIndex);
+    this.savePlayers();
     this.questionsService.saveQuestions();
   }
 
@@ -146,6 +149,13 @@ export class CountdownComponent implements OnInit {
 
   navigateToEditPlayer() {
     this.stopCountdown();
+    this.savePlayers();
+    this.questionsService.saveQuestions();
     this.router.navigate(['/edit-player']);
+  }
+
+  savePlayers() {
+    this.playerService.players = this.players;
+    this.playerService.savePlayers();
   }
 }
