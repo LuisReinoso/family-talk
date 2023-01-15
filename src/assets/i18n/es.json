@@ -20,7 +20,8 @@
     "configuration": "Configuración",
     "players": "Jugadores",
     "language": "Idioma",
-    "questions": "Preguntas"
+    "questions": "Preguntas",
+    "ai": "Inteligencia artificial"
   },
   "language": {
     "configureLanguage": "Configurar Idioma",

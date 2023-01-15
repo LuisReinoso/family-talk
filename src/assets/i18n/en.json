@@ -18,7 +18,8 @@
     "configuration": "Configuration",
     "players": "Players",
     "language": "Language",
-    "questions": "Questions"
+    "questions": "Questions",
+    "ai": "Artificial intelligence"
   },
   "language": {
     "configureLanguage": "Configure Language",

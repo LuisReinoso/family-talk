@@ -1,7 +1,7 @@
 import { CommonModule, ViewportScroller } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, interval, take, tap } from 'rxjs';
+import { BehaviorSubject, interval, lastValueFrom, take, tap } from 'rxjs';
 import { Player } from 'src/app/models/player';
 import { SecondsToMinutesPipe } from 'src/app/pipes/seconds-to-minutes.pipe';
 import { DOCUMENT } from '@angular/common';
@@ -9,6 +9,7 @@ import { PlayerService } from 'src/app/services/player.service';
 import { QuestionsService } from 'src/app/services/questions.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Category } from 'src/app/models/questions';
+import { AiService } from 'src/app/services/ai.service';
 
 @Component({
   selector: 'app-countdown',
@@ -32,11 +33,15 @@ export class CountdownComponent implements OnInit {
   intervalId!: NodeJS.Timer;
   isSelectingRandomUser: boolean = false;
 
+  openAiToken = this.aiService.openAiToken;
+  isLoadingQuestion: boolean = false;
+
   constructor(
     private router: Router,
     private playerService: PlayerService,
     private questionsService: QuestionsService,
     private translateService: TranslateService,
+    private aiService: AiService,
     @Inject(DOCUMENT) private document: Document
   ) {
     this.selectRandomQuestion();
@@ -152,9 +157,8 @@ export class CountdownComponent implements OnInit {
       }
     }
 
-    console.log(questions);
-
     const selectedQuestionIndex = Math.floor(Math.random() * questions.length);
+
     const currentQuestion = questions[selectedQuestionIndex];
     let question = currentQuestion.question;
     console.log(currentQuestion);
@@ -167,6 +171,27 @@ export class CountdownComponent implements OnInit {
     this.questionsService.removeQuestion(currentQuestion.id);
     this.savePlayers();
     this.questionsService.saveQuestions();
+  }
+
+  async generateRandomQuestion(): Promise<void> {
+    this.isLoadingQuestion = true;
+    const currentQuestion = await lastValueFrom(
+      this.aiService.generateRandomQuestion(
+        this.questionsService.currentCategory
+      )
+    );
+
+    this.isLoadingQuestion = false;
+
+    let question = currentQuestion.question;
+    console.log(currentQuestion);
+
+    if (this.translateService.currentLang === 'en') {
+      question = currentQuestion.translationUS;
+    }
+
+    this.selectedQuestion$.next(question);
+    this.savePlayers();
   }
 
   scrollToDiv() {

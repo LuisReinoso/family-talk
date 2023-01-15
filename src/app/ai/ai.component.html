@@ -1,0 +1,24 @@
+<div class="header">
+  <img class="logo" src="./assets/icons/family-talk-icon.png" />
+  <div class="title">{{ "language.configureLanguage" | translate }}</div>
+</div>
+
+<div class="container">
+  <section class="options">
+    <form [formGroup]="formGroup">
+      <label for="openAiToken">OpenAi Token</label>
+      <input
+        type="text"
+        formControlName="openAiToken"
+        name="openAiToken"
+        id="openAiToken"
+      />
+    </form>
+  </section>
+</div>
+
+<div class="footer">
+  <button class="primary" (click)="backToGame()">
+    {{ "common.return" | translate }}
+  </button>
+</div>

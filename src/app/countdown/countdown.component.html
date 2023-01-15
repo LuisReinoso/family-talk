@@ -50,9 +50,7 @@
   </ng-container>
 </section>
 <section class="footer">
-  <button class="primary" (click)="selectRandomUserAndStart()">
-    {{ "countdown.random" | translate }}
-  </button>
+  <button class="primary" (click)="selectRandomUserAndStart()">🔀</button>
   <button class="info" (click)="navigateConfigs()">⚙️</button>
   <button
     *ngIf="selectedPlayer"
@@ -60,5 +58,15 @@
     (click)="selectRandomQuestion()"
   >
     ❓
+  </button>
+  <button
+    *ngIf="openAiToken && selectedPlayer"
+    class="primary"
+    [ngClass]="{ loading: isLoadingQuestion }"
+    (click)="generateRandomQuestion()"
+  >
+    <ng-container *ngIf="isLoadingQuestion; else generateQuestionIconTemplate">
+    </ng-container>
+    <ng-template #generateQuestionIconTemplate> 🤖 </ng-template>
   </button>
 </section>

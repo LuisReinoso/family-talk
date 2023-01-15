@@ -27,6 +27,10 @@ export class ConfigComponent implements OnInit {
     this.router.navigate(['/config-questions']);
   }
 
+  goToAiConfig(): void {
+    this.router.navigate(['/config-ai']);
+  }
+
   backToGame(): void {
     this.router.navigate(['']);
   }

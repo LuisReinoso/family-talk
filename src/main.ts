@@ -49,6 +49,11 @@ const routes: Routes = [
         (m) => m.QuestionsComponent
       ),
   },
+  {
+    path: 'config-ai',
+    loadComponent: () =>
+      import('./app/ai/ai.component').then((m) => m.AiComponent),
+  },
 ];
 
 if (environment.production) {
