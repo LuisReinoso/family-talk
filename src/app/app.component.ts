@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { LanguageService } from 'src/app/services/language.service';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +10,8 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [CommonModule, RouterModule],
   standalone: true,
 })
-export class AppComponent {}
+export class AppComponent {
+  constructor(private languageService: LanguageService) {
+    this.languageService.loadLanguage();
+  }
+}

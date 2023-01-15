@@ -11,9 +11,7 @@ export class LanguageService {
   constructor(
     private localStorageService: LocalStorageService,
     private translateService: TranslateService
-  ) {
-    this.language = this.loadLanguage() || 'es';
-  }
+  ) {}
 
   public setLanguage(language: string): void {
     this.language = language;
@@ -21,8 +19,9 @@ export class LanguageService {
     this.saveLanguage(language);
   }
 
-  public loadLanguage(): string {
-    return this.localStorageService.get('language');
+  public loadLanguage() {
+    this.language = this.localStorageService.get('language') || 'es';
+    this.setLanguage(this.language);
   }
 
   private saveLanguage(language: string): void {
