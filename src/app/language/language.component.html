@@ -1,0 +1,23 @@
+<div class="header">
+  <img class="logo" src="./assets/icons/family-talk-icon.png" />
+  <div class="title">{{ "language.configureLanguage" | translate }}</div>
+</div>
+
+<div class="container">
+  <section class="options">
+    <button class="info" (click)="setupSpanishAsLanguage()">
+      {{ "language.spanish" | translate }}
+      <span class="check-icon" *ngIf="currentLanguage === 'es'">✔️</span>
+    </button>
+    <button class="info" (click)="setupEnglishAsLanguage()">
+      {{ "language.english" | translate
+      }}<span class="check-icon" *ngIf="currentLanguage === 'en'">✔️</span>
+    </button>
+  </section>
+</div>
+
+<div class="footer">
+  <button class="primary" (click)="backToGame()">
+    {{ "common.return" | translate }}
+  </button>
+</div>

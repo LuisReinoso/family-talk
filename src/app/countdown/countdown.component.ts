@@ -7,13 +7,15 @@ import { SecondsToMinutesPipe } from 'src/app/pipes/seconds-to-minutes.pipe';
 import { DOCUMENT } from '@angular/common';
 import { PlayerService } from 'src/app/services/player.service';
 import { QuestionsService } from 'src/app/services/questions.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Category } from 'src/app/models/questions';
 
 @Component({
   selector: 'app-countdown',
   templateUrl: './countdown.component.html',
   styleUrls: ['./countdown.component.scss'],
   standalone: true,
-  imports: [CommonModule, SecondsToMinutesPipe],
+  imports: [CommonModule, SecondsToMinutesPipe, TranslateModule],
 })
 export class CountdownComponent implements OnInit {
   selectedPlayer!: Player;
@@ -34,6 +36,7 @@ export class CountdownComponent implements OnInit {
     private router: Router,
     private playerService: PlayerService,
     private questionsService: QuestionsService,
+    private translateService: TranslateService,
     @Inject(DOCUMENT) private document: Document
   ) {
     this.selectRandomQuestion();
@@ -130,11 +133,38 @@ export class CountdownComponent implements OnInit {
   }
 
   selectRandomQuestion() {
-    const questions = this.questionsService.questions;
-    const selectedQuestionIndex = Math.floor(Math.random() * questions.length);
+    let questions = Object.values(this.questionsService.questions).filter(
+      (question) => {
+        if (this.questionsService.currentCategory === Category.random) {
+          return question;
+        }
+        return question.category === this.questionsService.currentCategory;
+      }
+    );
 
-    this.selectedQuestion$.next(questions[selectedQuestionIndex]);
-    this.questionsService.removeQuestion(selectedQuestionIndex);
+    if (questions.length === 0) {
+      questions = Object.values(this.questionsService.questions);
+      this.questionsService.setupQuestionCategory(Category.random);
+
+      if (questions.length === 0) {
+        this.questionsService.restoreQuestions();
+        questions = Object.values(this.questionsService.questions);
+      }
+    }
+
+    console.log(questions);
+
+    const selectedQuestionIndex = Math.floor(Math.random() * questions.length);
+    const currentQuestion = questions[selectedQuestionIndex];
+    let question = currentQuestion.question;
+    console.log(currentQuestion);
+
+    if (this.translateService.currentLang === 'en') {
+      question = currentQuestion.translationUS;
+    }
+
+    this.selectedQuestion$.next(question);
+    this.questionsService.removeQuestion(currentQuestion.id);
     this.savePlayers();
     this.questionsService.saveQuestions();
   }
@@ -147,11 +177,11 @@ export class CountdownComponent implements OnInit {
     });
   }
 
-  navigateToEditPlayer() {
+  navigateConfigs() {
     this.stopCountdown();
     this.savePlayers();
     this.questionsService.saveQuestions();
-    this.router.navigate(['/edit-player']);
+    this.router.navigate(['/configs']);
   }
 
   savePlayers() {

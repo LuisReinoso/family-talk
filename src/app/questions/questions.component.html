@@ -1,0 +1,24 @@
+<div class="header">
+  <img class="logo" src="./assets/icons/family-talk-icon.png" />
+  <div class="title">{{ "questions.configureQuestions" | translate }}</div>
+</div>
+
+<div class="container">
+  <section class="options">
+    <button
+      *ngFor="let category of categories"
+      class="info option"
+      [disabled]="numberQuestionsPerCategory[category] === 0"
+      (click)="setupQuestionCategory(category)"
+    >
+      {{ category | translate }} ({{ numberQuestionsPerCategory[category] }})
+      <span class="check-icon" *ngIf="category === selectedCategory">✔️</span>
+    </button>
+  </section>
+</div>
+
+<div class="footer">
+  <button class="primary" (click)="backToGame()">
+    {{ "common.return" | translate }}
+  </button>
+</div>

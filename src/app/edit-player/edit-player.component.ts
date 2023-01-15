@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { colors } from 'src/app/models/colors';
 import { Player, playerTemplate } from 'src/app/models/player';
 import { PlayerService } from 'src/app/services/player.service';
@@ -11,7 +12,7 @@ import { PlayerService } from 'src/app/services/player.service';
   templateUrl: './edit-player.component.html',
   styleUrls: ['./edit-player.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
 })
 export class EditPlayerComponent implements OnInit {
   players: {

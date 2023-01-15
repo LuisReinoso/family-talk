@@ -51,9 +51,9 @@
 </section>
 <section class="footer">
   <button class="primary" (click)="selectRandomUserAndStart()">
-    Aleatorio
+    {{ "countdown.random" | translate }}
   </button>
-  <button class="info" (click)="navigateToEditPlayer()">Editar</button>
+  <button class="info" (click)="navigateConfigs()">⚙️</button>
   <button
     *ngIf="selectedPlayer"
     class="warning"

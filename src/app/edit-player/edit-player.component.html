@@ -1,6 +1,6 @@
 <div class="header">
   <img class="logo" src="./assets/icons/family-talk-icon.png" />
-  <div class="title">Editar jugadores</div>
+  <div class="title">{{ "edit.editPlayers" | translate }}</div>
 </div>
 
 <div class="container">
@@ -46,17 +46,29 @@
 
 <div class="footer">
   <ng-container *ngIf="!!selectedUserId; else backActionTemplate">
-    <button class="primary" (click)="saveUser()">Guardar</button>
-    <button class="danger" (click)="deleteUser()">Eliminar</button>
+    <button class="primary" (click)="saveUser()">
+      {{ "common.save" | translate }}
+    </button>
+    <button class="danger" (click)="deleteUser()">
+      {{ "common.delete" | translate }}
+    </button>
   </ng-container>
   <ng-template #backActionTemplate>
     <ng-container *ngIf="!hasToDisplayAddUser; else addUserTemplateTemplate">
-      <button class="primary" (click)="backToGame()">Regresar</button>
-      <button class="info" (click)="displayAddUser()">Agregar</button>
+      <button class="primary" (click)="backToGame()">
+        {{ "common.return" | translate }}
+      </button>
+      <button class="info" (click)="displayAddUser()">
+        {{ "common.add" | translate }}
+      </button>
     </ng-container>
     <ng-template #addUserTemplateTemplate>
-      <button class="primary" (click)="addUser()">Guardar</button>
-      <button class="info" (click)="cancelCreateUser()">Cancelar</button>
+      <button class="primary" (click)="addUser()">
+        {{ "common.save" | translate }}
+      </button>
+      <button class="info" (click)="cancelCreateUser()">
+        {{ "common.cancel" | translate }}
+      </button>
     </ng-template>
   </ng-template>
 </div>

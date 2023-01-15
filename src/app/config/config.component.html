@@ -1,0 +1,24 @@
+<div class="header">
+  <img class="logo" src="./assets/icons/family-talk-icon.png" />
+  <div class="title">{{ "config.configuration" | translate }}</div>
+</div>
+
+<div class="container">
+  <section class="options">
+    <button class="info option" (click)="goToPlayersConfig()">
+      {{ "config.players" | translate }}
+    </button>
+    <button class="info option" (click)="goToLanguageConfig()">
+      {{ "config.language" | translate }}
+    </button>
+    <button class="info option" (click)="goToQuestionsConfig()">
+      {{ "config.questions" | translate }}
+    </button>
+  </section>
+</div>
+
+<div class="footer">
+  <button class="primary" (click)="backToGame()">
+    {{ "common.return" | translate }}
+  </button>
+</div>

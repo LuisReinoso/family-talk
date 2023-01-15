@@ -1,12 +1,24 @@
 import { Injectable } from '@angular/core';
-import { questions } from 'src/app/models/questions';
+import {
+  Category,
+  defaultQuestionCounter,
+  Question,
+  questions,
+} from 'src/app/models/questions';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class QuestionsService {
-  questions: string[] = questions;
+  questions: {
+    [key: string]: Question;
+  } = questions;
+
+  currentCategory: Category = Category.random;
+
+  numberQuestionsPerCategory: { [key: string]: number } =
+    defaultQuestionCounter;
 
   constructor(private localStorageService: LocalStorageService) {
     this.loadQuestions();
@@ -23,11 +35,47 @@ export class QuestionsService {
     this.questions = questionsFromLocalStorage;
   }
 
-  removeQuestion(index: number): void {
-    this.questions = this.questions.filter((question, i) => i !== index);
+  removeQuestion(questionId: string): void {
+    delete this.questions[questionId];
+    this.questions = { ...this.questions };
   }
 
   saveQuestions(): void {
     this.localStorageService.save('questions', this.questions);
+  }
+
+  setupQuestionCategory(selectedCategory: Category) {
+    this.currentCategory = selectedCategory;
+    this.saveCategory(selectedCategory);
+  }
+
+  saveCategory(category: Category): void {
+    this.localStorageService.save('category', category);
+  }
+
+  loadCategory(): Category {
+    return (
+      (this.localStorageService.get('category') as Category) || Category.random
+    );
+  }
+
+  calcQuestionsPerCategory(): void {
+    const questionCalc: { [key: string]: number } = {
+      ...defaultQuestionCounter,
+      [Category.random]: Object.values(this.questions).length,
+    };
+    Object.values(this.questions).forEach((question) => {
+      questionCalc[question.category] += 1;
+    });
+
+    console.log('questionCalc', questionCalc);
+
+    this.numberQuestionsPerCategory = {
+      ...questionCalc,
+    };
+  }
+
+  restoreQuestions() {
+    this.questions = questions;
   }
 }

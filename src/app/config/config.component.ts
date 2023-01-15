@@ -1,0 +1,33 @@
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+
+@Component({
+  selector: 'app-config',
+  templateUrl: './config.component.html',
+  styleUrls: ['./config.component.scss'],
+  standalone: true,
+  imports: [CommonModule, TranslateModule],
+})
+export class ConfigComponent implements OnInit {
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {}
+
+  goToPlayersConfig(): void {
+    this.router.navigate(['/config-players']);
+  }
+
+  goToLanguageConfig(): void {
+    this.router.navigate(['/config-language']);
+  }
+
+  goToQuestionsConfig(): void {
+    this.router.navigate(['/config-questions']);
+  }
+
+  backToGame(): void {
+    this.router.navigate(['']);
+  }
+}
