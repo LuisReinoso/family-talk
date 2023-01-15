@@ -19,5 +19,10 @@
     "players": "Jugadores",
     "language": "Idioma",
     "questions": "Preguntas"
+  },
+  "language": {
+    "configureLanguage": "Configurar Idioma",
+    "spanish": "Español",
+    "english": "Inglés"
   }
 }

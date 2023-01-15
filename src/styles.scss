@@ -41,6 +41,14 @@ body {
   text-align: center;
 }
 
+.options {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+  padding: 0px 40px;
+}
+
 @import "./styles/button.scss";
 @import "./styles/players.scss";
 @import "./styles/logo.scss";
