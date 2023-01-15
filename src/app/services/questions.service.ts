@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Question, questions } from 'src/app/models/questions';
+import {
+  Category,
+  defaultQuestionCounter,
+  Question,
+  questions,
+} from 'src/app/models/questions';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 
 @Injectable({
@@ -9,6 +14,11 @@ export class QuestionsService {
   questions: {
     [key: string]: Question;
   } = questions;
+
+  currentCategory: Category = Category.random;
+
+  numberQuestionsPerCategory: { [key: string]: number } =
+    defaultQuestionCounter;
 
   constructor(private localStorageService: LocalStorageService) {
     this.loadQuestions();

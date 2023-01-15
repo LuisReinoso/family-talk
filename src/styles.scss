@@ -43,10 +43,18 @@ body {
 
 .options {
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
   height: 100%;
-  padding: 0px 40px;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.option {
+  margin: 10px;
+  width: 100%;
 }
 
 @import "./styles/button.scss";

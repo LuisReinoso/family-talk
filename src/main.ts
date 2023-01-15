@@ -42,6 +42,13 @@ const routes: Routes = [
         (m) => m.LanguageComponent
       ),
   },
+  {
+    path: 'config-questions',
+    loadComponent: () =>
+      import('./app/questions/questions.component').then(
+        (m) => m.QuestionsComponent
+      ),
+  },
 ];
 
 if (environment.production) {

@@ -8,6 +8,7 @@ import { DOCUMENT } from '@angular/common';
 import { PlayerService } from 'src/app/services/player.service';
 import { QuestionsService } from 'src/app/services/questions.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Category } from 'src/app/models/questions';
 
 @Component({
   selector: 'app-countdown',
@@ -132,7 +133,27 @@ export class CountdownComponent implements OnInit {
   }
 
   selectRandomQuestion() {
-    const questions = Object.values(this.questionsService.questions);
+    let questions = Object.values(this.questionsService.questions).filter(
+      (question) => {
+        if (this.questionsService.currentCategory === Category.random) {
+          return question;
+        }
+        return question.category === this.questionsService.currentCategory;
+      }
+    );
+
+    if (questions.length === 0) {
+      questions = Object.values(this.questionsService.questions);
+      this.questionsService.setupQuestionCategory(Category.random);
+
+      if (questions.length === 0) {
+        this.questionsService.restoreQuestions();
+        questions = Object.values(this.questionsService.questions);
+      }
+    }
+
+    console.log(questions);
+
     const selectedQuestionIndex = Math.floor(Math.random() * questions.length);
     const currentQuestion = questions[selectedQuestionIndex];
     let question = currentQuestion.question;

@@ -24,6 +24,25 @@ export enum Category {
   freeTime = 'Planificación y organización del tiempo libre.',
 }
 
+export const defaultQuestionCounter = {
+  [Category.random]: 0,
+  [Category.goals]: 0,
+  [Category.principles]: 0,
+  [Category.challenges]: 0,
+  [Category.relationships]: 0,
+  [Category.education]: 0,
+  [Category.health]: 0,
+  [Category.money]: 0,
+  [Category.work]: 0,
+  [Category.technology]: 0,
+  [Category.news]: 0,
+  [Category.community]: 0,
+  [Category.environments]: 0,
+  [Category.culture]: 0,
+  [Category.spirituality]: 0,
+  [Category.freeTime]: 0,
+};
+
 export const questions: { [key: string]: Question } = {
   '1': {
     id: '1',
