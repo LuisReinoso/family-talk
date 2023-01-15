@@ -53,7 +53,9 @@
   <button class="primary" (click)="selectRandomUserAndStart()">
     {{ "countdown.random" | translate }}
   </button>
-  <button class="info" (click)="navigateConfigs()">⚙️</button>
+  <button class="info" (click)="navigateToEditPlayer()">
+    {{ "countdown.edit" | translate }}
+  </button>
   <button
     *ngIf="selectedPlayer"
     class="warning"

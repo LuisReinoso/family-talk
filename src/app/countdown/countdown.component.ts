@@ -7,8 +7,7 @@ import { SecondsToMinutesPipe } from 'src/app/pipes/seconds-to-minutes.pipe';
 import { DOCUMENT } from '@angular/common';
 import { PlayerService } from 'src/app/services/player.service';
 import { QuestionsService } from 'src/app/services/questions.service';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Category } from 'src/app/models/questions';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-countdown',

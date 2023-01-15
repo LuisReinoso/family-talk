@@ -13,32 +13,5 @@
   "edit": {
     "editPlayers": "Edit Players"
   },
-  "questions": {},
-  "config": {
-    "configuration": "Configuration",
-    "players": "Players",
-    "language": "Language",
-    "questions": "Questions"
-  },
-  "language": {
-    "configureLanguage": "Configure Language",
-    "spanish": "Español",
-    "english": "English"
-  },
-  "Aleatorio": "Random",
-  "Metas y sueños personales": "Personal goals and dreams",
-  "Valores y principios importantes": "Important values and principles",
-  "Cambios y desafíos en la vida personal": "Changes and challenges in personal life",
-  "Comunicación y relaciones interpersonales": "Communication and interpersonal relationships",
-  "Educación y desarrollo personal": "Education and personal development",
-  "Salud y bienestar físico y mental": "Physical and mental health and well-being",
-  "Finanzas y administración del dinero": "Finance and money management",
-  "Carrera y desarrollo profesional": "Career and professional development",
-  "Tecnología y su impacto en la vida cotidiana": "Technology and its impact on everyday life",
-  "Actualidad y eventos mundiales": "World news and events",
-  "Comunidad y responsabilidad social": "Community and social responsibility",
-  "Medio ambiente y sustentabilidad": "Environment and sustainability",
-  "Cultura y diversidad": "Culture and diversity",
-  "Espiritualidad y fe": "Spirituality and faith",
-  "Planificación y organización del tiempo libre.": "Planning and organization of free time."
+  "questions": {}
 }
