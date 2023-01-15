@@ -68,8 +68,6 @@ export class QuestionsService {
       questionCalc[question.category] += 1;
     });
 
-    console.log('questionCalc', questionCalc);
-
     this.numberQuestionsPerCategory = {
       ...questionCalc,
     };

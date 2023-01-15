@@ -161,7 +161,6 @@ export class CountdownComponent implements OnInit {
 
     const currentQuestion = questions[selectedQuestionIndex];
     let question = currentQuestion.question;
-    console.log(currentQuestion);
 
     if (this.translateService.currentLang === 'en') {
       question = currentQuestion.translationUS;
@@ -184,7 +183,6 @@ export class CountdownComponent implements OnInit {
     this.isLoadingQuestion = false;
 
     let question = currentQuestion.question;
-    console.log(currentQuestion);
 
     if (this.translateService.currentLang === 'en') {
       question = currentQuestion.translationUS;

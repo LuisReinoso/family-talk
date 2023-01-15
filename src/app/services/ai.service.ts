@@ -20,7 +20,6 @@ export class AiService {
 
   generateRandomQuestion(currentCategory: Category): Observable<any> {
     this.loadOpenAiToken();
-    console.log();
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${this.openAiToken}`,
@@ -46,8 +45,6 @@ export class AiService {
           return response.choices[0].text;
         }),
         map((text) => {
-          console.log(text, JSON.parse(text));
-
           let question = null;
 
           try {
