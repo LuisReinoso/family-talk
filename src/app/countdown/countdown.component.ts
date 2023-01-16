@@ -147,11 +147,15 @@ export class CountdownComponent implements OnInit {
       }
     );
 
-    if (questions.length === 0) {
+    const hasNoMoreQuestionsPerCategory = questions.length === 0;
+
+    if (hasNoMoreQuestionsPerCategory) {
       questions = Object.values(this.questionsService.questions);
       this.questionsService.setupQuestionCategory(Category.random);
 
-      if (questions.length === 0) {
+      const hasNoMoreDefaultQuestions = questions.length === 0;
+
+      if (hasNoMoreDefaultQuestions) {
         this.questionsService.restoreQuestions();
         questions = Object.values(this.questionsService.questions);
       }
