@@ -6,7 +6,9 @@
     "selectPlayer": "Seleccionar jugador",
     "configure": "Configurar",
     "changeQuestion": "Cambiar pregunta",
-    "generateQuestionWithAi": "Generar pregunta con I.A."
+    "generateQuestionWithAi": "Generar pregunta con I.A.",
+    "pressOn": "Presiona en",
+    "toStart": "para empezar"
   },
   "common": {
     "save": "Guardar",

@@ -215,4 +215,18 @@ export class CountdownComponent implements OnInit {
     this.playerService.players = this.players;
     this.playerService.savePlayers();
   }
+
+  displayAlert() {
+    const alert = this.document.getElementById('alert');
+    if (!alert) {
+      return;
+    }
+    alert.classList.remove('hidden');
+    setTimeout(() => {
+      if (!alert) {
+        return;
+      }
+      alert.classList.add('hidden');
+    }, 3000);
+  }
 }

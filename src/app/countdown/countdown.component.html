@@ -4,7 +4,7 @@
 </div>
 
 <div class="container">
-  <section class="players">
+  <section class="players" (click)="displayAlert()">
     <div
       *ngFor="let player of players | keyvalue; let i = index"
       [ngClass]="{
@@ -83,3 +83,7 @@
     </ng-template>
   </button>
 </section>
+
+<div id="alert" class="hidden">
+  {{ "countdown.pressOn" | translate }} 🔀 {{ "countdown.toStart" | translate }}
+</div>

@@ -6,7 +6,9 @@
     "selectPlayer": "Select player",
     "configure": "Configure",
     "changeQuestion": "Change question",
-    "generateQuestionWithAi": "Generate question with A.I."
+    "generateQuestionWithAi": "Generate question with A.I.",
+    "pressOn": "Press on",
+    "toStart": "to start"
   },
   "common": {
     "save": "Save",
