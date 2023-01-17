@@ -4,18 +4,28 @@
 </div>
 
 <div class="container">
-  <section class="options">
-    <button class="info option" (click)="goToPlayersConfig()">
-      {{ "config.players" | translate }}
+  <section class="config-options">
+    <button class="config-option config-player" (click)="goToPlayersConfig()">
+      <div class="config-option__title">{{ "config.players" | translate }}</div>
     </button>
-    <button class="info option" (click)="goToLanguageConfig()">
-      {{ "config.language" | translate }}
+    <button
+      class="config-option config-language"
+      (click)="goToLanguageConfig()"
+    >
+      <div class="config-option__title">
+        {{ "config.language" | translate }}
+      </div>
     </button>
-    <button class="info option" (click)="goToQuestionsConfig()">
-      {{ "config.questions" | translate }}
+    <button
+      class="config-option config-questions"
+      (click)="goToQuestionsConfig()"
+    >
+      <div class="config-option__title">
+        {{ "config.questions" | translate }}
+      </div>
     </button>
-    <button class="info option" (click)="goToAiConfig()">
-      {{ "config.ai" | translate }}
+    <button class="config-option config-ai" (click)="goToAiConfig()">
+      <div class="config-option__title">{{ "config.ai" | translate }}</div>
     </button>
   </section>
 </div>
