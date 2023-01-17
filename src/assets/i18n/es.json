@@ -1,7 +1,12 @@
 {
   "countdown": {
     "random": "Aleatorio",
-    "edit": "Editar"
+    "edit": "Editar",
+    "question": "Pregunta",
+    "selectPlayer": "Seleccionar jugador",
+    "configure": "Configurar",
+    "changeQuestion": "Cambiar pregunta",
+    "generateQuestionWithAi": "Generar pregunta con I.A."
   },
   "common": {
     "save": "Guardar",

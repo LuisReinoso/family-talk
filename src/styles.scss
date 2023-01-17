@@ -81,6 +81,33 @@ body {
   overflow: hidden;
 }
 
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  box-shadow: 2px 2px 10px #000;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
 @import "./styles/button.scss";
 @import "./styles/players.scss";
 @import "./styles/logo.scss";

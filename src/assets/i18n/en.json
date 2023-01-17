@@ -1,7 +1,12 @@
 {
   "countdown": {
     "random": "Random",
-    "edit": "Edit"
+    "edit": "Edit",
+    "question": "Question",
+    "selectPlayer": "Select player",
+    "configure": "Configure",
+    "changeQuestion": "Change question",
+    "generateQuestionWithAi": "Generate question with A.I."
   },
   "common": {
     "save": "Save",
