@@ -1,13 +1,16 @@
 #alert {
   padding: 20px;
   background-color: #f44336;
+  border: 1px solid black;
   color: white;
   position: absolute;
   top: 50%;
   left: 50%;
+  width: 80%;
   transform: translate(-50%, -50%);
   animation: fadeinout 3s;
   font-size: 24px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
 }
 
 .hidden {
@@ -23,5 +26,11 @@
   }
   100% {
     opacity: 0;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  #alert {
+    width: 20%;
   }
 }
