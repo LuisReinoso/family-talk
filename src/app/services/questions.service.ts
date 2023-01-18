@@ -41,7 +41,7 @@ export class QuestionsService {
   }
 
   saveQuestions(): void {
-    this.localStorageService.save('questions', this.questions);
+    this.localStorageService.set('questions', this.questions);
   }
 
   setupQuestionCategory(selectedCategory: Category) {
@@ -50,7 +50,7 @@ export class QuestionsService {
   }
 
   saveCategory(category: Category): void {
-    this.localStorageService.save('category', category);
+    this.localStorageService.set('category', category);
   }
 
   loadCategory(): Category {

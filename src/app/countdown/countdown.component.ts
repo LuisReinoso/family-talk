@@ -10,6 +10,7 @@ import { QuestionsService } from 'src/app/services/questions.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Category } from 'src/app/models/questions';
 import { AiService } from 'src/app/services/ai.service';
+import { UserAgentService } from 'src/app/services/userAgent.service';
 
 @Component({
   selector: 'app-countdown',
@@ -35,6 +36,8 @@ export class CountdownComponent implements OnInit {
 
   openAiToken = this.aiService.openAiToken;
   isLoadingQuestion: boolean = false;
+  isMobile = this.userAgentService.isMobile();
+  hasToUseAi = this.aiService.hasToUseAi;
 
   constructor(
     private router: Router,
@@ -42,6 +45,7 @@ export class CountdownComponent implements OnInit {
     private questionsService: QuestionsService,
     private translateService: TranslateService,
     private aiService: AiService,
+    private userAgentService: UserAgentService,
     @Inject(DOCUMENT) private document: Document
   ) {
     this.selectRandomQuestion();
@@ -50,6 +54,7 @@ export class CountdownComponent implements OnInit {
   ngOnInit(): void {
     const totalPlayers = Object.values(this.players).length;
     this.maxAnswerPerQuestion = totalPlayers > 6 ? 6 : totalPlayers;
+    this.hasToUseAi = this.aiService.hasToUseAi;
   }
 
   selectPlayer(player: Player) {
@@ -217,6 +222,8 @@ export class CountdownComponent implements OnInit {
   }
 
   displayAlert() {
+    console.log('navigator.userAgent');
+
     const alert = this.document.getElementById('alert');
     if (!alert) {
       return;

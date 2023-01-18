@@ -51,37 +51,49 @@
 </div>
 <section class="footer">
   <button class="primary tooltip" (click)="selectRandomUserAndStart()">
-    🔀
-    <span class="tooltip-text">{{ "countdown.selectPlayer" | translate }}</span>
-  </button>
-  <button class="info tooltip" (click)="navigateConfigs()">
-    ⚙️ <span class="tooltip-text">{{ "countdown.configure" | translate }}</span>
-  </button>
-  <button
-    *ngIf="selectedPlayer"
-    class="warning tooltip"
-    (click)="selectRandomQuestion()"
-  >
-    ❓
-    <span class="tooltip-text">{{
-      "countdown.changeQuestion" | translate
+    🔀 Jugar
+    <span *ngIf="!isMobile" class="tooltip-text">{{
+      "countdown.selectPlayer" | translate
     }}</span>
   </button>
-  <button
-    *ngIf="openAiToken && selectedPlayer"
-    class="primary tooltip"
-    [ngClass]="{ loading: isLoadingQuestion }"
-    (click)="generateRandomQuestion()"
-  >
-    <ng-container *ngIf="isLoadingQuestion; else generateQuestionIconTemplate">
-    </ng-container>
-    <ng-template #generateQuestionIconTemplate>
-      🤖
-      <span class="tooltip-text">{{
-        "countdown.generateQuestionWithAi" | translate
-      }}</span>
-    </ng-template>
+  <button class="info tooltip" (click)="navigateConfigs()">
+    ⚙️ Configuración
+    <span *ngIf="!isMobile" class="tooltip-text">{{
+      "countdown.configure" | translate
+    }}</span>
   </button>
+
+  <ng-container *ngIf="hasToUseAi; else localQuestionsTemplate">
+    <button
+      *ngIf="openAiToken && selectedPlayer"
+      class="primary tooltip"
+      [ngClass]="{ loading: isLoadingQuestion }"
+      (click)="generateRandomQuestion()"
+    >
+      <ng-container
+        *ngIf="isLoadingQuestion; else generateQuestionIconTemplate"
+      >
+      </ng-container>
+      <ng-template #generateQuestionIconTemplate>
+        🤖 Pregunta A.I.
+        <span *ngIf="!isMobile" class="tooltip-text">{{
+          "countdown.generateQuestionWithAi" | translate
+        }}</span>
+      </ng-template>
+    </button>
+  </ng-container>
+  <ng-template #localQuestionsTemplate>
+    <button
+      *ngIf="selectedPlayer"
+      class="info tooltip"
+      (click)="selectRandomQuestion()"
+    >
+      ❓ Pregunta
+      <span *ngIf="!isMobile" class="tooltip-text">{{
+        "countdown.changeQuestion" | translate
+      }}</span>
+    </button>
+  </ng-template>
 </section>
 
 <div id="alert" class="hidden">

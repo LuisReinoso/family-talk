@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { AiService } from 'src/app/services/ai.service';
 
 @Component({
@@ -14,11 +14,12 @@ import { AiService } from 'src/app/services/ai.service';
   imports: [CommonModule, ReactiveFormsModule, TranslateModule],
 })
 export class AiComponent implements OnInit, OnDestroy {
-  formGroup: FormGroup = this.fb.group(
-    { openAiToken: '' },
-    { updateOn: 'blur' }
-  );
+  formGroup: FormGroup = this.fb.group({
+    openAiToken: { value: '', updateOn: 'blur' },
+    hasToUseAi: false,
+  });
   openAiTokenSub!: Subscription | null;
+  hasToUseAiSub!: Subscription | null;
 
   constructor(
     private fb: FormBuilder,
@@ -30,11 +31,11 @@ export class AiComponent implements OnInit, OnDestroy {
     this.aiService.loadOpenAiToken();
     this.formGroup.controls['openAiToken'].setValue(this.aiService.openAiToken);
 
-    this.openAiTokenSub = this.formGroup.controls[
-      'openAiToken'
-    ].valueChanges.subscribe((openAiToken) => {
-      this.aiService.saveOpenAiToken(openAiToken);
-    });
+    this.aiService.loadHasToUseAi();
+    this.formGroup.controls['hasToUseAi'].setValue(this.aiService.hasToUseAi);
+
+    this.watchOpenAiToken();
+    this.watchHasToUseAi();
   }
 
   ngOnDestroy(): void {
@@ -42,6 +43,27 @@ export class AiComponent implements OnInit, OnDestroy {
       this.openAiTokenSub.unsubscribe();
       this.openAiTokenSub = null;
     }
+
+    if (!!this.hasToUseAiSub) {
+      this.hasToUseAiSub.unsubscribe();
+      this.hasToUseAiSub = null;
+    }
+  }
+
+  private watchOpenAiToken() {
+    this.openAiTokenSub = this.formGroup.controls[
+      'openAiToken'
+    ].valueChanges.subscribe((openAiToken) => {
+      this.aiService.saveOpenAiToken(openAiToken);
+    });
+  }
+
+  private watchHasToUseAi() {
+    this.hasToUseAiSub = this.formGroup.controls[
+      'hasToUseAi'
+    ].valueChanges.subscribe((hasToUseAi) => {
+      this.aiService.saveHasToUseAi(hasToUseAi);
+    });
   }
 
   backToGame(): void {

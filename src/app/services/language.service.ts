@@ -25,6 +25,6 @@ export class LanguageService {
   }
 
   private saveLanguage(language: string): void {
-    this.localStorageService.save('language', language);
+    this.localStorageService.set('language', language);
   }
 }

@@ -8,6 +8,7 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
   providedIn: 'root',
 })
 export class AiService {
+  public hasToUseAi = false;
   private apiUrl = 'https://api.openai.com';
   openAiToken!: string;
 
@@ -16,6 +17,15 @@ export class AiService {
     private localStorageService: LocalStorageService
   ) {
     this.loadOpenAiToken();
+    this.loadHasToUseAi();
+  }
+
+  saveHasToUseAi(value: boolean): void {
+    this.localStorageService.set('hasToUseAi', value);
+  }
+
+  loadHasToUseAi(): void {
+    this.hasToUseAi = this.localStorageService.get('hasToUseAi');
   }
 
   generateRandomQuestion(currentCategory: Category): Observable<any> {
@@ -60,7 +70,7 @@ export class AiService {
 
   saveOpenAiToken(openAiToken: any) {
     this.openAiToken = openAiToken;
-    this.localStorageService.save('openAiToken', openAiToken);
+    this.localStorageService.set('openAiToken', openAiToken);
   }
 
   loadOpenAiToken() {

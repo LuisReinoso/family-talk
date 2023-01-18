@@ -41,6 +41,6 @@ export class PlayerService implements OnInit {
   }
 
   savePlayers() {
-    this.localStorageService.save('players', JSON.stringify(this.players));
+    this.localStorageService.set('players', JSON.stringify(this.players));
   }
 }
