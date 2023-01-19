@@ -14,13 +14,11 @@
             class="checkbox"
             formControlName="hasToUseAi"
           />
-          <span class="custom-checkbox">
-            <span class="custom-checkmark"></span>
-          </span>
+          <span class="custom-checkbox"> </span>
         </span>
-        <span class="checkbox-label"
-          >Usar inteligencia artifical para generar preguntas?</span
-        >
+        <span class="checkbox-label">{{
+          "aiConfig.useAiGenerateQuestions" | translate
+        }}</span>
       </label>
       <label for="openAiToken">OpenAi Token</label>
       <input

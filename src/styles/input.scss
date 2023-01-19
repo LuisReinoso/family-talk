@@ -6,7 +6,7 @@ label {
 }
 
 form {
-  width: 50%;
+  width: 80%;
   margin: 0 auto;
   text-align: center;
 }
@@ -22,4 +22,11 @@ input[type="text"] {
 
 input[type="text"]:focus {
   border: 2px solid #555;
+}
+
+// styles for desktop media
+@media screen and (max-width: 768px) {
+  form {
+    width: 80%;
+  }
 }

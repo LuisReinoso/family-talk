@@ -33,6 +33,9 @@
     "spanish": "Español",
     "english": "English"
   },
+  "aiConfig": {
+    "useAiGenerateQuestions": "Use artificial intelligence to generate questions?"
+  },
   "Aleatorio": "Random",
   "Metas y sueños personales": "Personal goals and dreams",
   "Valores y principios importantes": "Important values and principles",
