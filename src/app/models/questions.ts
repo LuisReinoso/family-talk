@@ -24,6 +24,73 @@ export enum Category {
   freeTime = 'Planificación y organización del tiempo libre.',
 }
 
+export const defaultCategory = {
+  [Category.random]: {
+    name: Category.random,
+    image: '/assets/categories/random.png',
+  },
+  [Category.goals]: {
+    name: Category.goals,
+    image: '/assets/categories/goals.png',
+  },
+  [Category.principles]: {
+    name: Category.principles,
+    image: '/assets/categories/principles.png',
+  },
+  [Category.challenges]: {
+    name: Category.challenges,
+    image: '/assets/categories/challenges.png',
+  },
+  [Category.relationships]: {
+    name: Category.relationships,
+    image: '/assets/categories/relationships.png',
+  },
+  [Category.education]: {
+    name: Category.education,
+    image: '/assets/categories/education.png',
+  },
+  [Category.health]: {
+    name: Category.health,
+    image: '/assets/categories/health.png',
+  },
+  [Category.money]: {
+    name: Category.money,
+    image: '/assets/categories/money.png',
+  },
+  [Category.work]: {
+    name: Category.work,
+    image: '/assets/categories/work.png',
+  },
+  [Category.technology]: {
+    name: Category.technology,
+    image: '/assets/categories/technology.png',
+  },
+  [Category.news]: {
+    name: Category.news,
+    image: '/assets/categories/news.png',
+  },
+  [Category.community]: {
+    name: Category.community,
+    image: '/assets/categories/community.png',
+  },
+  [Category.environments]: {
+    name: Category.environments,
+    image: '/assets/categories/environments.png',
+  },
+  [Category.culture]: {
+    name: Category.culture,
+    image: '/assets/categories/culture.png',
+  },
+  [Category.spirituality]: {
+    name: Category.spirituality,
+    image: '/assets/categories/spirituality.png',
+  },
+  [Category.freeTime]: {
+    name: Category.freeTime,
+    image: '/assets/categories/freeTime.png',
+  },
+};
+
 export const defaultQuestionCounter = {
   [Category.random]: 0,
   [Category.goals]: 0,

@@ -20,7 +20,9 @@
   "edit": {
     "editPlayers": "Edit Players"
   },
-  "questions": {},
+  "questions": {
+    "configureQuestions": "Select the topic of conversation"
+  },
   "config": {
     "configuration": "Configuration",
     "players": "Players",

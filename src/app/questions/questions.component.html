@@ -8,11 +8,18 @@
     <button
       *ngFor="let category of categories"
       class="info option"
-      [disabled]="numberQuestionsPerCategory[category] === 0"
-      (click)="setupQuestionCategory(category)"
+      [disabled]="numberQuestionsPerCategory[category.name] === 0"
+      (click)="setupQuestionCategory(category.name)"
     >
-      {{ category | translate }} ({{ numberQuestionsPerCategory[category] }})
-      <span class="check-icon" *ngIf="category === selectedCategory">✔️</span>
+      <span class="topic">
+        {{ category.name | translate }} ({{
+          numberQuestionsPerCategory[category.name]
+        }})
+        <span class="check-icon" *ngIf="category.name === selectedCategory"
+          >✔️</span
+        >
+      </span>
+      <img class="image" [src]="url + category.image" />
     </button>
   </section>
 </div>

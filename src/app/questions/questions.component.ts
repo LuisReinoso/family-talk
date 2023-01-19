@@ -2,8 +2,9 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { Category } from 'src/app/models/questions';
+import { Category, defaultCategory } from 'src/app/models/questions';
 import { QuestionsService } from 'src/app/services/questions.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-questions',
@@ -14,9 +15,10 @@ import { QuestionsService } from 'src/app/services/questions.service';
 })
 export class QuestionsComponent implements OnInit {
   selectedCategory: Category = Category.random;
-  categories: Category[] = Object.values(Category);
+  categories = Object.values(defaultCategory);
   category = Category;
   numberQuestionsPerCategory = this.questionsService.numberQuestionsPerCategory;
+  url = environment.URL;
 
   constructor(
     private router: Router,
