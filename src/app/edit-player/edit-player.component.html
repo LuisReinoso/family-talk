@@ -15,19 +15,35 @@
       <div
         class="player player__selectable"
         [style.background]="player.value.color"
-        (click)="selectPlayer(player.key)"
+        (click)="selectedUserId ? null : selectPlayer(player.key)"
       >
-        <div class="player__name">{{ player.value.name }}</div>
+        <img
+          class="player__avatar"
+          [src]="url + player.value.avatar"
+          (click)="
+            selectedUserId && selectedUserId === player.value.id
+              ? selectRandomImage(player.key)
+              : null
+          "
+        />
+
+        <ng-container
+          *ngIf="
+            selectedUserId && selectedUserId === player.value.id;
+            else displayNameTemplate
+          "
+        >
+          <form class="form" [formGroup]="form">
+            <input formControlName="name" type="text" />
+          </form>
+        </ng-container>
+        <ng-template #displayNameTemplate>
+          <div class="player__name">{{ player.value.name }}</div>
+        </ng-template>
       </div>
     </div>
   </section>
 </div>
-
-<section *ngIf="selectedUserId">
-  <form [formGroup]="form">
-    <input formControlName="name" type="text" />
-  </form>
-</section>
 
 <section *ngIf="hasToDisplayAddUser">
   <form class="add-player" [formGroup]="form">

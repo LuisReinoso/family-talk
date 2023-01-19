@@ -15,6 +15,7 @@
       [id]="player.key"
     >
       <div class="player" [style.background]="player.value.color">
+        <img class="player__avatar" [src]="url + player.value.avatar" />
         <div class="player__name">{{ player.value.name }}</div>
         <div class="player__time">
           ⏳: {{ player.value.timeRemaining | secondsToMinutes }}
@@ -51,13 +52,13 @@
 </div>
 <section class="footer">
   <button class="primary tooltip" (click)="selectRandomUserAndStart()">
-    🔀 Jugar
+    🔀
     <span *ngIf="!isMobile" class="tooltip-text">{{
       "countdown.selectPlayer" | translate
     }}</span>
   </button>
   <button class="info tooltip" (click)="navigateConfigs()">
-    ⚙️ Configuración
+    ⚙️
     <span *ngIf="!isMobile" class="tooltip-text">{{
       "countdown.configure" | translate
     }}</span>
@@ -66,7 +67,7 @@
   <ng-container *ngIf="hasToUseAi; else localQuestionsTemplate">
     <button
       *ngIf="openAiToken && selectedPlayer"
-      class="primary tooltip"
+      class="warning tooltip"
       [ngClass]="{ loading: isLoadingQuestion }"
       (click)="generateRandomQuestion()"
     >
@@ -75,7 +76,7 @@
       >
       </ng-container>
       <ng-template #generateQuestionIconTemplate>
-        🤖 Pregunta A.I.
+        🤖
         <span *ngIf="!isMobile" class="tooltip-text">{{
           "countdown.generateQuestionWithAi" | translate
         }}</span>
@@ -85,10 +86,10 @@
   <ng-template #localQuestionsTemplate>
     <button
       *ngIf="selectedPlayer"
-      class="info tooltip"
+      class="warning tooltip"
       (click)="selectRandomQuestion()"
     >
-      ❓ Pregunta
+      ❓
       <span *ngIf="!isMobile" class="tooltip-text">{{
         "countdown.changeQuestion" | translate
       }}</span>

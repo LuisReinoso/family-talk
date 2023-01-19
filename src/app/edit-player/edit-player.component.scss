@@ -9,24 +9,6 @@
   background-color: aqua;
 }
 
-form {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-input[type="text"] {
-  width: 300px;
-  height: 40px;
-  padding: 10px;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  color: #333;
-  background-color: #fff;
-}
-
 .add-player {
   display: flex;
   align-items: center;

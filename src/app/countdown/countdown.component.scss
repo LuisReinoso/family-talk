@@ -17,25 +17,6 @@
   overflow-y: auto;
 }
 
-.player {
-  border: 1px solid black;
-  border-radius: 2%;
-  padding: 10px;
-  margin: 10px;
-  width: 180px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-  &__name {
-    color: #fff;
-    font-size: 22px;
-  }
-  &__time {
-    color: #fff;
-    font-size: 20px;
-    font-weight: bold;
-  }
-}
-
 .has-answered {
   background-color: grey;
 }
@@ -62,7 +43,7 @@
 
 .question {
   overflow: auto;
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .selected-player {
@@ -84,4 +65,16 @@
   border: none;
   font-size: 22px;
   cursor: pointer;
+}
+
+@media only screen and (min-width: 800px) {
+  .question {
+    font-size: 22px;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .question {
+    font-size: 24px;
+  }
 }

@@ -11,6 +11,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Category } from 'src/app/models/questions';
 import { AiService } from 'src/app/services/ai.service';
 import { UserAgentService } from 'src/app/services/userAgent.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-countdown',
@@ -38,6 +39,7 @@ export class CountdownComponent implements OnInit {
   isLoadingQuestion: boolean = false;
   isMobile = this.userAgentService.isMobile();
   hasToUseAi = this.aiService.hasToUseAi;
+  url = environment.URL;
 
   constructor(
     private router: Router,

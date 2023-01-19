@@ -6,6 +6,7 @@ export interface Player {
   timeRemaining: number;
   color: string;
   hasAnswer: boolean;
+  avatar: string;
 }
 
 export const playerTemplate: Player = {
@@ -14,6 +15,7 @@ export const playerTemplate: Player = {
   timeRemaining: CONFIG.maxTimeToTalkInSeconds,
   color: '#fff',
   hasAnswer: false,
+  avatar: '/assets/faces/1_0_0.png',
 };
 
 export const defaultPlayers: { [key: string]: Player } = {
@@ -23,13 +25,15 @@ export const defaultPlayers: { [key: string]: Player } = {
     color: '#3f297e',
     timeRemaining: CONFIG.maxTimeToTalkInSeconds,
     hasAnswer: false,
+    avatar: '/assets/faces/1_0_0.png',
   },
   ['player2']: {
     id: 'player2',
-    name: 'Juan',
+    name: 'Isabel',
     color: '#1d61ac',
     timeRemaining: CONFIG.maxTimeToTalkInSeconds,
     hasAnswer: false,
+    avatar: '/assets/faces/1_0_1.png',
   },
   ['player3']: {
     id: 'player3',
@@ -37,13 +41,15 @@ export const defaultPlayers: { [key: string]: Player } = {
     color: '#169ed8',
     timeRemaining: CONFIG.maxTimeToTalkInSeconds,
     hasAnswer: false,
+    avatar: '/assets/faces/1_0_2.png',
   },
   ['player4']: {
     id: 'player4',
-    name: 'Ana',
+    name: 'Luis',
     color: '#209b6c',
     timeRemaining: CONFIG.maxTimeToTalkInSeconds,
     hasAnswer: false,
+    avatar: '/assets/faces/1_0_3.png',
   },
   ['player5']: {
     id: 'player5',
@@ -51,6 +57,7 @@ export const defaultPlayers: { [key: string]: Player } = {
     color: '#60b236',
     timeRemaining: CONFIG.maxTimeToTalkInSeconds,
     hasAnswer: false,
+    avatar: '/assets/faces/1_1_0.png',
   },
   ['player6']: {
     id: 'player6',
@@ -58,20 +65,23 @@ export const defaultPlayers: { [key: string]: Player } = {
     color: '#c6bf27',
     timeRemaining: CONFIG.maxTimeToTalkInSeconds,
     hasAnswer: false,
+    avatar: '/assets/faces/1_1_1.png',
   },
   ['player7']: {
     id: 'player7',
-    name: 'Diego',
+    name: 'Carla',
     color: '#f7a416',
     timeRemaining: CONFIG.maxTimeToTalkInSeconds,
     hasAnswer: false,
+    avatar: '/assets/faces/1_1_2.png',
   },
   ['player8']: {
     id: 'player8',
-    name: 'Luis',
+    name: 'Ana',
     color: '#e6471d',
     timeRemaining: CONFIG.maxTimeToTalkInSeconds,
     hasAnswer: false,
+    avatar: '/assets/faces/1_1_3.png',
   },
   ['player9']: {
     id: 'player9',
@@ -79,6 +89,7 @@ export const defaultPlayers: { [key: string]: Player } = {
     color: '#dc0936',
     timeRemaining: CONFIG.maxTimeToTalkInSeconds,
     hasAnswer: false,
+    avatar: '/assets/faces/1_2_0.png',
   },
   ['player10']: {
     id: 'player10',
@@ -86,6 +97,7 @@ export const defaultPlayers: { [key: string]: Player } = {
     color: '#e5177b',
     timeRemaining: CONFIG.maxTimeToTalkInSeconds,
     hasAnswer: false,
+    avatar: '/assets/faces/1_2_1.png',
   },
   ['player11']: {
     id: 'player11',
@@ -93,12 +105,14 @@ export const defaultPlayers: { [key: string]: Player } = {
     color: '#be107f',
     timeRemaining: CONFIG.maxTimeToTalkInSeconds,
     hasAnswer: false,
+    avatar: '/assets/faces/1_2_3.png',
   },
   ['player12']: {
     id: 'player12',
-    name: 'Isabel',
+    name: 'Juan',
     color: '#0bb736',
     timeRemaining: CONFIG.maxTimeToTalkInSeconds,
     hasAnswer: false,
+    avatar: '/assets/faces/1_3_0.png',
   },
 };

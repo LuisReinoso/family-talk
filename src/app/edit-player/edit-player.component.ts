@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { colors } from 'src/app/models/colors';
 import { Player, playerTemplate } from 'src/app/models/player';
 import { PlayerService } from 'src/app/services/player.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-edit-player',
@@ -24,6 +25,7 @@ export class EditPlayerComponent implements OnInit {
   hasToDisplayAddUser: boolean = false;
   colors = colors;
   selectedColor = '#dc0936';
+  url = environment.URL;
 
   constructor(
     private playerService: PlayerService,
@@ -99,6 +101,16 @@ export class EditPlayerComponent implements OnInit {
 
   selectColor(color: string) {
     this.selectedColor = color;
+  }
+
+  selectRandomImage(playerId: string) {
+    const mainSeed = Math.floor(Math.random() * (12 - 1 + 1)) + 1;
+    const rowSeed = Math.floor(Math.random() * 3);
+
+    this.playerService.updateUser({
+      ...this.players[playerId],
+      avatar: `/assets/faces/${mainSeed}_${rowSeed}_${rowSeed}.png`,
+    });
   }
 
   private generateRandomId(): string {
