@@ -36,6 +36,7 @@
     "english": "English"
   },
   "aiConfig": {
+    "configQuestionGeneration": "Configure question generator",
     "useAiGenerateQuestions": "Use artificial intelligence to generate questions?"
   },
   "Aleatorio": "Random",
