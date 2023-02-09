@@ -2,7 +2,7 @@ button.primary {
   background-color: #4caf50;
   color: white;
   border: none;
-  padding: 15px 32px;
+  padding: 15px 15px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -123,5 +123,37 @@ button.loading::after {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+button.icon {
+  border: none;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+
+  .icon__text {
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+  }
+}
+
+.button-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 40px;
+
+  &__icon {
+  }
+
+  &__text {
+    font-size: 12px;
+    font-weight: 600;
   }
 }

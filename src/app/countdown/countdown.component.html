@@ -1,6 +1,10 @@
 <div class="header">
   <img class="logo" src="./assets/icons/family-talk-icon.png" />
   <div class="title">Reuniones familiares</div>
+  <button class="icon tooltip" (click)="navigateConfigs()">
+    ⚙️
+    <span class="icon__text">{{ "countdown.configure" | translate }}</span>
+  </button>
 </div>
 
 <div class="container">
@@ -52,22 +56,21 @@
 </div>
 <section class="footer">
   <button class="primary tooltip" (click)="selectRandomUserAndStart()">
-    🔀
+    <span class="button-content"
+      ><span class="button-content__icon">🔀</span>
+      <span class="button-content__text">{{
+        "countdown.selectPlayer" | translate
+      }}</span>
+    </span>
     <span *ngIf="!isMobile" class="tooltip-text">{{
       "countdown.selectPlayer" | translate
-    }}</span>
-  </button>
-  <button class="info tooltip" (click)="navigateConfigs()">
-    ⚙️
-    <span *ngIf="!isMobile" class="tooltip-text">{{
-      "countdown.configure" | translate
     }}</span>
   </button>
 
   <ng-container *ngIf="hasToUseAi; else localQuestionsTemplate">
     <button
       *ngIf="openAiToken && selectedPlayer"
-      class="warning tooltip"
+      class="info tooltip"
       [ngClass]="{ loading: isLoadingQuestion }"
       (click)="generateRandomQuestion()"
     >
@@ -76,7 +79,12 @@
       >
       </ng-container>
       <ng-template #generateQuestionIconTemplate>
-        🤖
+        <span class="button-content"
+          ><span class="button-content__icon">🤖</span>
+          <span class="button-content__text">{{
+            "countdown.generateQuestionWithAi" | translate
+          }}</span>
+        </span>
         <span *ngIf="!isMobile" class="tooltip-text">{{
           "countdown.generateQuestionWithAi" | translate
         }}</span>
@@ -86,10 +94,15 @@
   <ng-template #localQuestionsTemplate>
     <button
       *ngIf="selectedPlayer"
-      class="warning tooltip"
+      class="info tooltip"
       (click)="selectRandomQuestion()"
     >
-      ❓
+      <span class="button-content"
+        ><span class="button-content__icon">❓</span>
+        <span class="button-content__text">{{
+          "countdown.changeQuestion" | translate
+        }}</span>
+      </span>
       <span *ngIf="!isMobile" class="tooltip-text">{{
         "countdown.changeQuestion" | translate
       }}</span>
