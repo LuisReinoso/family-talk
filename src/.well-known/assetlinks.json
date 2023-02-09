@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "net.reunionesfamiliares.app.twa",
+      "sha256_cert_fingerprints": [
+        "88:C0:01:64:66:11:4C:47:0E:6D:72:1C:27:BE:09:F3:2D:14:93:EF:D7:44:3C:99:63:64:9D:96:3D:BC:D9:A4"
+      ]
+    }
+  }
+]
