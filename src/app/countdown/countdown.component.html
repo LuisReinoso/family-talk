@@ -67,7 +67,7 @@
     }}</span>
   </button>
 
-  <ng-container *ngIf="hasToUseAi; else localQuestionsTemplate">
+  <ng-container *ngIf="hasToUseAi$ | async; else localQuestionsTemplate">
     <button
       *ngIf="openAiToken && selectedPlayer"
       class="info tooltip"

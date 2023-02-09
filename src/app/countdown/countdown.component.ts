@@ -38,7 +38,7 @@ export class CountdownComponent implements OnInit {
   openAiToken = this.aiService.openAiToken;
   isLoadingQuestion: boolean = false;
   isMobile = this.userAgentService.isMobile();
-  hasToUseAi = this.aiService.hasToUseAi;
+  hasToUseAi$ = this.aiService.hasToUseAi$;
   url = environment.URL;
 
   constructor(
@@ -56,7 +56,6 @@ export class CountdownComponent implements OnInit {
   ngOnInit(): void {
     const totalPlayers = Object.values(this.players).length;
     this.maxAnswerPerQuestion = totalPlayers > 6 ? 6 : totalPlayers;
-    this.hasToUseAi = this.aiService.hasToUseAi;
   }
 
   selectPlayer(player: Player) {

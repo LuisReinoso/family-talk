@@ -32,7 +32,9 @@ export class AiComponent implements OnInit, OnDestroy {
     this.formGroup.controls['openAiToken'].setValue(this.aiService.openAiToken);
 
     this.aiService.loadHasToUseAi();
-    this.formGroup.controls['hasToUseAi'].setValue(this.aiService.hasToUseAi);
+    this.formGroup.controls['hasToUseAi'].setValue(
+      this.aiService.hasToUseAi.value
+    );
 
     this.watchOpenAiToken();
     this.watchHasToUseAi();

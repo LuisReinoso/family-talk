@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { Category } from 'src/app/models/questions';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 
@@ -8,7 +8,9 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
   providedIn: 'root',
 })
 export class AiService {
-  public hasToUseAi = false;
+  public hasToUseAi = new BehaviorSubject<boolean>(false);
+  public hasToUseAi$ = this.hasToUseAi.asObservable();
+
   private apiUrl = 'https://api.openai.com';
   openAiToken!: string;
 
@@ -22,10 +24,11 @@ export class AiService {
 
   saveHasToUseAi(value: boolean): void {
     this.localStorageService.set('hasToUseAi', value);
+    this.hasToUseAi.next(value);
   }
 
   loadHasToUseAi(): void {
-    this.hasToUseAi = this.localStorageService.get('hasToUseAi');
+    this.hasToUseAi.next(this.localStorageService.get('hasToUseAi'));
   }
 
   generateRandomQuestion(currentCategory: Category): Observable<any> {
