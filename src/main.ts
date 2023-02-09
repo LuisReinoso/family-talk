@@ -54,6 +54,10 @@ const routes: Routes = [
     loadComponent: () =>
       import('./app/ai/ai.component').then((m) => m.AiComponent),
   },
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];
 
 if (environment.production) {

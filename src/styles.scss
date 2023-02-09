@@ -57,15 +57,22 @@ body {
 .option {
   margin: 10px;
   width: 100%;
+  padding: 15px 15px !important;
 }
 
 @media screen and (min-width: 600px) {
+  .option {
+    width: 50%;
+  }
   .options {
     width: 80%;
   }
 }
 
 @media screen and (min-width: 1400px) {
+  .option {
+    width: 25%;
+  }
   .options {
     width: 60%;
   }

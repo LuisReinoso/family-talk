@@ -68,3 +68,10 @@
     color: white;
   }
 }
+
+// responsive styles screen
+@media (min-width: 768px) {
+  .config-options {
+    width: 50%;
+  }
+}
