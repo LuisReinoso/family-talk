@@ -12,6 +12,7 @@ import { Category } from 'src/app/models/questions';
 import { AiService } from 'src/app/services/ai.service';
 import { UserAgentService } from 'src/app/services/userAgent.service';
 import { environment } from 'src/environments/environment';
+import { LanguageService } from 'src/app/services/language.service';
 
 @Component({
   selector: 'app-countdown',
@@ -46,10 +47,12 @@ export class CountdownComponent implements OnInit {
     private playerService: PlayerService,
     private questionsService: QuestionsService,
     private translateService: TranslateService,
+    private languageService: LanguageService,
     private aiService: AiService,
     private userAgentService: UserAgentService,
     @Inject(DOCUMENT) private document: Document
   ) {
+    this.languageService.loadLanguage();
     this.selectRandomQuestion();
   }
 

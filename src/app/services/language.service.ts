@@ -20,7 +20,9 @@ export class LanguageService {
   }
 
   public loadLanguage() {
-    this.language = this.localStorageService.get('language') || 'es';
+    this.language =
+      this.localStorageService.get('language') ||
+      this.translateService.currentLang;
     this.setLanguage(this.language);
   }
 
