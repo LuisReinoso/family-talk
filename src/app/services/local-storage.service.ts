@@ -10,7 +10,7 @@ export class LocalStorageService {
 
   get(key: string) {
     const data = localStorage.getItem(key);
-    if (!data) {
+    if (!data || data === 'undefined') {
       return null;
     }
 
