@@ -104,7 +104,7 @@ export class EditPlayerComponent implements OnInit {
   }
 
   selectRandomImage(playerId: string) {
-    const mainSeed = Math.floor(Math.random() * (12 - 1 + 1)) + 1;
+    const mainSeed = Math.floor(Math.random() * (16 - 1 + 1)) + 1;
     const rowSeed = Math.floor(Math.random() * 3);
 
     this.playerService.updateUser({
