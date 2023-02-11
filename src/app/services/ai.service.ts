@@ -12,7 +12,7 @@ export class AiService {
   public hasToUseAi$ = this.hasToUseAi.asObservable();
 
   private apiUrl = 'https://api.openai.com';
-  openAiToken!: string;
+  openAiToken!: string | null;
 
   constructor(
     private http: HttpClient,
@@ -77,6 +77,6 @@ export class AiService {
   }
 
   loadOpenAiToken() {
-    this.openAiToken = this.localStorageService.get('openAiToken') || null;
+    this.openAiToken = this.localStorageService.getRaw('openAiToken') || null;
   }
 }

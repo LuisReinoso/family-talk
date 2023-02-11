@@ -20,9 +20,19 @@ export class LanguageService {
   }
 
   public loadLanguage() {
-    this.language =
-      this.localStorageService.get('language') ||
-      this.translateService.currentLang;
+    let language: string | null = this.localStorageService.getRaw('language');
+
+    if (!!language) {
+      if (language.includes('es')) {
+        language = 'es';
+      }
+
+      if (language.includes('en')) {
+        language = 'es';
+      }
+    }
+
+    this.language = language || this.translateService.currentLang;
     this.setLanguage(this.language);
   }
 

@@ -16,4 +16,17 @@ export class LocalStorageService {
 
     return JSON.parse(data);
   }
+
+  getRaw(key: string) {
+    const data = localStorage.getItem(key);
+    if (!data || data === 'undefined') {
+      return null;
+    }
+
+    return data;
+  }
+
+  reset() {
+    localStorage.clear();
+  }
 }
