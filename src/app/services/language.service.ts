@@ -20,20 +20,30 @@ export class LanguageService {
   }
 
   public loadLanguage() {
-    let language: string | null = this.localStorageService.get('language');
+    let language: string | null =
+      this.localStorageService.get('language') ||
+      this.translateService.currentLang ||
+      navigator.language;
 
-    if (!!language) {
-      if (language.includes('es')) {
-        language = 'es';
-      }
+    language = this.reduceLanguageToSupported(language);
+    this.language = language;
+    this.setLanguage(this.language);
+  }
 
-      if (language.includes('en')) {
-        language = 'en';
-      }
+  private reduceLanguageToSupported(language: string | null) {
+    if (!language) {
+      return 'en';
     }
 
-    this.language = language || this.translateService.currentLang;
-    this.setLanguage(this.language);
+    if (language.includes('es')) {
+      language = 'es';
+    }
+
+    if (language.includes('en')) {
+      language = 'en';
+    }
+
+    return language;
   }
 
   private saveLanguage(language: string): void {
