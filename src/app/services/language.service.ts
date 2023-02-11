@@ -20,7 +20,7 @@ export class LanguageService {
   }
 
   public loadLanguage() {
-    let language: string | null = this.localStorageService.getRaw('language');
+    let language: string | null = this.localStorageService.get('language');
 
     if (!!language) {
       if (language.includes('es')) {
@@ -28,7 +28,7 @@ export class LanguageService {
       }
 
       if (language.includes('en')) {
-        language = 'es';
+        language = 'en';
       }
     }
 
