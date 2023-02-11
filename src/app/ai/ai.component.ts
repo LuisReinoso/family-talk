@@ -1,17 +1,28 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subscription, take } from 'rxjs';
 import { AiService } from 'src/app/services/ai.service';
+import { EventsDirective } from 'src/app/tracking/events.directive';
 
 @Component({
   selector: 'app-ai',
   templateUrl: './ai.component.html',
   styleUrls: ['./ai.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    TranslateModule,
+    EventsDirective,
+  ],
 })
 export class AiComponent implements OnInit, OnDestroy {
   formGroup: FormGroup = this.fb.group({
@@ -36,6 +47,7 @@ export class AiComponent implements OnInit, OnDestroy {
       this.aiService.hasToUseAi.value
     );
 
+    this.updateValidationOpenAiToken(this.aiService.hasToUseAi.value);
     this.watchOpenAiToken();
     this.watchHasToUseAi();
   }
@@ -64,11 +76,25 @@ export class AiComponent implements OnInit, OnDestroy {
     this.hasToUseAiSub = this.formGroup.controls[
       'hasToUseAi'
     ].valueChanges.subscribe((hasToUseAi) => {
+      this.updateValidationOpenAiToken(hasToUseAi);
       this.aiService.saveHasToUseAi(hasToUseAi);
     });
   }
 
+  private updateValidationOpenAiToken(hasToUseAi: any) {
+    if (hasToUseAi) {
+      this.formGroup.controls['openAiToken'].addValidators(Validators.required);
+    } else {
+      this.formGroup.controls['openAiToken'].clearValidators();
+    }
+    this.formGroup.controls['openAiToken'].updateValueAndValidity();
+  }
+
   backToGame(): void {
+    if (this.formGroup.controls['openAiToken'].invalid) {
+      this.formGroup.controls['openAiToken'].markAsTouched();
+      return;
+    }
     this.router.navigate(['']);
   }
 }
