@@ -13,6 +13,8 @@
             name="hasToUseAi"
             class="checkbox"
             formControlName="hasToUseAi"
+            eventName="use-ai"
+            eventPayload="formGroup.hasToUseAi.value"
           />
           <span class="custom-checkbox"> </span>
         </span>
@@ -27,6 +29,9 @@
         name="openAiToken"
         id="openAiToken"
       />
+      <span class="error-warn" *ngIf="formGroup.controls['openAiToken'].errors"
+        >OpenAi Token {{ "common.isRequired" | translate }}</span
+      >
     </form>
   </section>
 </div>

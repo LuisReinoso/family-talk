@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { colors } from 'src/app/models/colors';
 import { Player, playerTemplate } from 'src/app/models/player';
 import { PlayerService } from 'src/app/services/player.service';
+import { EventsDirective } from 'src/app/tracking/events.directive';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -13,7 +14,12 @@ import { environment } from 'src/environments/environment';
   templateUrl: './edit-player.component.html',
   styleUrls: ['./edit-player.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    TranslateModule,
+    EventsDirective,
+  ],
 })
 export class EditPlayerComponent implements OnInit {
   players: {

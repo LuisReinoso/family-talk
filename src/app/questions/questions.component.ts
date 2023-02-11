@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Category, defaultCategory } from 'src/app/models/questions';
 import { QuestionsService } from 'src/app/services/questions.service';
+import { EventsDirective } from 'src/app/tracking/events.directive';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -11,7 +12,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './questions.component.html',
   styleUrls: ['./questions.component.scss'],
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, TranslateModule, EventsDirective],
 })
 export class QuestionsComponent implements OnInit {
   selectedCategory: Category = Category.random;

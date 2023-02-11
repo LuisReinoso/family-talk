@@ -5,11 +5,21 @@
 
 <div class="container">
   <section class="options">
-    <button class="info" (click)="setupSpanishAsLanguage()">
+    <button
+      class="info"
+      (click)="setupSpanishAsLanguage()"
+      eventName="change-language"
+      [eventPayload]="{ language: 'es' }"
+    >
       {{ "language.spanish" | translate }}
       <span class="check-icon" *ngIf="currentLanguage === 'es'">✔️</span>
     </button>
-    <button class="info" (click)="setupEnglishAsLanguage()">
+    <button
+      class="info"
+      (click)="setupEnglishAsLanguage()"
+      eventName="change-language"
+      [eventPayload]="{ language: 'en' }"
+    >
       {{ "language.english" | translate
       }}<span class="check-icon" *ngIf="currentLanguage === 'en'">✔️</span>
     </button>

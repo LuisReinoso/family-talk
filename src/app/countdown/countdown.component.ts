@@ -13,13 +13,20 @@ import { AiService } from 'src/app/services/ai.service';
 import { UserAgentService } from 'src/app/services/userAgent.service';
 import { environment } from 'src/environments/environment';
 import { LanguageService } from 'src/app/services/language.service';
+import { EventsDirective } from 'src/app/tracking/events.directive';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 
 @Component({
   selector: 'app-countdown',
   templateUrl: './countdown.component.html',
   styleUrls: ['./countdown.component.scss'],
   standalone: true,
-  imports: [CommonModule, SecondsToMinutesPipe, TranslateModule],
+  imports: [
+    CommonModule,
+    SecondsToMinutesPipe,
+    TranslateModule,
+    EventsDirective,
+  ],
 })
 export class CountdownComponent implements OnInit {
   selectedPlayer!: Player;
@@ -50,6 +57,7 @@ export class CountdownComponent implements OnInit {
     private languageService: LanguageService,
     private aiService: AiService,
     private userAgentService: UserAgentService,
+    private localStorageService: LocalStorageService,
     @Inject(DOCUMENT) private document: Document
   ) {
     this.languageService.loadLanguage();
@@ -222,7 +230,7 @@ export class CountdownComponent implements OnInit {
 
   savePlayers() {
     this.playerService.players = this.players;
-    this.playerService.savePlayers();
+    // this.playerService.savePlayers();
   }
 
   displayAlert() {
@@ -239,5 +247,10 @@ export class CountdownComponent implements OnInit {
       }
       alert.classList.add('hidden');
     }, 3000);
+  }
+
+  resetLocalStorage() {
+    this.localStorageService.reset();
+    location.reload();
   }
 }

@@ -10,6 +10,8 @@
       class="info option"
       [disabled]="numberQuestionsPerCategory[category.name] === 0"
       (click)="setupQuestionCategory(category.name)"
+      eventName="change-category"
+      [eventPayload]="{ category: category.name }"
     >
       <span class="topic">
         {{ category.name | translate }} ({{

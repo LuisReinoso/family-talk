@@ -5,12 +5,17 @@
 
 <div class="container">
   <section class="config-options">
-    <button class="config-option config-player" (click)="goToPlayersConfig()">
+    <button
+      class="config-option config-player"
+      (click)="goToPlayersConfig()"
+      eventName="go-to-players-config"
+    >
       <div class="config-option__title">{{ "config.players" | translate }}</div>
     </button>
     <button
       class="config-option config-language"
       (click)="goToLanguageConfig()"
+      eventName="go-to-language-config"
     >
       <div class="config-option__title">
         {{ "config.language" | translate }}
@@ -19,12 +24,17 @@
     <button
       class="config-option config-questions"
       (click)="goToQuestionsConfig()"
+      eventName="go-to-questions-config"
     >
       <div class="config-option__title">
         {{ "config.questions" | translate }}
       </div>
     </button>
-    <button class="config-option config-ai" (click)="goToAiConfig()">
+    <button
+      class="config-option config-ai"
+      (click)="goToAiConfig()"
+      eventName="go-to-ai-config"
+    >
       <div class="config-option__title">{{ "config.ai" | translate }}</div>
     </button>
   </section>

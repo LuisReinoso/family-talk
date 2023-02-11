@@ -1,14 +1,22 @@
 <div class="header">
   <img class="logo" src="./assets/icons/family-talk-icon.png" />
   <div class="title">Reuniones familiares</div>
-  <button class="icon tooltip" (click)="navigateConfigs()">
+  <button
+    class="icon tooltip"
+    (click)="navigateConfigs()"
+    eventName="go-to-configs"
+  >
     ⚙️
     <span class="icon__text">{{ "countdown.configure" | translate }}</span>
   </button>
 </div>
 
 <div class="container">
-  <section class="players" (click)="displayAlert()">
+  <section
+    class="players"
+    (click)="displayAlert()"
+    eventName="click-players-main-view"
+  >
     <div
       *ngFor="let player of players | keyvalue; let i = index"
       [ngClass]="{
@@ -35,27 +43,53 @@
     {{ selectedPlayer.timeRemaining | secondsToMinutes }}
 
     <ng-container *ngIf="selectedPlayer.timeRemaining > 0">
-      <button *ngIf="this.intervalId" class="pause" (click)="stopCountdown()">
+      <button
+        *ngIf="this.intervalId"
+        class="pause"
+        (click)="stopCountdown()"
+        eventName="pause-countdown"
+      >
         ⏸️
       </button>
       <button
         *ngIf="!this.intervalId"
         class="resume"
         (click)="startCountdown()"
+        eventName="resume-countdown"
       >
         ⏯
       </button>
     </ng-container>
   </ng-container>
 </section>
-<div class="selected-question" (click)="stopCountdown()" *ngIf="selectedPlayer">
+<div class="selected-question" *ngIf="selectedPlayer">
   <ng-container>
     <b>{{ "countdown.question" | translate }}:</b>
-    <div class="question">{{ selectedQuestion$ | async }}</div>
+    <ng-container
+      *ngIf="
+        selectedQuestion$ | async as selectedQuestion;
+        else noQuestionsTemplate
+      "
+    >
+      <div class="question">{{ selectedQuestion }}</div>
+    </ng-container>
+    <ng-template #noQuestionsTemplate>
+      <div
+        class="alert warn"
+        (click)="resetLocalStorage()"
+        eventName="reset-local-storage"
+      >
+        {{ "countdown.resetData" | translate }}
+      </div>
+    </ng-template>
   </ng-container>
 </div>
 <section class="footer">
-  <button class="primary tooltip" (click)="selectRandomUserAndStart()">
+  <button
+    class="primary tooltip"
+    (click)="selectRandomUserAndStart()"
+    eventName="click-play"
+  >
     <span class="button-content"
       ><span class="button-content__icon">🔀</span>
       <span class="button-content__text">{{
@@ -73,6 +107,8 @@
       class="info tooltip"
       [ngClass]="{ loading: isLoadingQuestion }"
       (click)="generateRandomQuestion()"
+      eventName="click-new-ai-question"
+      [eventPayload]="{ 'current-question': selectedQuestion$ | async }"
     >
       <ng-container
         *ngIf="isLoadingQuestion; else generateQuestionIconTemplate"
@@ -96,6 +132,8 @@
       *ngIf="selectedPlayer"
       class="info tooltip"
       (click)="selectRandomQuestion()"
+      eventName="click-new-question"
+      [eventPayload]="{ 'current-question': selectedQuestion$ | async }"
     >
       <span class="button-content"
         ><span class="button-content__icon">❓</span>

@@ -25,6 +25,7 @@
               ? selectRandomImage(player.key)
               : null
           "
+          eventName="change-avatar"
         />
 
         <ng-container
@@ -62,10 +63,10 @@
 
 <div class="footer">
   <ng-container *ngIf="!!selectedUserId; else backActionTemplate">
-    <button class="primary" (click)="saveUser()">
+    <button class="primary" (click)="saveUser()" eventName="save-edit-user">
       {{ "common.save" | translate }}
     </button>
-    <button class="danger" (click)="deleteUser()">
+    <button class="danger" (click)="deleteUser()" eventName="delete-user">
       {{ "common.delete" | translate }}
     </button>
   </ng-container>
@@ -74,15 +75,19 @@
       <button class="primary" (click)="backToGame()">
         {{ "common.return" | translate }}
       </button>
-      <button class="info" (click)="displayAddUser()">
+      <button class="info" (click)="displayAddUser()" eventName="add-new-user">
         {{ "common.add" | translate }}
       </button>
     </ng-container>
     <ng-template #addUserTemplateTemplate>
-      <button class="primary" (click)="addUser()">
+      <button class="primary" (click)="addUser()" eventName="save-new-user">
         {{ "common.save" | translate }}
       </button>
-      <button class="info" (click)="cancelCreateUser()">
+      <button
+        class="info"
+        (click)="cancelCreateUser()"
+        eventName="cancel-new-user"
+      >
         {{ "common.cancel" | translate }}
       </button>
     </ng-template>

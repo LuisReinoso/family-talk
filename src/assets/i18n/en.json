@@ -8,14 +8,16 @@
     "changeQuestion": "Change question",
     "generateQuestionWithAi": "Generate question with A.I.",
     "pressOn": "Press on",
-    "toStart": "to start"
+    "toStart": "to start",
+    "resetData": "Something's wrong, click to reset the data"
   },
   "common": {
     "save": "Save",
     "delete": "Delete",
     "return": "Return",
     "add": "Add",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "isRequired": "is required"
   },
   "edit": {
     "editPlayers": "Edit Players"

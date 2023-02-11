@@ -30,3 +30,8 @@ input[type="text"]:focus {
     width: 80%;
   }
 }
+
+.error-warn {
+  color: $color-red;
+  font-size: 15px;
+}

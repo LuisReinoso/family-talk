@@ -8,14 +8,16 @@
     "changeQuestion": "Cambiar pregunta",
     "generateQuestionWithAi": "Generar pregunta con I.A.",
     "pressOn": "Presiona en",
-    "toStart": "para empezar"
+    "toStart": "para empezar",
+    "resetData": "Algo salio mal, click para resetear datos"
   },
   "common": {
     "save": "Guardar",
     "delete": "Eliminar",
     "return": "Regresar",
     "add": "Agregar",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "isRequired": "es requerido"
   },
   "edit": {
     "editPlayers": "Editar Jugadores"

@@ -77,6 +77,6 @@ export class AiService {
   }
 
   loadOpenAiToken() {
-    this.openAiToken = this.localStorageService.getRaw('openAiToken') || null;
+    this.openAiToken = this.localStorageService.get('openAiToken') || null;
   }
 }
