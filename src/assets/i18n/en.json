@@ -9,7 +9,8 @@
     "generateQuestionWithAi": "Generate question with A.I.",
     "pressOn": "Press on",
     "toStart": "to start",
-    "resetData": "Something's wrong, click to reset the data"
+    "resetData": "Something's wrong, click to reset the data",
+    "aiTokenError": "Something is wrong with the OpenAi Token, change the token and try again"
   },
   "common": {
     "save": "Save",

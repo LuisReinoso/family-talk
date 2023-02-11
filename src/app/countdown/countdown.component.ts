@@ -195,22 +195,28 @@ export class CountdownComponent implements OnInit {
 
   async generateRandomQuestion(): Promise<void> {
     this.isLoadingQuestion = true;
-    const currentQuestion = await lastValueFrom(
-      this.aiService.generateRandomQuestion(
-        this.questionsService.currentCategory
-      )
-    );
 
-    this.isLoadingQuestion = false;
+    try {
+      const currentQuestion = await lastValueFrom(
+        this.aiService.generateRandomQuestion(
+          this.questionsService.currentCategory
+        )
+      );
 
-    let question = currentQuestion.question;
+      this.isLoadingQuestion = false;
 
-    if (this.translateService.currentLang === 'en') {
-      question = currentQuestion.translationUS;
+      let question = currentQuestion.question;
+
+      if (this.translateService.currentLang === 'en') {
+        question = currentQuestion.translationUS;
+      }
+
+      this.selectedQuestion$.next(question);
+      this.savePlayers();
+    } catch (error) {
+      this.isLoadingQuestion = false;
+      this.displayAlert('alert-ai');
     }
-
-    this.selectedQuestion$.next(question);
-    this.savePlayers();
   }
 
   scrollToDiv() {
@@ -233,10 +239,8 @@ export class CountdownComponent implements OnInit {
     // this.playerService.savePlayers();
   }
 
-  displayAlert() {
-    console.log('navigator.userAgent');
-
-    const alert = this.document.getElementById('alert');
+  displayAlert(id: string) {
+    const alert = this.document.getElementById(id);
     if (!alert) {
       return;
     }

@@ -14,7 +14,7 @@
 <div class="container">
   <section
     class="players"
-    (click)="displayAlert()"
+    (click)="displayAlert('alert')"
     eventName="click-players-main-view"
   >
     <div
@@ -106,8 +106,8 @@
       *ngIf="openAiToken && selectedPlayer"
       class="info tooltip"
       [ngClass]="{ loading: isLoadingQuestion }"
-      (click)="generateRandomQuestion()"
       eventName="click-new-ai-question"
+      (click)="generateRandomQuestion()"
       [eventPayload]="{ 'current-question': selectedQuestion$ | async }"
     >
       <ng-container
@@ -150,4 +150,8 @@
 
 <div id="alert" class="hidden">
   {{ "countdown.pressOn" | translate }} 🔀 {{ "countdown.toStart" | translate }}
+</div>
+
+<div id="alert-ai" class="hidden alert warn">
+  {{ "countdown.aiTokenError" | translate }}
 </div>
