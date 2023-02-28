@@ -1,0 +1,42 @@
+{
+  "packageId": "net.reunionesfamiliares.app.twa",
+  "host": "app.reunionesfamiliares.net",
+  "name": "Reuniones familiares",
+  "launcherName": "RunionFmliar",
+  "display": "standalone",
+  "themeColor": "#1976D2",
+  "navigationColor": "#000000",
+  "navigationColorDark": "#000000",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "backgroundColor": "#FAFAFA",
+  "enableNotifications": true,
+  "startUrl": "/",
+  "iconUrl": "https://app.reunionesfamiliares.net/assets/icons/family-talk-icon.png",
+  "maskableIconUrl": "https://app.reunionesfamiliares.net/assets/icons/family-talk-icon.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "/home/luis/proyectos-activos/family-talk/android.keystore",
+    "alias": "family-talk"
+  },
+  "appVersionName": "1",
+  "appVersionCode": 1,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://app.reunionesfamiliares.net/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://app.reunionesfamiliares.net/",
+  "minSdkVersion": 19,
+  "orientation": "default",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "appVersion": "1"
+}
