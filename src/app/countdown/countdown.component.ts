@@ -121,10 +121,21 @@ export class CountdownComponent implements OnInit {
     this.stopCountdown();
     this.savePlayers();
 
-    if (Object.values(this.players).every((player) => player.hasAnswer)) {
+    const availablePlayer = Object.values(this.players).filter(
+      (player) => !player.hasAnswer && player.timeRemaining > 0
+    );
+
+    const allPlayersAnswered = Object.values(this.players).every(
+      (player) => player.hasAnswer
+    );
+
+    if (availablePlayer.length === 0 || allPlayersAnswered) {
       this.players = Object.values(this.players)
         .map((player) => {
-          return { ...player, hasAnswer: false };
+          return {
+            ...player,
+            hasAnswer: !(player.timeRemaining > 0),
+          };
         })
         .reduce((accumulator, player) => {
           return { ...accumulator, [player.id]: player };
