@@ -1,0 +1,22 @@
+<div class="header">
+  <img class="logo" src="./assets/icons/family-talk-icon.png" />
+  <div class="title">{{ "generalSettings.generalSettings" | translate }}</div>
+</div>
+
+<div class="container">
+  <section class="options">
+    <button
+      class="info"
+      (click)="resetPlayersTimer()"
+      eventName="reset-players-timer"
+    >
+      {{ "generalSettings.resetPlayersTimer" | translate }}
+    </button>
+  </section>
+</div>
+
+<div class="footer">
+  <button class="primary" (click)="backToGame()">
+    {{ "common.return" | translate }}
+  </button>
+</div>

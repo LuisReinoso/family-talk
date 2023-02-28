@@ -55,6 +55,13 @@ const routes: Routes = [
       import('./app/ai/ai.component').then((m) => m.AiComponent),
   },
   {
+    path: 'general-settings',
+    loadComponent: () =>
+      import('./app/general-settings/general-settings.component').then(
+        (m) => m.GeneralSettingsComponent
+      ),
+  },
+  {
     path: '**',
     redirectTo: '',
   },

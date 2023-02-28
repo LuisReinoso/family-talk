@@ -13,6 +13,13 @@
       <div class="config-option__title">{{ "config.players" | translate }}</div>
     </button>
     <button
+      class="config-option config-general"
+      (click)="goToGeneralConfig()"
+      eventName="go-to-general-config"
+    >
+      <div class="config-option__title">{{ "config.general" | translate }}</div>
+    </button>
+    <button
       class="config-option config-language"
       (click)="goToLanguageConfig()"
       eventName="go-to-language-config"

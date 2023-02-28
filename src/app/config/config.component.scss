@@ -49,6 +49,17 @@
   overflow: hidden;
 }
 
+.config-general {
+  background-image: url("/assets/images/config-general.png");
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
 .config-option {
   flex-basis: 50%;
   padding-left: 0.25rem;
@@ -72,6 +83,6 @@
 // responsive styles screen
 @media (min-width: 768px) {
   .config-options {
-    width: 50%;
+    width: 25%;
   }
 }

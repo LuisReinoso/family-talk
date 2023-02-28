@@ -35,4 +35,8 @@ export class ConfigComponent implements OnInit {
   backToGame(): void {
     this.router.navigate(['']);
   }
+
+  goToGeneralConfig(): void {
+    this.router.navigate(['/general-settings']);
+  }
 }

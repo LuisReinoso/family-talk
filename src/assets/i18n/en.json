@@ -31,7 +31,8 @@
     "players": "Players",
     "language": "Language",
     "questions": "Questions",
-    "ai": "Artificial intelligence"
+    "ai": "Artificial intelligence",
+    "general": "General"
   },
   "language": {
     "configureLanguage": "Configure Language",
@@ -41,6 +42,10 @@
   "aiConfig": {
     "configQuestionGeneration": "Configure question generator",
     "useAiGenerateQuestions": "Use artificial intelligence to generate questions?"
+  },
+  "generalSettings": {
+    "resetPlayersTimer": "Reset players timer to speak",
+    "generalSettings": "General Settings"
   },
   "Aleatorio": "Random",
   "Metas y sueños personales": "Personal goals and dreams",
