@@ -15,7 +15,7 @@ export class EventsDirective {
 
   @HostListener('click', ['$event'])
   handleClick($event: MouseEvent) {
-    if (environment.production) {
+    if (environment.production && umami) {
       umami.trackEvent(this.eventName, this.eventPayload);
     }
   }
