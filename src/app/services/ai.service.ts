@@ -39,11 +39,16 @@ export class AiService {
     });
 
     const body = {
-      prompt:
-        '"Con la siguiente estructura:\n{\n      "id": "aabbcc111",\n      "question": "Cual es el nombre de la compania?",\n      "translationUS": "What is the name of the company?",\n      "category": "Category.challenges"\n }\n\nLas reglas son:\n- el atributo question agrega una pregunta para conversar con "la familia" sobre "' +
-        currentCategory +
-        '"\n- el id es un string aleatoreo alfanumerico\n- el atributo category es igual a Category.relationships, sin comillas\n- el atributo translationUS es igual a la traduccion al ingles de la pregunta que esta en el atributo question"',
-      model: 'text-davinci-003',
+      model: 'gpt-3.5-turbo',
+      messages: [
+        {
+          role: 'system',
+          content:
+            '"Genera una aleatoria e interesante pregunta basado en las reglas con la siguiente estructura:\n{\n      "id": "aabbcc111",\n      "question": "Cual es el nombre de la compania?",\n      "translationUS": "What is the name of the company?",\n      "category": "Category.challenges"\n }\n\nLas reglas son:\n- el atributo question tiene una pregunta para generar un tema de conversacion y conversar con "la familia" sobre "' +
+            currentCategory +
+            '"\n- el id es un string aleatoreo alfanumerico\n- el atributo category es igual a Category.relationships, sin comillas\n- el atributo translationUS es igual a la traduccion al ingles de la pregunta que esta en el atributo question"',
+        },
+      ],
       temperature: 1,
       max_tokens: 256,
       top_p: 1,
@@ -52,10 +57,10 @@ export class AiService {
     };
 
     return this.http
-      .post(`${this.apiUrl}/v1/completions`, body, { headers })
+      .post(`${this.apiUrl}/v1/chat/completions`, body, { headers })
       .pipe(
         map((response: any) => {
-          return response.choices[0].text;
+          return response.choices[0].message.content;
         }),
         map((text) => {
           let question = null;

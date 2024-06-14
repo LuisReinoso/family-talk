@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  URL: 'https://app.reunionesfamiliares.net',
+  URL: 'https://family-talk-jr-home.web.app/',
 };
