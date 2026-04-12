@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { Category } from 'src/app/models/questions';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { parseAiQuestionResponse } from 'src/app/utils/question.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -62,16 +63,8 @@ export class AiService {
         map((response: any) => {
           return response.choices[0].message.content;
         }),
-        map((text) => {
-          let question = null;
-
-          try {
-            question = JSON.parse(text);
-          } catch (error) {
-            question = null;
-          }
-
-          return question;
+        map((text: string) => {
+          return parseAiQuestionResponse(text);
         })
       );
   }

@@ -1,61 +1,47 @@
 import { Injectable, OnInit } from '@angular/core';
-import { CONFIG } from 'src/app/models/config';
 import { defaultPlayers, Player } from 'src/app/models/player';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import {
+  resetPlayersTimer as resetPlayersTimerUtil,
+  parsePlayers,
+  addPlayer,
+  removePlayer as removePlayerUtil,
+  updatePlayer as updatePlayerUtil,
+} from 'src/app/utils/player.utils';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PlayerService implements OnInit {
+export class PlayerService {
   players: { [key: string]: Player } = defaultPlayers;
 
   constructor(private localStorageService: LocalStorageService) {
     this.loadPlayers();
   }
 
-  ngOnInit(): void {
-    if (!this.players) {
-      this.savePlayers();
-    }
-  }
-
   addUser(user: Player) {
-    this.players[user.id] = user;
+    this.players = addPlayer(this.players, user);
   }
 
   deleteUser(id: string) {
-    delete this.players[id];
+    this.players = removePlayerUtil(this.players, id);
   }
 
   updateUser(user: Player) {
-    this.players[user.id] = user;
+    this.players = updatePlayerUtil(this.players, user);
   }
 
   loadPlayers() {
-    const localPlayers = JSON.parse(this.localStorageService.get('players'));
-    if (!localPlayers || Object.keys(localPlayers).length === 0) {
-      this.players = defaultPlayers;
-      return;
-    }
-
-    this.players = localPlayers;
+    const localPlayers = this.localStorageService.get('players');
+    this.players = parsePlayers(localPlayers);
   }
 
   savePlayers() {
-    this.localStorageService.set('players', JSON.stringify(this.players));
+    this.localStorageService.set('players', this.players);
   }
 
   resetPlayersTimer() {
-    const newPlayers: { [key: string]: Player } = {};
-    Object.values(this.players).forEach((player) => {
-      newPlayers[player.id] = {
-        ...player,
-        timeRemaining: CONFIG.maxTimeToTalkInSeconds,
-        hasAnswer: false,
-      };
-    });
-
-    this.players = newPlayers;
+    this.players = resetPlayersTimerUtil(this.players);
     this.savePlayers();
   }
 }

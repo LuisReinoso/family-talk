@@ -6,6 +6,10 @@ import {
   questions,
 } from 'src/app/models/questions';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import {
+  removeQuestion as removeQuestionUtil,
+  calcQuestionsPerCategory as calcQuestionsPerCategoryUtil,
+} from 'src/app/utils/question.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -36,8 +40,7 @@ export class QuestionsService {
   }
 
   removeQuestion(questionId: string): void {
-    delete this.questions[questionId];
-    this.questions = { ...this.questions };
+    this.questions = removeQuestionUtil(this.questions, questionId);
   }
 
   saveQuestions(): void {
@@ -60,17 +63,7 @@ export class QuestionsService {
   }
 
   calcQuestionsPerCategory(): void {
-    const questionCalc: { [key: string]: number } = {
-      ...defaultQuestionCounter,
-      [Category.random]: Object.values(this.questions).length,
-    };
-    Object.values(this.questions).forEach((question) => {
-      questionCalc[question.category] += 1;
-    });
-
-    this.numberQuestionsPerCategory = {
-      ...questionCalc,
-    };
+    this.numberQuestionsPerCategory = calcQuestionsPerCategoryUtil(this.questions);
   }
 
   restoreQuestions() {

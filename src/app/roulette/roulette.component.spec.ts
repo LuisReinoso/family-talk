@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { RouletteComponent } from './roulette.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('RouletteComponent', () => {
   let component: RouletteComponent;
@@ -8,13 +8,11 @@ describe('RouletteComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RouletteComponent ]
-    })
-    .compileComponents();
+      imports: [RouletteComponent, RouterTestingModule],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(RouletteComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

@@ -15,6 +15,15 @@ import { environment } from 'src/environments/environment';
 import { LanguageService } from 'src/app/services/language.service';
 import { EventsDirective } from 'src/app/tracking/events.directive';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import {
+  getRandomAvailablePlayer,
+  getPlayersForNextRound,
+  calcMaxAnswersPerQuestion,
+} from 'src/app/utils/player.utils';
+import {
+  selectRandomQuestion,
+  getQuestionText,
+} from 'src/app/utils/question.utils';
 
 @Component({
   selector: 'app-countdown',
@@ -66,7 +75,7 @@ export class CountdownComponent implements OnInit {
 
   ngOnInit(): void {
     const totalPlayers = Object.values(this.players).length;
-    this.maxAnswerPerQuestion = totalPlayers > 6 ? 6 : totalPlayers;
+    this.maxAnswerPerQuestion = calcMaxAnswersPerQuestion(totalPlayers);
   }
 
   selectPlayer(player: Player) {
@@ -89,15 +98,8 @@ export class CountdownComponent implements OnInit {
   }
 
   selectRandomUser() {
-    const availablePlayers = Object.values(this.players).filter(
-      (player) => !player.hasAnswer && player.timeRemaining > 0
-    );
-
-    const selectedRandomUserIndex = Math.floor(
-      Math.random() * availablePlayers.length
-    );
-
-    const player = availablePlayers[selectedRandomUserIndex];
+    const player = getRandomAvailablePlayer(this.players);
+    if (!player) return;
     this.selectedUserId = player.id;
     this.scrollToDiv();
   }
@@ -121,26 +123,7 @@ export class CountdownComponent implements OnInit {
     this.stopCountdown();
     this.savePlayers();
 
-    const availablePlayer = Object.values(this.players).filter(
-      (player) => !player.hasAnswer && player.timeRemaining > 0
-    );
-
-    const allPlayersAnswered = Object.values(this.players).every(
-      (player) => player.hasAnswer
-    );
-
-    if (availablePlayer.length === 0 || allPlayersAnswered) {
-      this.players = Object.values(this.players)
-        .map((player) => {
-          return {
-            ...player,
-            hasAnswer: !(player.timeRemaining > 0),
-          };
-        })
-        .reduce((accumulator, player) => {
-          return { ...accumulator, [player.id]: player };
-        }, {});
-    }
+    this.players = getPlayersForNextRound(this.players);
 
     interval(200)
       .pipe(
@@ -166,40 +149,28 @@ export class CountdownComponent implements OnInit {
   }
 
   selectRandomQuestion() {
-    let questions = Object.values(this.questionsService.questions).filter(
-      (question) => {
-        if (this.questionsService.currentCategory === Category.random) {
-          return question;
-        }
-        return question.category === this.questionsService.currentCategory;
-      }
+    const result = selectRandomQuestion(
+      this.questionsService.questions,
+      this.questionsService.currentCategory,
+      this.translateService.currentLang || 'es'
     );
 
-    const hasNoMoreQuestionsPerCategory = questions.length === 0;
-
-    if (hasNoMoreQuestionsPerCategory) {
-      questions = Object.values(this.questionsService.questions);
-      this.questionsService.setupQuestionCategory(Category.random);
-
-      const hasNoMoreDefaultQuestions = questions.length === 0;
-
-      if (hasNoMoreDefaultQuestions) {
-        this.questionsService.restoreQuestions();
-        questions = Object.values(this.questionsService.questions);
+    if (!result) {
+      this.questionsService.restoreQuestions();
+      const retry = selectRandomQuestion(
+        this.questionsService.questions,
+        this.questionsService.currentCategory,
+        this.translateService.currentLang || 'es'
+      );
+      if (retry) {
+        this.selectedQuestion$.next(retry.questionText);
+        this.questionsService.questions = retry.remaining;
       }
+      return;
     }
 
-    const selectedQuestionIndex = Math.floor(Math.random() * questions.length);
-
-    const currentQuestion = questions[selectedQuestionIndex];
-    let question = currentQuestion.question;
-
-    if (this.translateService.currentLang === 'en') {
-      question = currentQuestion.translationUS;
-    }
-
-    this.selectedQuestion$.next(question);
-    this.questionsService.removeQuestion(currentQuestion.id);
+    this.selectedQuestion$.next(result.questionText);
+    this.questionsService.questions = result.remaining;
     this.savePlayers();
     this.questionsService.saveQuestions();
   }
@@ -216,11 +187,10 @@ export class CountdownComponent implements OnInit {
 
       this.isLoadingQuestion = false;
 
-      let question = currentQuestion.question;
-
-      if (this.translateService.currentLang === 'en') {
-        question = currentQuestion.translationUS;
-      }
+      const question = getQuestionText(
+        currentQuestion,
+        this.translateService.currentLang || 'es'
+      );
 
       this.selectedQuestion$.next(question);
       this.savePlayers();
@@ -247,7 +217,6 @@ export class CountdownComponent implements OnInit {
 
   savePlayers() {
     this.playerService.players = this.players;
-    // this.playerService.savePlayers();
   }
 
   displayAlert(id: string) {

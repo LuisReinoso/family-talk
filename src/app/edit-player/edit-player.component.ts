@@ -10,6 +10,7 @@ import { EventsDirective } from 'src/app/tracking/events.directive';
 import { environment } from 'src/environments/environment';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
+import { generateId, generateAvatarPaths } from 'src/app/utils/id.utils';
 
 @Component({
   selector: 'app-edit-player',
@@ -30,7 +31,7 @@ export class EditPlayerComponent implements OnInit {
     [key: string]: Player;
   } = this.playerService.players;
   selectedUserId: string = '';
-  avatarOptions: string[] = [];
+  avatarOptions: string[] = generateAvatarPaths();
 
   form = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
@@ -53,16 +54,6 @@ export class EditPlayerComponent implements OnInit {
       Object.values(this.playerService.players).length === 0
     ) {
       this.playerService.loadPlayers();
-    }
-    this.generateAvatarOptions();
-  }
-
-  generateAvatarOptions(): void {
-    this.avatarOptions = [];
-    for (let mainSeed = 1; mainSeed <= 16; mainSeed++) {
-      for (let rowSeed = 0; rowSeed < 3; rowSeed++) {
-        this.avatarOptions.push(`/assets/faces/${mainSeed}_${rowSeed}_${rowSeed}.png`);
-      }
     }
   }
 
@@ -116,7 +107,7 @@ export class EditPlayerComponent implements OnInit {
 
     this.playerService.addUser({
       ...playerTemplate,
-      id: this.generateRandomId(),
+      id: generateId(),
       color: this.selectedColor,
       name: this.form.controls.name.value || '',
       avatar: `/assets/faces/1_0_0.png`,
@@ -140,10 +131,6 @@ export class EditPlayerComponent implements OnInit {
       ...this.players[playerId],
       avatar: avatar,
     });
-  }
-
-  private generateRandomId(): string {
-    return Math.random().toString(36).substring(2, 15);
   }
 
   private showError(message: string): void {

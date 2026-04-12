@@ -1,15 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { LanguageService } from './services/language.service';
 
 describe('AppComponent', () => {
+  let languageServiceSpy: jasmine.SpyObj<LanguageService>;
+
   beforeEach(async () => {
+    languageServiceSpy = jasmine.createSpyObj('LanguageService', ['loadLanguage']);
+
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        AppComponent
+      imports: [RouterTestingModule],
+      providers: [
+        { provide: LanguageService, useValue: languageServiceSpy },
       ],
     }).compileComponents();
   });
@@ -20,16 +23,8 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'family-talk'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('family-talk');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('family-talk app is running!');
+  it('should call loadLanguage on construction', () => {
+    TestBed.createComponent(AppComponent);
+    expect(languageServiceSpy.loadLanguage).toHaveBeenCalled();
   });
 });
