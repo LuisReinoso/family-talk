@@ -42,3 +42,19 @@ testem.log
 Thumbs.db
 
 /.firebase/*
+.gradle/
+android.keystore
+app-release-bundle.aab
+app-release-signed.apk
+app-release-signed.apk.idsig
+app-release-unsigned-aligned.apk
+build.gradle
+gradle.properties
+gradle/
+gradlew
+gradlew.bat
+manifest-checksum.txt
+settings.gradle
+
+# Firebase cache
+.firebase/

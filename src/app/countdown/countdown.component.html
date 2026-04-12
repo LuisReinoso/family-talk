@@ -5,6 +5,7 @@
     class="icon tooltip"
     (click)="navigateConfigs()"
     eventName="go-to-configs"
+    data-testid="btn-config"
   >
     ⚙️
     <span class="icon__text">{{ "countdown.configure" | translate }}</span>
@@ -16,6 +17,7 @@
     class="players"
     (click)="displayAlert('alert')"
     eventName="click-players-main-view"
+    data-testid="players-section"
   >
     <div
       *ngFor="let player of players | keyvalue; let i = index"
@@ -37,7 +39,7 @@
   </section>
 </div>
 
-<section class="selected-player" *ngIf="selectedPlayer">
+<section class="selected-player" *ngIf="selectedPlayer" data-testid="selected-player">
   <ng-container *ngIf="!isSelectingRandomUser">
     {{ selectedPlayer.name }} |
     {{ selectedPlayer.timeRemaining | secondsToMinutes }}
@@ -48,6 +50,7 @@
         class="pause"
         (click)="stopCountdown()"
         eventName="pause-countdown"
+        data-testid="btn-pause"
       >
         ⏸️
       </button>
@@ -56,13 +59,14 @@
         class="resume"
         (click)="startCountdown()"
         eventName="resume-countdown"
+        data-testid="btn-resume"
       >
         ⏯
       </button>
     </ng-container>
   </ng-container>
 </section>
-<div class="selected-question" *ngIf="selectedPlayer">
+<div class="selected-question" *ngIf="selectedPlayer" data-testid="selected-question">
   <ng-container>
     <b>{{ "countdown.question" | translate }}:</b>
     <ng-container
@@ -78,6 +82,7 @@
         class="alert warn"
         (click)="resetLocalStorage()"
         eventName="reset-local-storage"
+        data-testid="btn-reset-data"
       >
         {{ "countdown.resetData" | translate }}
       </div>
@@ -89,6 +94,7 @@
     class="primary tooltip"
     (click)="selectRandomUserAndStart()"
     eventName="click-play"
+    data-testid="btn-select-player"
   >
     <span class="button-content"
       ><span class="button-content__icon">🔀</span>
@@ -109,6 +115,7 @@
       eventName="click-new-ai-question"
       (click)="generateRandomQuestion()"
       [eventPayload]="{ 'current-question': selectedQuestion$ | async }"
+      data-testid="btn-ai-question"
     >
       <ng-container
         *ngIf="isLoadingQuestion; else generateQuestionIconTemplate"
@@ -134,6 +141,7 @@
       (click)="selectRandomQuestion()"
       eventName="click-new-question"
       [eventPayload]="{ 'current-question': selectedQuestion$ | async }"
+      data-testid="btn-change-question"
     >
       <span class="button-content"
         ><span class="button-content__icon">❓</span>

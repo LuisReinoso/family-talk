@@ -8,6 +8,8 @@ import { Player, playerTemplate } from 'src/app/models/player';
 import { PlayerService } from 'src/app/services/player.service';
 import { EventsDirective } from 'src/app/tracking/events.directive';
 import { environment } from 'src/environments/environment';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-edit-player',
@@ -19,6 +21,8 @@ import { environment } from 'src/environments/environment';
     ReactiveFormsModule,
     TranslateModule,
     EventsDirective,
+    MatTooltipModule,
+    MatSnackBarModule,
   ],
 })
 export class EditPlayerComponent implements OnInit {
@@ -26,8 +30,11 @@ export class EditPlayerComponent implements OnInit {
     [key: string]: Player;
   } = this.playerService.players;
   selectedUserId: string = '';
+  avatarOptions: string[] = [];
 
-  form = this.fb.group({ name: ['', Validators.required] });
+  form = this.fb.group({
+    name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
+  });
   hasToDisplayAddUser: boolean = false;
   colors = colors;
   selectedColor = '#dc0936';
@@ -36,7 +43,8 @@ export class EditPlayerComponent implements OnInit {
   constructor(
     private playerService: PlayerService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +53,16 @@ export class EditPlayerComponent implements OnInit {
       Object.values(this.playerService.players).length === 0
     ) {
       this.playerService.loadPlayers();
+    }
+    this.generateAvatarOptions();
+  }
+
+  generateAvatarOptions(): void {
+    this.avatarOptions = [];
+    for (let mainSeed = 1; mainSeed <= 16; mainSeed++) {
+      for (let rowSeed = 0; rowSeed < 3; rowSeed++) {
+        this.avatarOptions.push(`/assets/faces/${mainSeed}_${rowSeed}_${rowSeed}.png`);
+      }
     }
   }
 
@@ -65,6 +83,7 @@ export class EditPlayerComponent implements OnInit {
 
   saveUser(): void {
     if (this.form.invalid) {
+      this.showError('edit.nameValidation');
       return;
     }
 
@@ -74,20 +93,24 @@ export class EditPlayerComponent implements OnInit {
     });
 
     this.selectedUserId = '';
+    this.showSuccess('edit.playerUpdated');
   }
 
   deleteUser(): void {
     this.playerService.deleteUser(this.selectedUserId);
-
     this.selectedUserId = '';
+    this.showSuccess('edit.playerDeleted');
   }
 
   displayAddUser(): void {
     this.hasToDisplayAddUser = true;
+    this.form.reset();
+    this.selectedColor = '#dc0936';
   }
 
   addUser(): void {
     if (this.form.invalid) {
+      this.showError('edit.nameValidation');
       return;
     }
 
@@ -96,33 +119,44 @@ export class EditPlayerComponent implements OnInit {
       id: this.generateRandomId(),
       color: this.selectedColor,
       name: this.form.controls.name.value || '',
+      avatar: `/assets/faces/1_0_0.png`,
     });
 
     this.hasToDisplayAddUser = false;
+    this.showSuccess('edit.playerAdded');
   }
 
   cancelCreateUser() {
     this.hasToDisplayAddUser = false;
+    this.form.reset();
   }
 
   selectColor(color: string) {
     this.selectedColor = color;
   }
 
-  selectRandomImage(playerId: string) {
-    const mainSeed = Math.floor(Math.random() * (16 - 1 + 1)) + 1;
-    const rowSeed = Math.floor(Math.random() * 3);
-
+  selectAvatar(avatar: string, playerId: string) {
     this.playerService.updateUser({
       ...this.players[playerId],
-      avatar: `/assets/faces/${mainSeed}_${rowSeed}_${rowSeed}.png`,
+      avatar: avatar,
     });
   }
 
   private generateRandomId(): string {
-    const randomNumber = Math.random();
-    const RANDOM_LENGTH = 16;
-    const id = randomNumber.toString(RANDOM_LENGTH);
-    return id;
+    return Math.random().toString(36).substring(2, 15);
+  }
+
+  private showError(message: string): void {
+    this.snackBar.open(message, 'OK', {
+      duration: 3000,
+      panelClass: ['error-snackbar']
+    });
+  }
+
+  private showSuccess(message: string): void {
+    this.snackBar.open(message, 'OK', {
+      duration: 3000,
+      panelClass: ['success-snackbar']
+    });
   }
 }

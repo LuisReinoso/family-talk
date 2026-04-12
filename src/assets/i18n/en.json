@@ -21,7 +21,24 @@
     "isRequired": "is required"
   },
   "edit": {
-    "editPlayers": "Edit Players"
+    "editPlayers": "Edit Players",
+    "clickToEdit": "Click to edit",
+    "clickToChangeAvatar": "Click to change avatar",
+    "clickToSelectColor": "Click to select color",
+    "addNewPlayer": "Add new player",
+    "enterName": "Enter name",
+    "nameRequired": "Name is required",
+    "nameMinLength": "Name must be at least 2 characters",
+    "nameMaxLength": "Name must be at most 20 characters",
+    "chooseColor": "Choose a color",
+    "saveChanges": "Save changes",
+    "deletePlayer": "Delete player",
+    "returnToGame": "Return to game",
+    "cancelCreation": "Cancel creation",
+    "playerUpdated": "Player updated",
+    "playerDeleted": "Player deleted",
+    "playerAdded": "Player added",
+    "nameValidation": "Invalid name"
   },
   "questions": {
     "configureQuestions": "Select the topic of conversation"

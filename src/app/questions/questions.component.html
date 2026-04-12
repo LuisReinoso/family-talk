@@ -12,6 +12,7 @@
       (click)="setupQuestionCategory(category.name)"
       eventName="change-category"
       [eventPayload]="{ category: category.name }"
+      data-testid="btn-category"
     >
       <span class="topic">
         {{ category.name | translate }} ({{
@@ -27,7 +28,7 @@
 </div>
 
 <div class="footer">
-  <button class="primary" (click)="backToGame()">
+  <button class="primary" (click)="backToGame()" data-testid="btn-return">
     {{ "common.return" | translate }}
   </button>
 </div>

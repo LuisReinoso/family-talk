@@ -10,6 +10,7 @@
       (click)="setupSpanishAsLanguage()"
       eventName="change-language"
       [eventPayload]="{ language: 'es' }"
+      data-testid="btn-spanish"
     >
       {{ "language.spanish" | translate }}
       <span class="check-icon" *ngIf="currentLanguage === 'es'">✔️</span>
@@ -19,6 +20,7 @@
       (click)="setupEnglishAsLanguage()"
       eventName="change-language"
       [eventPayload]="{ language: 'en' }"
+      data-testid="btn-english"
     >
       {{ "language.english" | translate
       }}<span class="check-icon" *ngIf="currentLanguage === 'en'">✔️</span>
@@ -27,7 +29,7 @@
 </div>
 
 <div class="footer">
-  <button class="primary" (click)="backToGame()">
+  <button class="primary" (click)="backToGame()" data-testid="btn-return">
     {{ "common.return" | translate }}
   </button>
 </div>

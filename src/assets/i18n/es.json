@@ -21,13 +21,30 @@
     "isRequired": "es requerido"
   },
   "edit": {
-    "editPlayers": "Editar Jugadores"
+    "editPlayers": "Editar Jugadores",
+    "clickToEdit": "Click para editar",
+    "clickToChangeAvatar": "Click para cambiar avatar",
+    "clickToSelectColor": "Click para seleccionar color",
+    "addNewPlayer": "Agregar nuevo jugador",
+    "enterName": "Ingresa el nombre",
+    "nameRequired": "El nombre es requerido",
+    "nameMinLength": "El nombre debe tener al menos 2 caracteres",
+    "nameMaxLength": "El nombre debe tener maximo 20 caracteres",
+    "chooseColor": "Elige un color",
+    "saveChanges": "Guardar cambios",
+    "deletePlayer": "Eliminar jugador",
+    "returnToGame": "Regresar al juego",
+    "cancelCreation": "Cancelar creacion",
+    "playerUpdated": "Jugador actualizado",
+    "playerDeleted": "Jugador eliminado",
+    "playerAdded": "Jugador agregado",
+    "nameValidation": "Nombre invalido"
   },
   "questions": {
-    "configureQuestions": "Selecciona el tema de conversación"
+    "configureQuestions": "Selecciona el tema de conversacion"
   },
   "config": {
-    "configuration": "Configuración",
+    "configuration": "Configuracion",
     "players": "Jugadores",
     "language": "Idioma",
     "questions": "Preguntas",
@@ -36,8 +53,8 @@
   },
   "language": {
     "configureLanguage": "Configurar Idioma",
-    "spanish": "Español",
-    "english": "Inglés"
+    "spanish": "Espanol",
+    "english": "Ingles"
   },
   "aiConfig": {
     "configQuestionGeneration": "Configurar generador de preguntas",
@@ -45,22 +62,22 @@
   },
   "generalSettings": {
     "resetPlayersTimer": "Reiniciar tiempo para hablar de los jugadores",
-    "generalSettings": "Configuración General"
+    "generalSettings": "Configuracion General"
   },
   "Aleatorio": "Aleatorio",
-  "Metas y sueños personales": "Metas y sueños personales",
+  "Metas y suenos personales": "Metas y suenos personales",
   "Valores y principios importantes": "Valores y principios importantes",
-  "Cambios y desafíos en la vida personal": "Cambios y desafíos en la vida personal",
-  "Comunicación y relaciones interpersonales": "Comunicación y relaciones interpersonales",
-  "Educación y desarrollo personal": "Educación y desarrollo personal",
-  "Salud y bienestar físico y mental": "Salud y bienestar físico y mental",
-  "Finanzas y administración del dinero": "Finanzas y administración del dinero",
+  "Cambios y desafios en la vida personal": "Cambios y desafios en la vida personal",
+  "Comunicacion y relaciones interpersonales": "Comunicacion y relaciones interpersonales",
+  "Educacion y desarrollo personal": "Educacion y desarrollo personal",
+  "Salud y bienestar fisico y mental": "Salud y bienestar fisico y mental",
+  "Finanzas y administracion del dinero": "Finanzas y administracion del dinero",
   "Carrera y desarrollo profesional": "Carrera y desarrollo profesional",
-  "Tecnología y su impacto en la vida cotidiana": "Tecnología y su impacto en la vida cotidiana",
+  "Tecnologia y su impacto en la vida cotidiana": "Tecnologia y su impacto en la vida cotidiana",
   "Actualidad y eventos mundiales": "Actualidad y eventos mundiales",
   "Comunidad y responsabilidad social": "Comunidad y responsabilidad social",
   "Medio ambiente y sustentabilidad": "Medio ambiente y sustentabilidad",
   "Cultura y diversidad": "Cultura y diversidad",
   "Espiritualidad y fe": "Espiritualidad y fe",
-  "Planificación y organización del tiempo libre.": "Planificación y organización del tiempo libre."
+  "Planificacion y organizacion del tiempo libre.": "Planificacion y organizacion del tiempo libre."
 }

@@ -9,6 +9,7 @@
       class="info"
       (click)="resetPlayersTimer()"
       eventName="reset-players-timer"
+      data-testid="btn-reset-timers"
     >
       {{ "generalSettings.resetPlayersTimer" | translate }}
     </button>
@@ -16,7 +17,7 @@
 </div>
 
 <div class="footer">
-  <button class="primary" (click)="backToGame()">
+  <button class="primary" (click)="backToGame()" data-testid="btn-return">
     {{ "common.return" | translate }}
   </button>
 </div>

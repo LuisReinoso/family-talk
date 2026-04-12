@@ -9,6 +9,7 @@
       class="config-option config-player"
       (click)="goToPlayersConfig()"
       eventName="go-to-players-config"
+      data-testid="btn-config-players"
     >
       <div class="config-option__title">{{ "config.players" | translate }}</div>
     </button>
@@ -16,6 +17,7 @@
       class="config-option config-general"
       (click)="goToGeneralConfig()"
       eventName="go-to-general-config"
+      data-testid="btn-config-general"
     >
       <div class="config-option__title">{{ "config.general" | translate }}</div>
     </button>
@@ -23,6 +25,7 @@
       class="config-option config-language"
       (click)="goToLanguageConfig()"
       eventName="go-to-language-config"
+      data-testid="btn-config-language"
     >
       <div class="config-option__title">
         {{ "config.language" | translate }}
@@ -32,6 +35,7 @@
       class="config-option config-questions"
       (click)="goToQuestionsConfig()"
       eventName="go-to-questions-config"
+      data-testid="btn-config-questions"
     >
       <div class="config-option__title">
         {{ "config.questions" | translate }}
@@ -41,6 +45,7 @@
       class="config-option config-ai"
       (click)="goToAiConfig()"
       eventName="go-to-ai-config"
+      data-testid="btn-config-ai"
     >
       <div class="config-option__title">{{ "config.ai" | translate }}</div>
     </button>
@@ -48,7 +53,7 @@
 </div>
 
 <div class="footer">
-  <button class="primary" (click)="backToGame()">
+  <button class="primary" (click)="backToGame()" data-testid="btn-return">
     {{ "common.return" | translate }}
   </button>
 </div>

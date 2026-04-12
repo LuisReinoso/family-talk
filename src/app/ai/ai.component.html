@@ -6,7 +6,7 @@
 <div class="container">
   <section class="options">
     <form [formGroup]="formGroup">
-      <label class="checkbox-label-container">
+      <label class="checkbox-label-container" data-testid="checkbox-ai">
         <span>
           <input
             type="checkbox"
@@ -28,6 +28,7 @@
         formControlName="openAiToken"
         name="openAiToken"
         id="openAiToken"
+        data-testid="input-openai-token"
       />
       <span class="error-warn" *ngIf="formGroup.controls['openAiToken'].errors"
         >OpenAi Token {{ "common.isRequired" | translate }}</span
@@ -37,7 +38,7 @@
 </div>
 
 <div class="footer">
-  <button class="primary" (click)="backToGame()">
+  <button class="primary" (click)="backToGame()" data-testid="btn-return">
     {{ "common.return" | translate }}
   </button>
 </div>

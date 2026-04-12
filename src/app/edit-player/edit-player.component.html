@@ -1,5 +1,5 @@
 <div class="header">
-  <img class="logo" src="./assets/icons/family-talk-icon.png" />
+  <img class="logo" src="./assets/icons/family-talk-icon.png" alt="Family Talk Logo" />
   <div class="title">{{ "edit.editPlayers" | translate }}</div>
 </div>
 
@@ -11,22 +11,37 @@
         'selected-player': player.value.id === selectedUserId
       }"
       [id]="player.key"
+      class="player-card"
     >
       <div
         class="player player__selectable"
         [style.background]="player.value.color"
         (click)="selectedUserId ? null : selectPlayer(player.key)"
+        [matTooltip]="'edit.clickToEdit' | translate"
+        data-testid="player-card-selectable"
       >
-        <img
-          class="player__avatar"
-          [src]="url + player.value.avatar"
-          (click)="
-            selectedUserId && selectedUserId === player.value.id
-              ? selectRandomImage(player.key)
-              : null
-          "
-          eventName="change-avatar"
-        />
+        <div class="avatar-container">
+          <img
+            class="player__avatar"
+            [src]="url + player.value.avatar"
+            [alt]="player.value.name + ' avatar'"
+            [matTooltip]="'edit.clickToChangeAvatar' | translate"
+            data-testid="player-avatar"
+          />
+          <div *ngIf="selectedUserId === player.value.id" class="avatar-options">
+            <div class="avatar-grid">
+              <img
+                *ngFor="let avatar of avatarOptions"
+                [src]="url + avatar"
+                (click)="selectAvatar(avatar, player.key)"
+                class="avatar-option"
+                [class.selected]="player.value.avatar === avatar"
+                [alt]="'Avatar option'"
+                data-testid="avatar-option"
+              />
+            </div>
+          </div>
+        </div>
 
         <ng-container
           *ngIf="
@@ -35,7 +50,18 @@
           "
         >
           <form class="form" [formGroup]="form">
-            <input formControlName="name" type="text" />
+            <input
+              formControlName="name"
+              type="text"
+              [placeholder]="'edit.enterName' | translate"
+              class="name-input"
+              data-testid="input-player-name"
+            />
+            <div class="validation-message" *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+              <span *ngIf="form.get('name')?.errors?.['required']">{{ "edit.nameRequired" | translate }}</span>
+              <span *ngIf="form.get('name')?.errors?.['minlength']">{{ "edit.nameMinLength" | translate }}</span>
+              <span *ngIf="form.get('name')?.errors?.['maxlength']">{{ "edit.nameMaxLength" | translate }}</span>
+            </div>
           </form>
         </ng-container>
         <ng-template #displayNameTemplate>
@@ -46,47 +72,95 @@
   </section>
 </div>
 
-<section *ngIf="hasToDisplayAddUser">
+<section *ngIf="hasToDisplayAddUser" class="add-player-section">
   <form class="add-player" [formGroup]="form">
-    <input formControlName="name" type="text" />
-    <div class="color-container">
-      <div
-        (click)="selectColor(color)"
-        [ngClass]="{ 'selected-color': selectedColor === color }"
-        *ngFor="let color of colors"
-        class="color"
-        [style.background]="color"
-      ></div>
+    <div class="form-header">{{ "edit.addNewPlayer" | translate }}</div>
+    <input
+      formControlName="name"
+      type="text"
+      [placeholder]="'edit.enterName' | translate"
+      data-testid="input-new-player-name"
+    />
+    <div class="validation-message" *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+      <span *ngIf="form.get('name')?.errors?.['required']">{{ "edit.nameRequired" | translate }}</span>
+      <span *ngIf="form.get('name')?.errors?.['minlength']">{{ "edit.nameMinLength" | translate }}</span>
+      <span *ngIf="form.get('name')?.errors?.['maxlength']">{{ "edit.nameMaxLength" | translate }}</span>
+    </div>
+
+    <div class="color-section">
+      <div class="section-label">{{ "edit.chooseColor" | translate }}</div>
+      <div class="color-container">
+        <div
+          (click)="selectColor(color)"
+          [ngClass]="{ 'selected-color': selectedColor === color }"
+          *ngFor="let color of colors"
+          class="color"
+          [style.background]="color"
+          [matTooltip]="'edit.clickToSelectColor' | translate"
+          data-testid="color-option"
+        ></div>
+      </div>
     </div>
   </form>
 </section>
 
 <div class="footer">
   <ng-container *ngIf="!!selectedUserId; else backActionTemplate">
-    <button class="primary" (click)="saveUser()" eventName="save-edit-user">
+    <button
+      class="primary"
+      (click)="saveUser()"
+      eventName="save-edit-user"
+      [matTooltip]="'edit.saveChanges' | translate"
+      data-testid="btn-save-player"
+    >
       {{ "common.save" | translate }}
     </button>
-    <button class="danger" (click)="deleteUser()" eventName="delete-user">
+    <button
+      class="danger"
+      (click)="deleteUser()"
+      eventName="delete-user"
+      [matTooltip]="'edit.deletePlayer' | translate"
+      data-testid="btn-delete-player"
+    >
       {{ "common.delete" | translate }}
     </button>
   </ng-container>
   <ng-template #backActionTemplate>
     <ng-container *ngIf="!hasToDisplayAddUser; else addUserTemplateTemplate">
-      <button class="primary" (click)="backToGame()">
+      <button
+        class="primary"
+        (click)="backToGame()"
+        [matTooltip]="'edit.returnToGame' | translate"
+        data-testid="btn-return"
+      >
         {{ "common.return" | translate }}
       </button>
-      <button class="info" (click)="displayAddUser()" eventName="add-new-user">
+      <button
+        class="info"
+        (click)="displayAddUser()"
+        eventName="add-new-user"
+        [matTooltip]="'edit.addNewPlayer' | translate"
+        data-testid="btn-add-player"
+      >
         {{ "common.add" | translate }}
       </button>
     </ng-container>
     <ng-template #addUserTemplateTemplate>
-      <button class="primary" (click)="addUser()" eventName="save-new-user">
+      <button
+        class="primary"
+        (click)="addUser()"
+        eventName="save-new-user"
+        [matTooltip]="'edit.saveChanges' | translate"
+        data-testid="btn-save-player"
+      >
         {{ "common.save" | translate }}
       </button>
       <button
         class="info"
         (click)="cancelCreateUser()"
         eventName="cancel-new-user"
+        [matTooltip]="'edit.cancelCreation' | translate"
+        data-testid="btn-cancel-add"
       >
         {{ "common.cancel" | translate }}
       </button>
