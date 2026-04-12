@@ -8,10 +8,11 @@
     *ngFor="let player of players | keyvalue; trackBy: trackByPlayerKey"
     [ngClass]="{
       'selected-player-random': player.value.id === selectedUserId,
-      'has-answered':
-        player.value.hasAnswer || player.value.timeRemaining <= 0
+      'has-answered': player.value.hasAnswer || player.value.timeRemaining <= 0,
+      'player-available': !player.value.hasAnswer && player.value.timeRemaining > 0 && player.value.id !== selectedUserId
     }"
     [id]="player.key"
+    class="player-card"
   >
     <div class="player" [style.background]="player.value.color">
       <img class="player__avatar" [src]="url + player.value.avatar" />
@@ -19,6 +20,8 @@
       <div class="player__time">
         ⏳: {{ player.value.timeRemaining | secondsToMinutes }}
       </div>
+      <div *ngIf="player.value.hasAnswer" class="player__badge">✓</div>
+      <div *ngIf="player.value.timeRemaining <= 0 && !player.value.hasAnswer" class="player__badge player__badge--expired">⏱</div>
     </div>
   </div>
 </section>

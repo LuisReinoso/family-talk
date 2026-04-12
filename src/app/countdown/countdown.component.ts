@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, interval, lastValueFrom, Subscription, take, tap } from 'rxjs';
 import { Player } from 'src/app/models/player';
@@ -71,6 +71,7 @@ export class CountdownComponent implements OnInit, OnDestroy {
     private aiService: AiService,
     private userAgentService: UserAgentService,
     private localStorageService: LocalStorageService,
+    private cdr: ChangeDetectorRef,
   ) {
     this.languageService.loadLanguage();
     this.selectRandomQuestion();
@@ -107,6 +108,7 @@ export class CountdownComponent implements OnInit, OnDestroy {
     const player = getRandomAvailablePlayer(this.players);
     if (!player) return;
     this.selectedUserId = player.id;
+    this.cdr.markForCheck();
     this.scrollToPlayer();
   }
 
@@ -144,6 +146,7 @@ export class CountdownComponent implements OnInit, OnDestroy {
           this.startCountdown();
           this.answerPerQuestion += 1;
           this.isSelectingRandomUser = false;
+          this.cdr.markForCheck();
         },
       });
   }
