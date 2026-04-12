@@ -13,82 +13,28 @@
 </div>
 
 <div class="container">
-  <section
-    class="players"
-    (click)="showPlayerAlert = true"
-    eventName="click-players-main-view"
-    data-testid="players-section"
-  >
-    <div
-      *ngFor="let player of players | keyvalue; let i = index"
-      [ngClass]="{
-        'selected-player-random': player.value.id === selectedUserId,
-        'has-answered':
-          player.value.hasAnswer || player.value.timeRemaining <= 0
-      }"
-      [id]="player.key"
-    >
-      <div class="player" [style.background]="player.value.color">
-        <img class="player__avatar" [src]="url + player.value.avatar" />
-        <div class="player__name">{{ player.value.name }}</div>
-        <div class="player__time">
-          ⏳: {{ player.value.timeRemaining | secondsToMinutes }}
-        </div>
-      </div>
-    </div>
-  </section>
+  <app-player-grid
+    [players]="players"
+    [selectedUserId]="selectedUserId"
+    (playerClick)="showPlayerAlert = true"
+  ></app-player-grid>
 </div>
 
-<section class="selected-player" *ngIf="selectedPlayer" data-testid="selected-player">
-  <ng-container *ngIf="!isSelectingRandomUser">
-    {{ selectedPlayer.name }} |
-    {{ selectedPlayer.timeRemaining | secondsToMinutes }}
+<app-timer
+  [player]="selectedPlayer"
+  [isRunning]="isTimerRunning"
+  [isSelecting]="isSelectingRandomUser"
+  (pauseClick)="stopCountdown()"
+  (resumeClick)="startCountdown()"
+></app-timer>
 
-    <ng-container *ngIf="selectedPlayer.timeRemaining > 0">
-      <button
-        *ngIf="isTimerRunning"
-        class="pause"
-        (click)="stopCountdown()"
-        eventName="pause-countdown"
-        data-testid="btn-pause"
-      >
-        ⏸️
-      </button>
-      <button
-        *ngIf="!isTimerRunning"
-        class="resume"
-        (click)="startCountdown()"
-        eventName="resume-countdown"
-        data-testid="btn-resume"
-      >
-        ⏯
-      </button>
-    </ng-container>
-  </ng-container>
-</section>
-<div class="selected-question" *ngIf="selectedPlayer" data-testid="selected-question">
-  <ng-container>
-    <b>{{ "countdown.question" | translate }}:</b>
-    <ng-container
-      *ngIf="
-        selectedQuestion$ | async as selectedQuestion;
-        else noQuestionsTemplate
-      "
-    >
-      <div class="question">{{ selectedQuestion }}</div>
-    </ng-container>
-    <ng-template #noQuestionsTemplate>
-      <div
-        class="alert warn"
-        (click)="resetLocalStorage()"
-        eventName="reset-local-storage"
-        data-testid="btn-reset-data"
-      >
-        {{ "countdown.resetData" | translate }}
-      </div>
-    </ng-template>
-  </ng-container>
-</div>
+<app-question-display
+  *ngIf="selectedPlayer"
+  [questionText]="selectedQuestion$ | async"
+  [showReset]="!(selectedQuestion$ | async)"
+  (resetClick)="resetLocalStorage()"
+></app-question-display>
+
 <section class="footer">
   <button
     class="primary tooltip"

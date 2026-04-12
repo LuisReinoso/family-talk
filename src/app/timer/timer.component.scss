@@ -1,0 +1,22 @@
+@import "/src/styles";
+
+.selected-player {
+  height: 75px;
+  background-color: $color-purple;
+  color: $color-white;
+  text-align: center;
+  font-size: 24px;
+  padding: 10px;
+  font-weight: 600;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.pause,
+.resume {
+  background-color: unset;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}

@@ -3,17 +3,18 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { Router } from '@angular/router';
 import { BehaviorSubject, interval, lastValueFrom, Subscription, take, tap } from 'rxjs';
 import { Player } from 'src/app/models/player';
-import { SecondsToMinutesPipe } from 'src/app/pipes/seconds-to-minutes.pipe';
 import { PlayerService } from 'src/app/services/player.service';
 import { QuestionsService } from 'src/app/services/questions.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Category } from 'src/app/models/questions';
 import { AiService } from 'src/app/services/ai.service';
 import { UserAgentService } from 'src/app/services/userAgent.service';
-import { environment } from 'src/environments/environment';
 import { LanguageService } from 'src/app/services/language.service';
 import { EventsDirective } from 'src/app/tracking/events.directive';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { PlayerGridComponent } from 'src/app/player-grid/player-grid.component';
+import { TimerComponent } from 'src/app/timer/timer.component';
+import { QuestionDisplayComponent } from 'src/app/question-display/question-display.component';
 import {
   getRandomAvailablePlayer,
   getPlayersForNextRound,
@@ -32,9 +33,11 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
-    SecondsToMinutesPipe,
     TranslateModule,
     EventsDirective,
+    PlayerGridComponent,
+    TimerComponent,
+    QuestionDisplayComponent,
   ],
 })
 export class CountdownComponent implements OnInit, OnDestroy {
@@ -47,8 +50,6 @@ export class CountdownComponent implements OnInit, OnDestroy {
 
   players: { [key: string]: Player } = this.playerService.players;
 
-  title = 'family-talk';
-
   private countdownIntervalId: ReturnType<typeof setInterval> | null = null;
   private shuffleSubscription: Subscription | null = null;
   isSelectingRandomUser: boolean = false;
@@ -60,7 +61,6 @@ export class CountdownComponent implements OnInit, OnDestroy {
   isLoadingQuestion: boolean = false;
   isMobile = this.userAgentService.isMobile();
   hasToUseAi$ = this.aiService.hasToUseAi$;
-  url = environment.URL;
 
   constructor(
     private router: Router,
@@ -84,10 +84,6 @@ export class CountdownComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.clearCountdown();
     this.shuffleSubscription?.unsubscribe();
-  }
-
-  selectPlayer(player: Player) {
-    this.selectedPlayer = player;
   }
 
   startCountdown() {
@@ -115,7 +111,7 @@ export class CountdownComponent implements OnInit, OnDestroy {
   }
 
   selectPlayerById() {
-    this.selectPlayer(this.players[this.selectedUserId]);
+    this.selectedPlayer = this.players[this.selectedUserId];
   }
 
   selectRandomUserAndStart() {

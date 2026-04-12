@@ -1,0 +1,40 @@
+@import "/src/styles";
+
+.selected-question {
+  background: $color-white;
+  border-radius: 5px;
+  text-align: center;
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 1px solid black;
+  padding: 10px;
+  overflow: auto;
+}
+
+.question {
+  overflow: auto;
+  font-size: 20px;
+
+  @media only screen and (min-width: 800px) {
+    font-size: 22px;
+  }
+
+  @media only screen and (min-width: 1024px) {
+    font-size: 24px;
+  }
+}
+
+.alert {
+  border: 4px solid;
+  padding: 10px;
+  cursor: pointer;
+
+  &.warn {
+    border-color: $color-red;
+    background-color: $color-orange;
+  }
+}

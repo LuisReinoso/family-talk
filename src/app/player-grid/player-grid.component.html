@@ -1,0 +1,24 @@
+<section
+  class="players"
+  (click)="playerClick.emit()"
+  eventName="click-players-main-view"
+  data-testid="players-section"
+>
+  <div
+    *ngFor="let player of players | keyvalue; trackBy: trackByPlayerKey"
+    [ngClass]="{
+      'selected-player-random': player.value.id === selectedUserId,
+      'has-answered':
+        player.value.hasAnswer || player.value.timeRemaining <= 0
+    }"
+    [id]="player.key"
+  >
+    <div class="player" [style.background]="player.value.color">
+      <img class="player__avatar" [src]="url + player.value.avatar" />
+      <div class="player__name">{{ player.value.name }}</div>
+      <div class="player__time">
+        ⏳: {{ player.value.timeRemaining | secondsToMinutes }}
+      </div>
+    </div>
+  </div>
+</section>

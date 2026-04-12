@@ -1,0 +1,27 @@
+<section class="selected-player" *ngIf="player" data-testid="selected-player">
+  <ng-container *ngIf="!isSelecting">
+    {{ player.name }} |
+    {{ player.timeRemaining | secondsToMinutes }}
+
+    <ng-container *ngIf="player.timeRemaining > 0">
+      <button
+        *ngIf="isRunning"
+        class="pause"
+        (click)="pauseClick.emit()"
+        eventName="pause-countdown"
+        data-testid="btn-pause"
+      >
+        ⏸️
+      </button>
+      <button
+        *ngIf="!isRunning"
+        class="resume"
+        (click)="resumeClick.emit()"
+        eventName="resume-countdown"
+        data-testid="btn-resume"
+      >
+        ⏯
+      </button>
+    </ng-container>
+  </ng-container>
+</section>

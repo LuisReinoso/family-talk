@@ -1,0 +1,16 @@
+<div class="selected-question" data-testid="selected-question">
+  <ng-container *ngIf="questionText; else noQuestionsTemplate">
+    <b>{{ "countdown.question" | translate }}:</b>
+    <div class="question">{{ questionText }}</div>
+  </ng-container>
+  <ng-template #noQuestionsTemplate>
+    <div
+      class="alert warn"
+      (click)="resetClick.emit()"
+      eventName="reset-local-storage"
+      data-testid="btn-reset-data"
+    >
+      {{ "countdown.resetData" | translate }}
+    </div>
+  </ng-template>
+</div>
