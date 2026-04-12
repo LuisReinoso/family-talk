@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { EventsDirective } from 'src/app/tracking/events.directive';
@@ -9,12 +9,11 @@ import { EventsDirective } from 'src/app/tracking/events.directive';
   templateUrl: './config.component.html',
   styleUrls: ['./config.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, TranslateModule, EventsDirective],
 })
-export class ConfigComponent implements OnInit {
+export class ConfigComponent {
   constructor(private router: Router) {}
-
-  ngOnInit(): void {}
 
   goToPlayersConfig(): void {
     this.router.navigate(['/config-players']);

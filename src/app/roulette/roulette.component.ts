@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -7,17 +7,17 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './roulette.component.html',
   styleUrls: ['./roulette.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
 })
-export class RouletteComponent implements OnInit {
+export class RouletteComponent implements OnInit, OnDestroy {
   @ViewChild('roulette') roulette!: ElementRef;
 
   isRotating = true;
-
-  rotationInterval: any;
   rotationAngle: number = 0;
-
   screenRotation: number = 0;
+
+  private rotationIntervalId: ReturnType<typeof setInterval> | null = null;
 
   items = [
     { name: 'Item 1', color: '#3f297e' },
@@ -35,17 +35,19 @@ export class RouletteComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router) {
     this.screenRotation = 360 / this.items.length;
-    console.log('screenRotation', this.screenRotation);
   }
 
   ngOnInit(): void {
-    console.log('queryParams', this.route.snapshot.queryParams);
     this.startRotation();
+  }
+
+  ngOnDestroy(): void {
+    this.stopRotation();
   }
 
   startRotation() {
     this.isRotating = true;
-    this.rotationInterval = setInterval(() => {
+    this.rotationIntervalId = setInterval(() => {
       this.rotationAngle += 10;
       this.roulette.nativeElement.setAttribute(
         'transform',
@@ -56,7 +58,10 @@ export class RouletteComponent implements OnInit {
 
   stopRotation() {
     this.isRotating = false;
-    clearInterval(this.rotationInterval);
+    if (this.rotationIntervalId !== null) {
+      clearInterval(this.rotationIntervalId);
+      this.rotationIntervalId = null;
+    }
   }
 
   returnToCountdown() {

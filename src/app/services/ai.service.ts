@@ -1,9 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
-import { Category } from 'src/app/models/questions';
+import { Category, Question } from 'src/app/models/questions';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { parseAiQuestionResponse } from 'src/app/utils/question.utils';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +13,9 @@ export class AiService {
   public hasToUseAi = new BehaviorSubject<boolean>(false);
   public hasToUseAi$ = this.hasToUseAi.asObservable();
 
-  private apiUrl = 'https://api.openai.com';
-  openAiToken!: string | null;
+  openAiToken: string | null = null;
+
+  private apiUrl = environment.openApiUrl;
 
   constructor(
     private http: HttpClient,
@@ -29,10 +31,11 @@ export class AiService {
   }
 
   loadHasToUseAi(): void {
-    this.hasToUseAi.next(this.localStorageService.get('hasToUseAi'));
+    const value = this.localStorageService.get<boolean>('hasToUseAi');
+    this.hasToUseAi.next(value ?? false);
   }
 
-  generateRandomQuestion(currentCategory: Category): Observable<any> {
+  generateRandomQuestion(currentCategory: Category): Observable<Question | null> {
     this.loadOpenAiToken();
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -58,23 +61,19 @@ export class AiService {
     };
 
     return this.http
-      .post(`${this.apiUrl}/v1/chat/completions`, body, { headers })
+      .post<{ choices: { message: { content: string } }[] }>(`${this.apiUrl}/v1/chat/completions`, body, { headers })
       .pipe(
-        map((response: any) => {
-          return response.choices[0].message.content;
-        }),
-        map((text: string) => {
-          return parseAiQuestionResponse(text);
-        })
+        map((response) => response.choices[0].message.content),
+        map((text: string) => parseAiQuestionResponse(text))
       );
   }
 
-  saveOpenAiToken(openAiToken: any) {
+  saveOpenAiToken(openAiToken: string) {
     this.openAiToken = openAiToken;
     this.localStorageService.set('openAiToken', openAiToken);
   }
 
   loadOpenAiToken() {
-    this.openAiToken = this.localStorageService.get('openAiToken') || null;
+    this.openAiToken = this.localStorageService.get<string>('openAiToken') || null;
   }
 }

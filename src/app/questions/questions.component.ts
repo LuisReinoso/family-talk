@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Category, defaultCategory } from 'src/app/models/questions';
@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './questions.component.html',
   styleUrls: ['./questions.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, TranslateModule, EventsDirective],
 })
 export class QuestionsComponent implements OnInit {
@@ -23,8 +24,7 @@ export class QuestionsComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private questionsService: QuestionsService,
-    private cd: ChangeDetectorRef
+    private questionsService: QuestionsService
   ) {}
 
   ngOnInit(): void {
@@ -32,7 +32,6 @@ export class QuestionsComponent implements OnInit {
     this.questionsService.calcQuestionsPerCategory();
     this.numberQuestionsPerCategory =
       this.questionsService.numberQuestionsPerCategory;
-    this.cd.detectChanges();
   }
 
   setupQuestionCategory(category: Category): void {

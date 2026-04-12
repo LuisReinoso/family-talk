@@ -22,9 +22,9 @@ export class LanguageService {
 
   public loadLanguage() {
     let language: string | null =
-      this.localStorageService.get('language') ||
+      this.localStorageService.get<string>('language') ||
       this.translateService.currentLang ||
-      navigator.language;
+      (typeof navigator !== 'undefined' ? navigator.language : null);
 
     language = normalizeLanguage(language);
     this.language = language;

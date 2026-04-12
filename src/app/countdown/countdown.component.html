@@ -15,7 +15,7 @@
 <div class="container">
   <section
     class="players"
-    (click)="displayAlert('alert')"
+    (click)="showPlayerAlert = true"
     eventName="click-players-main-view"
     data-testid="players-section"
   >
@@ -46,7 +46,7 @@
 
     <ng-container *ngIf="selectedPlayer.timeRemaining > 0">
       <button
-        *ngIf="this.intervalId"
+        *ngIf="isTimerRunning"
         class="pause"
         (click)="stopCountdown()"
         eventName="pause-countdown"
@@ -55,7 +55,7 @@
         ⏸️
       </button>
       <button
-        *ngIf="!this.intervalId"
+        *ngIf="!isTimerRunning"
         class="resume"
         (click)="startCountdown()"
         eventName="resume-countdown"
@@ -156,10 +156,10 @@
   </ng-template>
 </section>
 
-<div id="alert" class="hidden">
+<div *ngIf="showPlayerAlert" class="alert warn" (click)="showPlayerAlert = false">
   {{ "countdown.pressOn" | translate }} 🔀 {{ "countdown.toStart" | translate }}
 </div>
 
-<div id="alert-ai" class="hidden alert warn">
+<div *ngIf="showAiErrorAlert" class="alert warn" (click)="showAiErrorAlert = false">
   {{ "countdown.aiTokenError" | translate }}
 </div>

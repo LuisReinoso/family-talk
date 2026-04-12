@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { PlayerService } from 'src/app/services/player.service';
@@ -10,12 +10,11 @@ import { EventsDirective } from 'src/app/tracking/events.directive';
   templateUrl: './general-settings.component.html',
   styleUrls: ['./general-settings.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, TranslateModule, EventsDirective],
 })
-export class GeneralSettingsComponent implements OnInit {
+export class GeneralSettingsComponent {
   constructor(private playerService: PlayerService, private router: Router) {}
-
-  ngOnInit(): void {}
 
   resetPlayersTimer() {
     this.playerService.resetPlayersTimer();

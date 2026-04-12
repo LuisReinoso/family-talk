@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageService } from 'src/app/services/language.service';
@@ -10,6 +10,7 @@ import { EventsDirective } from 'src/app/tracking/events.directive';
   templateUrl: './language.component.html',
   styleUrls: ['./language.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, TranslateModule, EventsDirective],
 })
 export class LanguageComponent implements OnInit {

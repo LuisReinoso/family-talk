@@ -6,6 +6,7 @@ import {
   questions,
 } from 'src/app/models/questions';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { BehaviorSubject } from 'rxjs';
 import {
   removeQuestion as removeQuestionUtil,
   calcQuestionsPerCategory as calcQuestionsPerCategoryUtil,
@@ -15,58 +16,81 @@ import {
   providedIn: 'root',
 })
 export class QuestionsService {
-  questions: {
-    [key: string]: Question;
-  } = questions;
+  private questionsSubject = new BehaviorSubject<{ [key: string]: Question }>(questions);
+  questions$ = this.questionsSubject.asObservable();
 
-  currentCategory: Category = Category.random;
+  private categorySubject = new BehaviorSubject<Category>(Category.random);
+  currentCategory$ = this.categorySubject.asObservable();
 
-  numberQuestionsPerCategory: { [key: string]: number } =
-    defaultQuestionCounter;
+  private questionCounterSubject = new BehaviorSubject<{ [key: string]: number }>(defaultQuestionCounter);
+  numberQuestionsPerCategory$ = this.questionCounterSubject.asObservable();
+
+  private localStorageKey = 'questions';
+  private categoryLocalStorageKey = 'category';
 
   constructor(private localStorageService: LocalStorageService) {
     this.loadQuestions();
   }
 
-  loadQuestions(): void {
-    const questionsFromLocalStorage = this.localStorageService.get('questions');
+  get questions(): { [key: string]: Question } {
+    return this.questionsSubject.getValue();
+  }
 
-    if (!questionsFromLocalStorage || questionsFromLocalStorage.length === 0) {
-      this.questions = questions;
+  set questions(value: { [key: string]: Question }) {
+    this.questionsSubject.next(value);
+  }
+
+  get currentCategory(): Category {
+    return this.categorySubject.getValue();
+  }
+
+  get numberQuestionsPerCategory(): { [key: string]: number } {
+    return this.questionCounterSubject.getValue();
+  }
+
+  loadQuestions(): void {
+    const questionsFromLocalStorage = this.localStorageService.get<{ [key: string]: Question }>(this.localStorageKey);
+
+    if (!questionsFromLocalStorage || Object.keys(questionsFromLocalStorage).length === 0) {
+      this.questionsSubject.next(questions);
       return;
     }
 
-    this.questions = questionsFromLocalStorage;
+    this.questionsSubject.next(questionsFromLocalStorage);
   }
 
   removeQuestion(questionId: string): void {
-    this.questions = removeQuestionUtil(this.questions, questionId);
+    const updated = removeQuestionUtil(this.questions, questionId);
+    this.questionsSubject.next(updated);
   }
 
   saveQuestions(): void {
-    this.localStorageService.set('questions', this.questions);
+    this.localStorageService.set(this.localStorageKey, this.questions);
   }
 
   setupQuestionCategory(selectedCategory: Category) {
-    this.currentCategory = selectedCategory;
+    this.categorySubject.next(selectedCategory);
     this.saveCategory(selectedCategory);
   }
 
   saveCategory(category: Category): void {
-    this.localStorageService.set('category', category);
+    this.localStorageService.set(this.categoryLocalStorageKey, category);
   }
 
   loadCategory(): Category {
-    return (
-      (this.localStorageService.get('category') as Category) || Category.random
-    );
+    const category = (
+      this.localStorageService.get(this.categoryLocalStorageKey) as Category
+    ) || Category.random;
+    this.categorySubject.next(category);
+    return category;
   }
 
   calcQuestionsPerCategory(): void {
-    this.numberQuestionsPerCategory = calcQuestionsPerCategoryUtil(this.questions);
+    const result = calcQuestionsPerCategoryUtil(this.questions);
+    this.questionCounterSubject.next(result);
   }
 
   restoreQuestions() {
-    this.questions = questions;
+    this.questionsSubject.next(questions);
   }
 }

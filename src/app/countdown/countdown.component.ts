@@ -1,10 +1,9 @@
-import { CommonModule, ViewportScroller } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, interval, lastValueFrom, take, tap } from 'rxjs';
+import { BehaviorSubject, interval, lastValueFrom, Subscription, take, tap } from 'rxjs';
 import { Player } from 'src/app/models/player';
 import { SecondsToMinutesPipe } from 'src/app/pipes/seconds-to-minutes.pipe';
-import { DOCUMENT } from '@angular/common';
 import { PlayerService } from 'src/app/services/player.service';
 import { QuestionsService } from 'src/app/services/questions.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -30,6 +29,7 @@ import {
   templateUrl: './countdown.component.html',
   styleUrls: ['./countdown.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     SecondsToMinutesPipe,
@@ -37,7 +37,7 @@ import {
     EventsDirective,
   ],
 })
-export class CountdownComponent implements OnInit {
+export class CountdownComponent implements OnInit, OnDestroy {
   selectedPlayer!: Player;
   selectedUserId: string = '';
   selectedQuestion$: BehaviorSubject<string> = new BehaviorSubject<string>('');
@@ -49,8 +49,12 @@ export class CountdownComponent implements OnInit {
 
   title = 'family-talk';
 
-  intervalId!: NodeJS.Timer;
+  private countdownIntervalId: ReturnType<typeof setInterval> | null = null;
+  private shuffleSubscription: Subscription | null = null;
   isSelectingRandomUser: boolean = false;
+  isTimerRunning: boolean = false;
+  showAiErrorAlert: boolean = false;
+  showPlayerAlert: boolean = false;
 
   openAiToken = this.aiService.openAiToken;
   isLoadingQuestion: boolean = false;
@@ -67,7 +71,6 @@ export class CountdownComponent implements OnInit {
     private aiService: AiService,
     private userAgentService: UserAgentService,
     private localStorageService: LocalStorageService,
-    @Inject(DOCUMENT) private document: Document
   ) {
     this.languageService.loadLanguage();
     this.selectRandomQuestion();
@@ -78,12 +81,19 @@ export class CountdownComponent implements OnInit {
     this.maxAnswerPerQuestion = calcMaxAnswersPerQuestion(totalPlayers);
   }
 
+  ngOnDestroy(): void {
+    this.clearCountdown();
+    this.shuffleSubscription?.unsubscribe();
+  }
+
   selectPlayer(player: Player) {
     this.selectedPlayer = player;
   }
 
   startCountdown() {
-    this.intervalId = setInterval(() => {
+    this.clearCountdown();
+    this.isTimerRunning = true;
+    this.countdownIntervalId = setInterval(() => {
       this.selectedPlayer.timeRemaining--;
       if (this.selectedPlayer.timeRemaining <= 0) {
         this.stopCountdown();
@@ -92,8 +102,8 @@ export class CountdownComponent implements OnInit {
   }
 
   stopCountdown() {
-    clearInterval(this.intervalId);
-    this.intervalId = null as unknown as NodeJS.Timer;
+    this.clearCountdown();
+    this.isTimerRunning = false;
     this.savePlayers();
   }
 
@@ -101,7 +111,7 @@ export class CountdownComponent implements OnInit {
     const player = getRandomAvailablePlayer(this.players);
     if (!player) return;
     this.selectedUserId = player.id;
-    this.scrollToDiv();
+    this.scrollToPlayer();
   }
 
   selectPlayerById() {
@@ -125,23 +135,21 @@ export class CountdownComponent implements OnInit {
 
     this.players = getPlayersForNextRound(this.players);
 
-    interval(200)
+    this.shuffleSubscription = interval(200)
       .pipe(
         tap(() => this.selectRandomUser()),
         take(Object.values(this.players).length)
       )
-      .subscribe(
-        () => {},
-        () => {},
-        () => {
+      .subscribe({
+        complete: () => {
           this.markPlayerAsAnswered();
           this.stopCountdown();
           this.selectPlayerById();
           this.startCountdown();
           this.answerPerQuestion += 1;
           this.isSelectingRandomUser = false;
-        }
-      );
+        },
+      });
   }
 
   markPlayerAsAnswered() {
@@ -188,7 +196,7 @@ export class CountdownComponent implements OnInit {
       this.isLoadingQuestion = false;
 
       const question = getQuestionText(
-        currentQuestion,
+        currentQuestion!,
         this.translateService.currentLang || 'es'
       );
 
@@ -196,16 +204,16 @@ export class CountdownComponent implements OnInit {
       this.savePlayers();
     } catch (error) {
       this.isLoadingQuestion = false;
-      this.displayAlert('alert-ai');
+      this.showAiErrorAlert = true;
+      setTimeout(() => { this.showAiErrorAlert = false; }, 3000);
     }
   }
 
-  scrollToDiv() {
-    this.document.getElementById(this.selectedUserId)?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-      inline: 'nearest',
-    });
+  scrollToPlayer() {
+    const element = document.getElementById(this.selectedUserId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+    }
   }
 
   navigateConfigs() {
@@ -219,22 +227,15 @@ export class CountdownComponent implements OnInit {
     this.playerService.players = this.players;
   }
 
-  displayAlert(id: string) {
-    const alert = this.document.getElementById(id);
-    if (!alert) {
-      return;
-    }
-    alert.classList.remove('hidden');
-    setTimeout(() => {
-      if (!alert) {
-        return;
-      }
-      alert.classList.add('hidden');
-    }, 3000);
-  }
-
   resetLocalStorage() {
     this.localStorageService.reset();
     location.reload();
+  }
+
+  private clearCountdown(): void {
+    if (this.countdownIntervalId !== null) {
+      clearInterval(this.countdownIntervalId);
+      this.countdownIntervalId = null;
+    }
   }
 }
