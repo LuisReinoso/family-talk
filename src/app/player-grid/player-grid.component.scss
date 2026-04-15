@@ -5,6 +5,7 @@
   flex-direction: column;
   overflow: hidden;
   align-items: center;
+  width: 100%;
 }
 
 .players {
@@ -12,11 +13,10 @@
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
-  height: 100%;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   overflow-y: auto;
-  padding: 8px;
+  padding: 4px;
 }
 
 .player-card {
@@ -53,9 +53,9 @@
 .player {
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  padding: 10px;
-  margin: 10px;
-  width: 180px;
+  padding: 8px;
+  margin: 6px;
+  width: 140px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
@@ -64,7 +64,7 @@
   position: relative;
 
   &__avatar {
-    width: 125px;
+    width: 80px;
     height: auto;
     border-radius: 50%;
     border: 3px solid white;
@@ -73,7 +73,7 @@
 
   &__name {
     color: $color-white;
-    font-size: 22px;
+    font-size: 16px;
     background: $color-grey;
     width: 100%;
     text-align: center;
@@ -82,7 +82,7 @@
 
   &__time {
     color: $color-white;
-    font-size: 20px;
+    font-size: 14px;
     font-weight: bold;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   }
@@ -91,15 +91,15 @@
     position: absolute;
     top: 8px;
     right: 8px;
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     background: $color-green;
     color: $color-white;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 
@@ -114,10 +114,44 @@
     width: 80%;
     margin: 0 auto;
   }
+
+  .player {
+    width: 160px;
+    padding: 10px;
+    margin: 8px;
+
+    &__avatar {
+      width: 100px;
+    }
+
+    &__name {
+      font-size: 18px;
+    }
+
+    &__time {
+      font-size: 16px;
+    }
+  }
 }
 
 @media only screen and (min-width: 1024px) {
   .players {
-    width: 60%;
+    width: 70%;
+  }
+
+  .player {
+    width: 180px;
+
+    &__avatar {
+      width: 125px;
+    }
+
+    &__name {
+      font-size: 22px;
+    }
+
+    &__time {
+      font-size: 20px;
+    }
   }
 }

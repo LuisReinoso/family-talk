@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  URL: 'http://localhost:4200',
+  URL: '',
   openApiUrl: 'https://api.openai.com',
 };
 

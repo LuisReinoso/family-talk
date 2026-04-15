@@ -13,36 +13,31 @@
 </div>
 
 <div class="container">
+  <div *ngIf="!selectedPlayer" class="empty-hint">
+    {{ "countdown.pressOn" | translate }} 🔀 {{ "countdown.toStart" | translate }}
+  </div>
   <app-player-grid
     [players]="players"
     [selectedUserId]="selectedUserId"
     (playerClick)="showPlayerAlert = true"
   ></app-player-grid>
+
+  <ng-container *ngIf="selectedPlayer">
+    <app-timer
+      [player]="selectedPlayer"
+      [isRunning]="isTimerRunning"
+      [isSelecting]="isSelectingRandomUser"
+      (pauseClick)="stopCountdown()"
+      (resumeClick)="startCountdown()"
+    ></app-timer>
+
+    <app-question-display
+      [questionText]="selectedQuestion$ | async"
+      [showReset]="!(selectedQuestion$ | async)"
+      (resetClick)="resetLocalStorage()"
+    ></app-question-display>
+  </ng-container>
 </div>
-
-<ng-container *ngIf="selectedPlayer; else emptyState">
-  <app-timer
-    [player]="selectedPlayer"
-    [isRunning]="isTimerRunning"
-    [isSelecting]="isSelectingRandomUser"
-    (pauseClick)="stopCountdown()"
-    (resumeClick)="startCountdown()"
-  ></app-timer>
-
-  <app-question-display
-    [questionText]="selectedQuestion$ | async"
-    [showReset]="!(selectedQuestion$ | async)"
-    (resetClick)="resetLocalStorage()"
-  ></app-question-display>
-</ng-container>
-
-<ng-template #emptyState>
-  <div class="empty-state">
-    <div class="empty-state__icon">🔀</div>
-    <div class="empty-state__text">{{ "countdown.selectPlayer" | translate }}</div>
-    <div class="empty-state__hint">{{ "countdown.pressOn" | translate }} 🔀 {{ "countdown.toStart" | translate }}</div>
-  </div>
-</ng-template>
 
 <section class="footer">
   <button
