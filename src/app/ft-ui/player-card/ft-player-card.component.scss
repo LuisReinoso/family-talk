@@ -1,0 +1,114 @@
+@import '../tokens';
+
+.ft-player-card {
+  cursor: pointer;
+  transition: transform $ft-transition-normal, opacity $ft-transition-slow;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &--answered {
+    opacity: 0.6;
+
+    .ft-player-card__body {
+      filter: grayscale(40%);
+    }
+  }
+
+  &--selected {
+    transform: translateY(-2px);
+
+    .ft-player-card__body {
+      outline: 2px solid $ft-skyblue;
+      outline-offset: 2px;
+      box-shadow: $ft-shadow-lg;
+    }
+  }
+
+  &--expired {
+    opacity: 0.5;
+  }
+
+  &__body {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: $ft-radius-md;
+    padding: $ft-space-2;
+    margin: $ft-space-1;
+    width: 100px;
+    box-shadow: $ft-shadow-sm;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: box-shadow $ft-transition-normal, filter $ft-transition-slow;
+    position: relative;
+
+    @media (min-width: $ft-breakpoint-md) {
+      width: 130px;
+      padding: $ft-space-2;
+
+      .ft-player-card__avatar {
+        width: 64px;
+        height: 64px;
+      }
+
+      .ft-player-card__name {
+        font-size: $ft-font-sm;
+      }
+
+      .ft-player-card__time {
+        font-size: $ft-font-sm;
+      }
+    }
+
+    @media (min-width: $ft-breakpoint-lg) {
+      width: 150px;
+
+      .ft-player-card__avatar {
+        width: 80px;
+        height: 80px;
+      }
+
+      .ft-player-card__name {
+        font-size: $ft-font-base;
+      }
+
+      .ft-player-card__time {
+        font-size: $ft-font-base;
+      }
+    }
+  }
+
+  &__avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: $ft-radius-full;
+    border: 2px solid $ft-white;
+    object-fit: cover;
+  }
+
+  &__name {
+    color: $ft-white;
+    font-size: $ft-font-xs;
+    background: $ft-gray-500;
+    width: 100%;
+    text-align: center;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    border-radius: 0 0 $ft-radius-sm $ft-radius-sm;
+    line-height: $ft-line-height-tight;
+    padding: $ft-space-1 0;
+  }
+
+  &__time {
+    color: $ft-white;
+    font-size: $ft-font-xs;
+    font-weight: $ft-weight-bold;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  &__badge {
+    position: absolute;
+    top: $ft-space-1;
+    right: $ft-space-1;
+  }
+}

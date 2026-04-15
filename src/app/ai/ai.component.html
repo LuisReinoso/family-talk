@@ -1,44 +1,23 @@
-<div class="header">
-  <img class="logo" src="./assets/icons/family-talk-icon.png" />
-  <div class="title">{{ "aiConfig.configQuestionGeneration" | translate }}</div>
-</div>
+<ft-header [title]="'aiConfig.configQuestionGeneration' | translate"></ft-header>
 
 <div class="container">
   <section class="options">
-    <form [formGroup]="formGroup">
-      <label class="checkbox-label-container" data-testid="checkbox-ai">
-        <span>
-          <input
-            type="checkbox"
-            name="hasToUseAi"
-            class="checkbox"
-            formControlName="hasToUseAi"
-            eventName="use-ai"
-            eventPayload="formGroup.hasToUseAi.value"
-          />
-          <span class="custom-checkbox"> </span>
-        </span>
-        <span class="checkbox-label">{{
-          "aiConfig.useAiGenerateQuestions" | translate
-        }}</span>
-      </label>
-      <label for="openAiToken">OpenAi Token</label>
-      <input
-        type="text"
+    <form [formGroup]="formGroup" class="ai-form">
+      <ft-checkbox
+        [label]="'aiConfig.useAiGenerateQuestions' | translate"
+        formControlName="hasToUseAi"
+      ></ft-checkbox>
+
+      <ft-input
+        label="OpenAi Token"
         formControlName="openAiToken"
-        name="openAiToken"
-        id="openAiToken"
-        data-testid="input-openai-token"
-      />
-      <span class="error-warn" *ngIf="formGroup.controls['openAiToken'].errors"
-        >OpenAi Token {{ "common.isRequired" | translate }}</span
-      >
+        placeholder="sk-..."
+        [errorMessage]="formGroup.controls['openAiToken'].errors ? 'OpenAi Token ' + ('common.isRequired' | translate) : ''"
+      ></ft-input>
     </form>
   </section>
 </div>
 
 <div class="footer">
-  <button class="primary" (click)="backToGame()" data-testid="btn-return">
-    {{ "common.return" | translate }}
-  </button>
+  <ft-button variant="primary" (buttonClick)="backToGame()">{{ "common.return" | translate }}</ft-button>
 </div>

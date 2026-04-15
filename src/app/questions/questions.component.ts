@@ -6,6 +6,8 @@ import { Category, defaultCategory } from 'src/app/models/questions';
 import { QuestionsService } from 'src/app/services/questions.service';
 import { EventsDirective } from 'src/app/tracking/events.directive';
 import { environment } from 'src/environments/environment';
+import { FtHeaderComponent } from 'src/app/ft-ui/header/ft-header.component';
+import { FtButtonComponent } from 'src/app/ft-ui/button/ft-button.component';
 
 @Component({
   selector: 'app-questions',
@@ -13,7 +15,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./questions.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, TranslateModule, EventsDirective],
+  imports: [CommonModule, TranslateModule, EventsDirective, FtHeaderComponent, FtButtonComponent],
 })
 export class QuestionsComponent implements OnInit {
   selectedCategory: Category = Category.random;

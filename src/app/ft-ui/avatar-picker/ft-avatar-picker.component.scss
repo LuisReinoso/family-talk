@@ -1,0 +1,29 @@
+@import '../tokens';
+
+.ft-avatar-picker {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: $ft-space-1;
+
+  @media (min-width: $ft-breakpoint-md) {
+    grid-template-columns: repeat(8, 1fr);
+  }
+
+  &__option {
+    width: 36px;
+    height: 36px;
+    border-radius: $ft-radius-full;
+    cursor: pointer;
+    border: 2px solid transparent;
+    object-fit: cover;
+    transition: transform $ft-transition-normal, border-color $ft-transition-normal;
+
+    &:hover {
+      transform: scale(1.15);
+    }
+
+    &--selected {
+      border-color: $ft-green;
+    }
+  }
+}

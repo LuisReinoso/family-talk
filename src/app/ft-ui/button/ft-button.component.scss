@@ -1,0 +1,128 @@
+@import '../tokens';
+
+.ft-btn {
+  border: none;
+  border-radius: $ft-radius-md;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $ft-space-2;
+  font-family: $ft-font-family;
+  font-weight: $ft-weight-semibold;
+  transition: background-color $ft-transition-normal, transform $ft-transition-fast;
+  text-decoration: none;
+  line-height: 1;
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+  }
+
+  &__spinner {
+    width: 0.9em;
+    height: 0.9em;
+    border-radius: $ft-radius-full;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: $ft-white;
+    animation: ft-spin 1s linear infinite;
+  }
+
+  &__icon {
+    font-size: 1.2em;
+    line-height: 1;
+  }
+
+  &__text {
+    font-size: inherit;
+  }
+
+  // ── Sizes ──
+  &--sm {
+    padding: $ft-space-1 $ft-space-3;
+    font-size: $ft-font-sm;
+  }
+
+  &--md {
+    padding: $ft-space-2 $ft-space-5;
+    font-size: $ft-font-base;
+  }
+
+  &--lg {
+    padding: $ft-space-3 $ft-space-6;
+    font-size: $ft-font-lg;
+  }
+
+  // ── Variants ──
+  &--primary {
+    background-color: $ft-color-primary;
+    color: $ft-white;
+
+    &:hover:not(:disabled) {
+      background-color: $ft-color-primary-hover;
+    }
+  }
+
+  &--info {
+    background-color: $ft-color-info;
+    color: $ft-white;
+
+    &:hover:not(:disabled) {
+      background-color: $ft-color-info-hover;
+    }
+  }
+
+  &--danger {
+    background-color: $ft-color-danger;
+    color: $ft-white;
+
+    &:hover:not(:disabled) {
+      background-color: $ft-color-danger-hover;
+    }
+  }
+
+  &--ai {
+    background-color: $ft-brand-purple-light;
+    color: $ft-white;
+
+    &:hover:not(:disabled) {
+      background-color: darken($ft-brand-purple-light, 8%);
+    }
+  }
+
+  &--question {
+    background-color: $ft-color-info;
+    color: $ft-white;
+
+    &:hover:not(:disabled) {
+      background-color: $ft-color-info-hover;
+    }
+  }
+
+  &--icon {
+    background: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: $ft-white;
+    padding: $ft-space-2;
+
+    .ft-btn__text {
+      font-size: $ft-font-xs;
+      font-weight: $ft-weight-bold;
+    }
+  }
+}
+
+@keyframes ft-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

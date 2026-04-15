@@ -1,0 +1,70 @@
+@import '../tokens';
+
+.ft-action-btn {
+  border: none;
+  border-radius: $ft-radius-md;
+  padding: $ft-space-2 $ft-space-4;
+  font-size: $ft-font-sm;
+  font-weight: $ft-weight-semibold;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: $ft-space-1;
+  transition: background-color $ft-transition-normal, transform $ft-transition-fast;
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  &--loading {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+
+  &__content {
+    display: flex;
+    align-items: center;
+    gap: $ft-space-1;
+  }
+
+  &__icon {
+    font-size: $ft-font-lg;
+  }
+
+  &__text {
+    font-size: $ft-font-sm;
+  }
+
+  &__spinner {
+    width: 14px;
+    height: 14px;
+    border-radius: $ft-radius-full;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: $ft-white;
+    animation: ft-action-spin 1s linear infinite;
+  }
+
+  &--ai {
+    background-color: $ft-brand-purple-light;
+    color: $ft-white;
+
+    &:hover:not(:disabled) {
+      background-color: darken($ft-brand-purple-light, 8%);
+    }
+  }
+
+  &--question {
+    background-color: $ft-color-info;
+    color: $ft-white;
+
+    &:hover:not(:disabled) {
+      background-color: $ft-color-info-hover;
+    }
+  }
+}
+
+@keyframes ft-action-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

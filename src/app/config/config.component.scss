@@ -1,4 +1,4 @@
-@import "/src/styles";
+@import '/src/app/ft-ui/tokens';
 
 :host {
   display: flex;
@@ -10,90 +10,49 @@
 .config-options {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  padding: 16px;
+  gap: $ft-space-3;
+  padding: $ft-space-4;
   width: 100%;
   max-width: 400px;
   margin: 0 auto;
 }
 
-.config-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 20px 12px;
-  background: white;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  border-top: 3px solid $color-purple;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  &:nth-child(1) { border-top-color: #4caf50; }
-  &:nth-child(2) { border-top-color: #ff9800; }
-  &:nth-child(3) { border-top-color: #2196f3; }
-  &:nth-child(4) { border-top-color: #9c27b0; }
-  &:nth-child(5) { border-top-color: #6c3ce0; }
-
-  &__icon {
-    font-size: 32px;
-    line-height: 1;
-  }
-
-  &__label {
-    font-size: 14px;
-    font-weight: 600;
-    color: #333;
-    text-align: center;
-  }
-}
-
-// 5th card spans full width on 2-col grid
-.config-card:nth-child(5) {
+// 5th card centered
+ft-config-card:nth-child(5) {
   grid-column: 1 / -1;
   max-width: 50%;
   justify-self: center;
 }
 
-@media (min-width: 768px) {
+.container {
+  width: 100%;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  padding: $ft-space-3;
+}
+
+@media (min-width: $ft-breakpoint-md) {
   .config-options {
     grid-template-columns: repeat(3, 1fr);
     max-width: 500px;
   }
 
-  .config-card:nth-child(5) {
+  ft-config-card:nth-child(5) {
     grid-column: auto;
     max-width: none;
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: $ft-breakpoint-lg) {
   .config-options {
     grid-template-columns: repeat(5, 1fr);
     max-width: 600px;
-  }
-
-  .config-card {
-    padding: 24px 16px;
-
-    &__icon {
-      font-size: 36px;
-    }
-
-    &__label {
-      font-size: 15px;
-    }
   }
 }

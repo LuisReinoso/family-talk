@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageService } from 'src/app/services/language.service';
 import { EventsDirective } from 'src/app/tracking/events.directive';
+import { FtHeaderComponent } from 'src/app/ft-ui/header/ft-header.component';
+import { FtButtonComponent } from 'src/app/ft-ui/button/ft-button.component';
 
 @Component({
   selector: 'language-name',
@@ -11,7 +13,7 @@ import { EventsDirective } from 'src/app/tracking/events.directive';
   styleUrls: ['./language.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, TranslateModule, EventsDirective],
+  imports: [CommonModule, TranslateModule, EventsDirective, FtHeaderComponent, FtButtonComponent],
 })
 export class LanguageComponent implements OnInit {
   currentLanguage: string = 'es';

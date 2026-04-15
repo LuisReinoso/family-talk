@@ -56,12 +56,7 @@
 </div>
 
 <div class="footer">
-  <button class="primary" *ngIf="!isRotating" (click)="startRotation()">
-    Empezar
-  </button>
-  <button class="secondary" *ngIf="isRotating" (click)="stopRotation()">
-    Detener
-  </button>
-
-  <button class="info" (click)="returnToCountdown()">Regresar</button>
+  <ft-button *ngIf="!isRotating" variant="primary" (buttonClick)="startRotation()">Empezar</ft-button>
+  <ft-button *ngIf="isRotating" variant="info" (buttonClick)="stopRotation()">Detener</ft-button>
+  <ft-button variant="info" (buttonClick)="returnToCountdown()">Regresar</ft-button>
 </div>

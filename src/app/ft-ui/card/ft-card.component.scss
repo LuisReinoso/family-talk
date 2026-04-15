@@ -1,0 +1,25 @@
+@import '../tokens';
+
+.ft-card {
+  background: $ft-white;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: $ft-radius-lg;
+  box-shadow: $ft-shadow-sm;
+  transition: transform $ft-transition-normal, box-shadow $ft-transition-normal;
+
+  &--accent {
+    border-top: 3px solid $ft-brand-purple;
+  }
+
+  &--pad-sm {
+    padding: $ft-space-2;
+  }
+
+  &--pad-md {
+    padding: $ft-space-4;
+  }
+
+  &--pad-lg {
+    padding: $ft-space-6;
+  }
+}

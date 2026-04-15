@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FtButtonComponent } from 'src/app/ft-ui/button/ft-button.component';
 
 @Component({
   selector: 'app-roulette',
@@ -8,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./roulette.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule],
+  imports: [CommonModule, FtButtonComponent],
 })
 export class RouletteComponent implements OnInit, OnDestroy {
   @ViewChild('roulette') roulette!: ElementRef;

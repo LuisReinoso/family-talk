@@ -6,7 +6,9 @@
     "start": "ng serve --host=0.0.0.0",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "private": true,
   "dependencies": {
@@ -32,6 +34,10 @@
     "@angular-devkit/build-angular": "^14.2.2",
     "@angular/cli": "~14.2.2",
     "@angular/compiler-cli": "^14.2.0",
+    "@storybook/addon-actions": "6.5",
+    "@storybook/addon-essentials": "6.5",
+    "@storybook/angular": "6.5",
+    "@storybook/builder-webpack5": "6.5",
     "@types/jasmine": "~4.0.0",
     "jasmine-core": "~4.3.0",
     "karma": "~6.4.0",

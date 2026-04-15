@@ -11,6 +11,11 @@ import { environment } from 'src/environments/environment';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { generateId, generateAvatarPaths } from 'src/app/utils/id.utils';
+import { FtHeaderComponent } from 'src/app/ft-ui/header/ft-header.component';
+import { FtButtonComponent } from 'src/app/ft-ui/button/ft-button.component';
+import { FtInputComponent } from 'src/app/ft-ui/input/ft-input.component';
+import { FtColorPickerComponent } from 'src/app/ft-ui/color-picker/ft-color-picker.component';
+import { FtAvatarPickerComponent } from 'src/app/ft-ui/avatar-picker/ft-avatar-picker.component';
 
 @Component({
   selector: 'app-edit-player',
@@ -25,6 +30,11 @@ import { generateId, generateAvatarPaths } from 'src/app/utils/id.utils';
     EventsDirective,
     MatTooltipModule,
     MatSnackBarModule,
+    FtHeaderComponent,
+    FtButtonComponent,
+    FtInputComponent,
+    FtColorPickerComponent,
+    FtAvatarPickerComponent,
   ],
 })
 export class EditPlayerComponent implements OnInit {
@@ -33,6 +43,7 @@ export class EditPlayerComponent implements OnInit {
   } = this.playerService.players;
   selectedUserId: string = '';
   avatarOptions: string[] = generateAvatarPaths();
+  avatarUrls: string[] = generateAvatarPaths().map(a => this.url + a);
 
   form = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
@@ -132,6 +143,15 @@ export class EditPlayerComponent implements OnInit {
       ...this.players[playerId],
       avatar: avatar,
     });
+  }
+
+  getInputErrorMessage(): string {
+    const control = this.form.get('name');
+    if (!control?.errors || !control.touched) return '';
+    if (control.errors['required']) return 'Name is required';
+    if (control.errors['minlength']) return 'Name too short';
+    if (control.errors['maxlength']) return 'Name too long';
+    return '';
   }
 
   private showError(message: string): void {

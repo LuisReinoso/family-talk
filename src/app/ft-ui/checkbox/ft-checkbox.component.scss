@@ -1,0 +1,44 @@
+@import '../tokens';
+
+.ft-checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: $ft-space-2;
+  cursor: pointer;
+}
+
+.ft-checkbox-input {
+  display: none;
+}
+
+.ft-checkbox-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background-color: $ft-white;
+  border: 2px solid $ft-gray-700;
+  border-radius: $ft-radius-sm;
+  transition: background-color $ft-transition-fast;
+
+  &--checked {
+    background-color: $ft-green-3;
+    border-color: $ft-green-3;
+  }
+}
+
+.ft-checkbox-mark {
+  width: 6px;
+  height: 10px;
+  border: 2px solid $ft-white;
+  border-top: none;
+  border-right: none;
+  transform: rotate(45deg);
+  margin-top: -2px;
+}
+
+.ft-checkbox-label {
+  text-align: start;
+  font-size: $ft-font-base;
+}

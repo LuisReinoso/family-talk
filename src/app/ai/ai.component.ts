@@ -11,6 +11,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Subscription, take } from 'rxjs';
 import { AiService } from 'src/app/services/ai.service';
 import { EventsDirective } from 'src/app/tracking/events.directive';
+import { FtHeaderComponent } from 'src/app/ft-ui/header/ft-header.component';
+import { FtButtonComponent } from 'src/app/ft-ui/button/ft-button.component';
+import { FtCheckboxComponent } from 'src/app/ft-ui/checkbox/ft-checkbox.component';
+import { FtInputComponent } from 'src/app/ft-ui/input/ft-input.component';
 
 @Component({
   selector: 'app-ai',
@@ -23,6 +27,10 @@ import { EventsDirective } from 'src/app/tracking/events.directive';
     ReactiveFormsModule,
     TranslateModule,
     EventsDirective,
+    FtHeaderComponent,
+    FtButtonComponent,
+    FtCheckboxComponent,
+    FtInputComponent,
   ],
 })
 export class AiComponent implements OnInit, OnDestroy {

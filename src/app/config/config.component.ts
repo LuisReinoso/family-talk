@@ -3,6 +3,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { EventsDirective } from 'src/app/tracking/events.directive';
+import { FtHeaderComponent } from 'src/app/ft-ui/header/ft-header.component';
+import { FtConfigCardComponent } from 'src/app/ft-ui/config-card/ft-config-card.component';
+import { FtButtonComponent } from 'src/app/ft-ui/button/ft-button.component';
 
 @Component({
   selector: 'app-config',
@@ -10,7 +13,14 @@ import { EventsDirective } from 'src/app/tracking/events.directive';
   styleUrls: ['./config.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, TranslateModule, EventsDirective],
+  imports: [
+    CommonModule,
+    TranslateModule,
+    EventsDirective,
+    FtHeaderComponent,
+    FtConfigCardComponent,
+    FtButtonComponent,
+  ],
 })
 export class ConfigComponent {
   constructor(private router: Router) {}

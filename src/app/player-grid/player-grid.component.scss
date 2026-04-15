@@ -1,4 +1,4 @@
-@import "/src/styles";
+@import '/src/app/ft-ui/tokens';
 
 :host {
   display: flex;
@@ -16,147 +16,14 @@
   justify-content: center;
   align-items: flex-start;
   overflow-y: auto;
-  padding: 4px;
-}
+  padding: $ft-space-1;
 
-.player-card {
-  cursor: pointer;
-  transition: transform 0.2s ease, opacity 0.3s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-  }
-
-  &.has-answered {
-    opacity: 0.6;
-
-    .player {
-      filter: grayscale(40%);
-    }
-  }
-
-  &.selected-player-random {
-    transform: translateY(-2px);
-
-    .player {
-      outline: 2px solid $color-skyblue;
-      outline-offset: 2px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-  }
-
-  &.player-available {
-    opacity: 1;
-  }
-}
-
-.player {
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 8px;
-  padding: 6px;
-  margin: 3px;
-  width: 100px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: box-shadow 0.2s ease, filter 0.3s ease;
-  position: relative;
-
-  &__avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    border: 2px solid white;
-    transition: transform 0.2s ease;
-  }
-
-  &__name {
-    color: $color-white;
-    font-size: 11px;
-    background: $color-grey;
-    width: 100%;
-    text-align: center;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    border-radius: 0 0 4px 4px;
-    line-height: 1.2;
-    padding: 2px 0;
-  }
-
-  &__time {
-    color: $color-white;
-    font-size: 11px;
-    font-weight: bold;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  }
-
-  &__badge {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: $color-green;
-    color: $color-white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: bold;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-
-    &--expired {
-      background: $color-red;
-    }
-  }
-}
-
-@media only screen and (min-width: 768px) {
-  .players {
+  @media (min-width: $ft-breakpoint-md) {
     width: 80%;
     margin: 0 auto;
   }
 
-  .player {
-    width: 130px;
-    padding: 8px;
-    margin: 5px;
-
-    &__avatar {
-      width: 64px;
-      height: 64px;
-    }
-
-    &__name {
-      font-size: 13px;
-    }
-
-    &__time {
-      font-size: 12px;
-    }
-  }
-}
-
-@media only screen and (min-width: 1024px) {
-  .players {
+  @media (min-width: $ft-breakpoint-lg) {
     width: 70%;
-  }
-
-  .player {
-    width: 150px;
-
-    &__avatar {
-      width: 80px;
-      height: 80px;
-    }
-
-    &__name {
-      font-size: 15px;
-    }
-
-    &__time {
-      font-size: 14px;
-    }
   }
 }

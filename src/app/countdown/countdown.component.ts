@@ -14,7 +14,11 @@ import { EventsDirective } from 'src/app/tracking/events.directive';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { PlayerGridComponent } from 'src/app/player-grid/player-grid.component';
 import { TimerComponent } from 'src/app/timer/timer.component';
-import { QuestionDisplayComponent } from 'src/app/question-display/question-display.component';
+import { FtHeaderComponent } from 'src/app/ft-ui/header/ft-header.component';
+import { FtQuestionCardComponent } from 'src/app/ft-ui/question-card/ft-question-card.component';
+import { FtActionButtonComponent } from 'src/app/ft-ui/action-button/ft-action-button.component';
+import { FtButtonComponent } from 'src/app/ft-ui/button/ft-button.component';
+import { FtAlertComponent } from 'src/app/ft-ui/alert/ft-alert.component';
 import {
   getRandomAvailablePlayer,
   getPlayersForNextRound,
@@ -37,7 +41,11 @@ import {
     EventsDirective,
     PlayerGridComponent,
     TimerComponent,
-    QuestionDisplayComponent,
+    FtHeaderComponent,
+    FtQuestionCardComponent,
+    FtActionButtonComponent,
+    FtButtonComponent,
+    FtAlertComponent,
   ],
 })
 export class CountdownComponent implements OnInit, OnDestroy {

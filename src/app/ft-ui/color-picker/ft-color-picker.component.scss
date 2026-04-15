@@ -1,0 +1,25 @@
+@import '../tokens';
+
+.ft-color-picker {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: $ft-space-1;
+
+  &__swatch {
+    width: 32px;
+    height: 32px;
+    border-radius: $ft-radius-full;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform $ft-transition-normal, border-color $ft-transition-normal;
+
+    &:hover {
+      transform: scale(1.15);
+    }
+
+    &--selected {
+      border-color: $ft-skyblue;
+    }
+  }
+}

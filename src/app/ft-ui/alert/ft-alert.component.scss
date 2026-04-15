@@ -1,0 +1,66 @@
+@import '../tokens';
+
+.ft-alert {
+  display: flex;
+  align-items: center;
+  gap: $ft-space-2;
+  padding: $ft-space-3 $ft-space-4;
+  border-radius: $ft-radius-md;
+  font-size: $ft-font-base;
+  font-weight: $ft-weight-medium;
+  animation: ft-alert-in 0.3s ease;
+
+  &--warn {
+    background-color: $ft-orange;
+    border: 2px solid $ft-red;
+    color: $ft-white;
+  }
+
+  &--error {
+    background-color: $ft-red;
+    color: $ft-white;
+  }
+
+  &--info {
+    background-color: $ft-color-info;
+    color: $ft-white;
+  }
+
+  &--success {
+    background-color: $ft-color-success;
+    color: $ft-white;
+  }
+
+  &__icon {
+    font-size: $ft-font-lg;
+  }
+
+  &__message {
+    flex: 1;
+  }
+
+  &__close {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: $ft-font-lg;
+    cursor: pointer;
+    padding: 0 $ft-space-1;
+    opacity: 0.8;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+@keyframes ft-alert-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

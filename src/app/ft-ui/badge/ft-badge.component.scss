@@ -1,0 +1,30 @@
+@import '../tokens';
+
+.ft-badge {
+  width: 18px;
+  height: 18px;
+  border-radius: $ft-radius-full;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: $ft-weight-bold;
+  box-shadow: $ft-shadow-sm;
+  color: $ft-white;
+
+  &--success {
+    background-color: $ft-green;
+  }
+
+  &--expired {
+    background-color: $ft-red;
+  }
+
+  &--info {
+    background-color: $ft-color-info;
+  }
+
+  &__icon {
+    line-height: 1;
+  }
+}

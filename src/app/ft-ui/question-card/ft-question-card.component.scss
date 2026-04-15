@@ -1,0 +1,50 @@
+@import '../tokens';
+
+.ft-question-card {
+  background: linear-gradient(135deg, rgba(62, 52, 166, 0.08), rgba(22, 158, 216, 0.06));
+  border-radius: $ft-radius-lg;
+  border-left: 4px solid $ft-brand-purple;
+  text-align: center;
+  width: 100%;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  box-shadow: 0 2px 8px rgba(62, 52, 166, 0.12);
+  padding: $ft-space-4 $ft-space-5;
+  overflow: auto;
+
+  &--empty {
+    border-left-color: $ft-gray-400;
+    background: $ft-gray-50;
+  }
+
+  &__label {
+    font-size: $ft-font-xs;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: $ft-brand-purple;
+    margin-bottom: $ft-space-2;
+    font-weight: $ft-weight-semibold;
+  }
+
+  &__text {
+    overflow: auto;
+    font-size: $ft-font-lg;
+    line-height: $ft-line-height-normal;
+
+    @media (min-width: $ft-breakpoint-md) {
+      font-size: $ft-font-xl;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: $ft-space-2;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: $ft-space-3;
+  }
+}

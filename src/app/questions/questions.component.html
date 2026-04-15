@@ -1,34 +1,24 @@
-<div class="header">
-  <img class="logo" src="./assets/icons/family-talk-icon.png" />
-  <div class="title">{{ "questions.configureQuestions" | translate }}</div>
-</div>
+<ft-header [title]="'questions.configureQuestions' | translate"></ft-header>
 
 <div class="container">
   <section class="options">
-    <button
+    <ft-button
       *ngFor="let category of categories"
-      class="info option"
+      variant="info"
       [disabled]="numberQuestionsPerCategory[category.name] === 0"
-      (click)="setupQuestionCategory(category.name)"
-      eventName="change-category"
-      [eventPayload]="{ category: category.name }"
-      data-testid="btn-category"
+      (buttonClick)="setupQuestionCategory(category.name)"
     >
       <span class="topic">
         {{ category.name | translate }} ({{
           numberQuestionsPerCategory[category.name]
         }})
-        <span class="check-icon" *ngIf="category.name === selectedCategory"
-          >✔️</span
-        >
+        <span class="check-icon" *ngIf="category.name === selectedCategory">✔️</span>
       </span>
       <img class="image" [src]="url + category.image" />
-    </button>
+    </ft-button>
   </section>
 </div>
 
 <div class="footer">
-  <button class="primary" (click)="backToGame()" data-testid="btn-return">
-    {{ "common.return" | translate }}
-  </button>
+  <ft-button variant="primary" (buttonClick)="backToGame()">{{ "common.return" | translate }}</ft-button>
 </div>

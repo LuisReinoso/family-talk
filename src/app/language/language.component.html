@@ -1,35 +1,18 @@
-<div class="header">
-  <img class="logo" src="./assets/icons/family-talk-icon.png" />
-  <div class="title">{{ "language.configureLanguage" | translate }}</div>
-</div>
+<ft-header [title]="'language.configureLanguage' | translate"></ft-header>
 
 <div class="container">
   <section class="options">
-    <button
-      class="info"
-      (click)="setupSpanishAsLanguage()"
-      eventName="change-language"
-      [eventPayload]="{ language: 'es' }"
-      data-testid="btn-spanish"
-    >
+    <ft-button variant="info" (buttonClick)="setupSpanishAsLanguage()">
       {{ "language.spanish" | translate }}
       <span class="check-icon" *ngIf="currentLanguage === 'es'">✔️</span>
-    </button>
-    <button
-      class="info"
-      (click)="setupEnglishAsLanguage()"
-      eventName="change-language"
-      [eventPayload]="{ language: 'en' }"
-      data-testid="btn-english"
-    >
-      {{ "language.english" | translate
-      }}<span class="check-icon" *ngIf="currentLanguage === 'en'">✔️</span>
-    </button>
+    </ft-button>
+    <ft-button variant="info" (buttonClick)="setupEnglishAsLanguage()">
+      {{ "language.english" | translate }}
+      <span class="check-icon" *ngIf="currentLanguage === 'en'">✔️</span>
+    </ft-button>
   </section>
 </div>
 
 <div class="footer">
-  <button class="primary" (click)="backToGame()" data-testid="btn-return">
-    {{ "common.return" | translate }}
-  </button>
+  <ft-button variant="primary" (buttonClick)="backToGame()">{{ "common.return" | translate }}</ft-button>
 </div>

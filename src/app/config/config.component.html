@@ -1,60 +1,40 @@
-<div class="header">
-  <img class="logo" src="./assets/icons/family-talk-icon.png" />
-  <div class="title">{{ "config.configuration" | translate }}</div>
-</div>
+<ft-header [title]="'config.configuration' | translate"></ft-header>
 
 <div class="container">
   <section class="config-options">
-    <button
-      class="config-card"
-      (click)="goToPlayersConfig()"
-      eventName="go-to-players-config"
-      data-testid="btn-config-players"
-    >
-      <span class="config-card__icon">👥</span>
-      <span class="config-card__label">{{ "config.players" | translate }}</span>
-    </button>
-    <button
-      class="config-card"
-      (click)="goToGeneralConfig()"
-      eventName="go-to-general-config"
-      data-testid="btn-config-general"
-    >
-      <span class="config-card__icon">⚙️</span>
-      <span class="config-card__label">{{ "config.general" | translate }}</span>
-    </button>
-    <button
-      class="config-card"
-      (click)="goToLanguageConfig()"
-      eventName="go-to-language-config"
-      data-testid="btn-config-language"
-    >
-      <span class="config-card__icon">🌐</span>
-      <span class="config-card__label">{{ "config.language" | translate }}</span>
-    </button>
-    <button
-      class="config-card"
-      (click)="goToQuestionsConfig()"
-      eventName="go-to-questions-config"
-      data-testid="btn-config-questions"
-    >
-      <span class="config-card__icon">❓</span>
-      <span class="config-card__label">{{ "config.questions" | translate }}</span>
-    </button>
-    <button
-      class="config-card"
-      (click)="goToAiConfig()"
-      eventName="go-to-ai-config"
-      data-testid="btn-config-ai"
-    >
-      <span class="config-card__icon">🤖</span>
-      <span class="config-card__label">{{ "config.ai" | translate }}</span>
-    </button>
+    <ft-config-card
+      icon="👥"
+      [label]="'config.players' | translate"
+      accentColor="#4caf50"
+      (cardClick)="goToPlayersConfig()"
+    ></ft-config-card>
+    <ft-config-card
+      icon="⚙️"
+      [label]="'config.general' | translate"
+      accentColor="#ff9800"
+      (cardClick)="goToGeneralConfig()"
+    ></ft-config-card>
+    <ft-config-card
+      icon="🌐"
+      [label]="'config.language' | translate"
+      accentColor="#2196f3"
+      (cardClick)="goToLanguageConfig()"
+    ></ft-config-card>
+    <ft-config-card
+      icon="❓"
+      [label]="'config.questions' | translate"
+      accentColor="#9c27b0"
+      (cardClick)="goToQuestionsConfig()"
+    ></ft-config-card>
+    <ft-config-card
+      icon="🤖"
+      [label]="'config.ai' | translate"
+      accentColor="#6c3ce0"
+      (cardClick)="goToAiConfig()"
+    ></ft-config-card>
   </section>
 </div>
 
 <div class="footer">
-  <button class="primary" (click)="backToGame()" data-testid="btn-return">
-    {{ "common.return" | translate }}
-  </button>
+  <ft-button variant="primary" (buttonClick)="backToGame()">{{ 'common.return' | translate }}</ft-button>
 </div>

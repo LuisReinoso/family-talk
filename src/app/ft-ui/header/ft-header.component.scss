@@ -1,0 +1,23 @@
+@import '../tokens';
+
+.ft-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $ft-header-bg;
+  padding: $ft-space-2 $ft-space-3;
+
+  &__logo {
+    width: 48px;
+    height: 48px;
+  }
+
+  &__title {
+    color: $ft-white;
+    font-weight: $ft-weight-bold;
+    font-size: $ft-font-lg;
+    width: 100%;
+    text-align: center;
+    flex: 1;
+  }
+}

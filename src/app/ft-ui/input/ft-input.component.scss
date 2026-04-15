@@ -1,0 +1,42 @@
+@import '../tokens';
+
+.ft-input-wrapper {
+  width: 100%;
+}
+
+.ft-input__label {
+  font-size: $ft-font-base;
+  font-weight: $ft-weight-bold;
+  display: block;
+  margin-bottom: $ft-space-2;
+}
+
+.ft-input {
+  width: 100%;
+  padding: $ft-space-2 $ft-space-3;
+  border: 2px solid $ft-gray-300;
+  border-radius: $ft-radius-sm;
+  font-size: $ft-font-sm;
+  font-family: $ft-font-family;
+  transition: border-color $ft-transition-fast;
+
+  &:focus {
+    outline: none;
+    border-color: $ft-brand-purple;
+  }
+
+  &:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+
+  &--error {
+    border-color: $ft-red;
+  }
+}
+
+.ft-input__error {
+  color: $ft-red;
+  font-size: $ft-font-sm;
+  margin-top: $ft-space-1;
+}
