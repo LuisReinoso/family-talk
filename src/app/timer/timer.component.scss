@@ -1,22 +1,31 @@
 @import "/src/styles";
 
 .selected-player {
-  height: 75px;
+  height: 48px;
   background-color: $color-purple;
   color: $color-white;
   text-align: center;
-  font-size: 24px;
-  padding: 10px;
+  font-size: 18px;
+  padding: 0 16px;
   font-weight: 600;
   align-items: center;
   justify-content: center;
   display: flex;
+  gap: 12px;
+  border-radius: 8px;
 }
 
 .pause,
 .resume {
-  background-color: unset;
+  background-color: rgba(255, 255, 255, 0.15);
   border: none;
-  font-size: 22px;
+  font-size: 18px;
   cursor: pointer;
+  border-radius: 6px;
+  padding: 4px 8px;
+  line-height: 1;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
 }

@@ -13,29 +13,77 @@
 </div>
 
 <div class="container">
-  <div *ngIf="!selectedPlayer" class="empty-hint">
-    {{ "countdown.pressOn" | translate }} 🔀 {{ "countdown.toStart" | translate }}
-  </div>
-  <app-player-grid
-    [players]="players"
-    [selectedUserId]="selectedUserId"
-    (playerClick)="showPlayerAlert = true"
-  ></app-player-grid>
+  <!-- No player selected: show hint + grid + shuffle -->
+  <ng-container *ngIf="!selectedPlayer">
+    <div class="empty-hint">
+      {{ "countdown.pressOn" | translate }} 🔀 {{ "countdown.toStart" | translate }}
+    </div>
+    <app-player-grid
+      [players]="players"
+      [selectedUserId]="selectedUserId"
+      (playerClick)="showPlayerAlert = true"
+    ></app-player-grid>
+  </ng-container>
 
+  <!-- Player selected: question-centric layout -->
   <ng-container *ngIf="selectedPlayer">
-    <app-timer
-      [player]="selectedPlayer"
-      [isRunning]="isTimerRunning"
-      [isSelecting]="isSelectingRandomUser"
-      (pauseClick)="stopCountdown()"
-      (resumeClick)="startCountdown()"
-    ></app-timer>
+    <div class="game-area">
+      <app-timer
+        [player]="selectedPlayer"
+        [isRunning]="isTimerRunning"
+        [isSelecting]="isSelectingRandomUser"
+        (pauseClick)="stopCountdown()"
+        (resumeClick)="startCountdown()"
+      ></app-timer>
 
-    <app-question-display
-      [questionText]="selectedQuestion$ | async"
-      [showReset]="!(selectedQuestion$ | async)"
-      (resetClick)="resetLocalStorage()"
-    ></app-question-display>
+      <app-question-display
+        [questionText]="selectedQuestion$ | async"
+        [showReset]="!(selectedQuestion$ | async)"
+        (resetClick)="resetLocalStorage()"
+      ></app-question-display>
+
+      <div class="action-buttons">
+        <ng-container *ngIf="hasToUseAi$ | async; else localQuestionsTemplate">
+          <button
+            *ngIf="openAiToken"
+            class="action-btn action-btn--ai"
+            [ngClass]="{ 'action-btn--loading': isLoadingQuestion }"
+            eventName="click-new-ai-question"
+            (click)="generateRandomQuestion()"
+            [eventPayload]="{ 'current-question': selectedQuestion$ | async }"
+            data-testid="btn-ai-question"
+          >
+            <span *ngIf="!isLoadingQuestion" class="action-btn__content">
+              <span class="action-btn__icon">🤖</span>
+              <span class="action-btn__text">{{ "countdown.generateQuestionWithAi" | translate }}</span>
+            </span>
+            <span *ngIf="isLoadingQuestion" class="action-btn__content">
+              <span class="action-btn__icon">⏳</span>
+            </span>
+          </button>
+        </ng-container>
+        <ng-template #localQuestionsTemplate>
+          <button
+            class="action-btn action-btn--question"
+            (click)="selectRandomQuestion()"
+            eventName="click-new-question"
+            [eventPayload]="{ 'current-question': selectedQuestion$ | async }"
+            data-testid="btn-change-question"
+          >
+            <span class="action-btn__content">
+              <span class="action-btn__icon">❓</span>
+              <span class="action-btn__text">{{ "countdown.changeQuestion" | translate }}</span>
+            </span>
+          </button>
+        </ng-template>
+      </div>
+    </div>
+
+    <app-player-grid
+      [players]="players"
+      [selectedUserId]="selectedUserId"
+      (playerClick)="showPlayerAlert = true"
+    ></app-player-grid>
   </ng-container>
 </div>
 
@@ -56,54 +104,6 @@
       "countdown.selectPlayer" | translate
     }}</span>
   </button>
-
-  <ng-container *ngIf="hasToUseAi$ | async; else localQuestionsTemplate">
-    <button
-      *ngIf="openAiToken && selectedPlayer"
-      class="info tooltip"
-      [ngClass]="{ loading: isLoadingQuestion }"
-      eventName="click-new-ai-question"
-      (click)="generateRandomQuestion()"
-      [eventPayload]="{ 'current-question': selectedQuestion$ | async }"
-      data-testid="btn-ai-question"
-    >
-      <ng-container
-        *ngIf="isLoadingQuestion; else generateQuestionIconTemplate"
-      >
-      </ng-container>
-      <ng-template #generateQuestionIconTemplate>
-        <span class="button-content"
-          ><span class="button-content__icon">🤖</span>
-          <span class="button-content__text">{{
-            "countdown.generateQuestionWithAi" | translate
-          }}</span>
-        </span>
-        <span *ngIf="!isMobile" class="tooltip-text">{{
-          "countdown.generateQuestionWithAi" | translate
-        }}</span>
-      </ng-template>
-    </button>
-  </ng-container>
-  <ng-template #localQuestionsTemplate>
-    <button
-      *ngIf="selectedPlayer"
-      class="info tooltip"
-      (click)="selectRandomQuestion()"
-      eventName="click-new-question"
-      [eventPayload]="{ 'current-question': selectedQuestion$ | async }"
-      data-testid="btn-change-question"
-    >
-      <span class="button-content"
-        ><span class="button-content__icon">❓</span>
-        <span class="button-content__text">{{
-          "countdown.changeQuestion" | translate
-        }}</span>
-      </span>
-      <span *ngIf="!isMobile" class="tooltip-text">{{
-        "countdown.changeQuestion" | translate
-      }}</span>
-    </button>
-  </ng-template>
 </section>
 
 <div *ngIf="showAiErrorAlert" class="alert warn" (click)="showAiErrorAlert = false">

@@ -15,6 +15,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 8px;
+}
+
+.game-area {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0 8px;
 }
 
 .empty-hint {
@@ -26,17 +37,79 @@
   background: rgba(255, 255, 255, 0.6);
 }
 
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s, transform 0.1s;
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  &__content {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  &__icon {
+    font-size: 16px;
+  }
+
+  &__text {
+    font-size: 13px;
+  }
+
+  &--ai {
+    background-color: #6c3ce0;
+    color: white;
+
+    &:hover {
+      background-color: #5a2ec9;
+    }
+  }
+
+  &--question {
+    background-color: #17a2b8;
+    color: white;
+
+    &:hover {
+      background-color: #138496;
+    }
+  }
+
+  &--loading {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+}
+
 section.footer {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 8px;
-  padding: 12px 16px;
+  padding: 10px 16px;
   background: white;
 
   button {
     max-width: 280px;
-    padding: 10px 20px;
+    padding: 10px 24px;
     font-size: 14px;
   }
 }
@@ -53,6 +126,36 @@ section.footer {
       padding: 14px 16px;
       font-size: 16px;
     }
+  }
+
+  .game-area {
+    gap: 8px;
+    padding: 8px 0 4px;
+  }
+
+  .action-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+
+    &__icon {
+      font-size: 14px;
+    }
+
+    &__text {
+      font-size: 12px;
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .game-area {
+    max-width: 500px;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .game-area {
+    max-width: 560px;
   }
 }
 

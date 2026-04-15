@@ -1,6 +1,6 @@
 <div class="selected-question" data-testid="selected-question">
   <ng-container *ngIf="questionText; else noQuestionsTemplate">
-    <b>{{ "countdown.question" | translate }}:</b>
+    <div class="question-label">{{ "countdown.question" | translate }}</div>
     <div class="question">{{ questionText }}</div>
   </ng-container>
   <ng-template #noQuestionsTemplate>

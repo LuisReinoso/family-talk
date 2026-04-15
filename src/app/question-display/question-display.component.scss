@@ -1,31 +1,42 @@
 @import "/src/styles";
 
 .selected-question {
-  background: $color-white;
-  border-radius: 5px;
+  background: linear-gradient(135deg, rgba(62, 52, 166, 0.08), rgba(22, 158, 216, 0.06));
+  border-radius: 12px;
+  border-left: 4px solid $color-purple;
   text-align: center;
   width: 100%;
-  height: 200px;
+  min-height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  border: 1px solid black;
-  padding: 10px;
+  box-shadow: 0 2px 8px rgba(62, 52, 166, 0.12);
+  padding: 16px 20px;
   overflow: auto;
 }
 
 .question {
   overflow: auto;
-  font-size: 20px;
+  font-size: 18px;
+  line-height: 1.4;
 
   @media only screen and (min-width: 800px) {
-    font-size: 22px;
+    font-size: 20px;
   }
 
   @media only screen and (min-width: 1024px) {
-    font-size: 24px;
+    font-size: 22px;
   }
+}
+
+.question-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: $color-purple;
+  margin-bottom: 8px;
+  font-weight: 600;
 }
 
 .alert {

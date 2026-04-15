@@ -8,81 +8,92 @@
 }
 
 .config-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 16px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.config-card {
   display: flex;
-  flex-wrap: wrap;
-  margin-left: -0.25rem;
-  margin-right: -0.25rem;
-  width: 100%;
-}
-
-.config-player {
-  @include custom-background-image;
-  background-image: url("/assets/images/config-players.png");
-  background-position: top;
-}
-
-.config-language {
-  @include custom-background-image;
-  background-image: url("/assets/images/config-language.png");
-  background-position: center;
-}
-
-.config-questions {
-  background-image: url("/assets/images/config-questions.png");
-  background-size: cover;
-  background-position: top;
-  background-repeat: no-repeat;
-  width: 100%;
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-}
-
-.config-ai {
-  background-image: url("/assets/images/config-ai.png");
-  background-size: cover;
-  background-position: top;
-  background-repeat: no-repeat;
-  width: 100%;
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-}
-
-.config-general {
-  background-image: url("/assets/images/config-general.png");
-  background-size: cover;
-  background-position: top;
-  background-repeat: no-repeat;
-  width: 100%;
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-}
-
-.config-option {
-  flex-basis: 50%;
-  padding-left: 0.25rem;
-  width: 100%;
-  padding-right: 0.25rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 20px 12px;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-top: 3px solid $color-purple;
 
-  &__title {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 0.25rem;
-    margin-top: 0.25rem;
-    bottom: 0px;
-    position: absolute;
-    width: 100%;
-    background: #3e34a6;
-    color: white;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:nth-child(1) { border-top-color: #4caf50; }
+  &:nth-child(2) { border-top-color: #ff9800; }
+  &:nth-child(3) { border-top-color: #2196f3; }
+  &:nth-child(4) { border-top-color: #9c27b0; }
+  &:nth-child(5) { border-top-color: #6c3ce0; }
+
+  &__icon {
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  &__label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
   }
 }
 
-// responsive styles screen
+// 5th card spans full width on 2-col grid
+.config-card:nth-child(5) {
+  grid-column: 1 / -1;
+  max-width: 50%;
+  justify-self: center;
+}
+
 @media (min-width: 768px) {
   .config-options {
-    width: 25%;
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 500px;
+  }
+
+  .config-card:nth-child(5) {
+    grid-column: auto;
+    max-width: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .config-options {
+    grid-template-columns: repeat(5, 1fr);
+    max-width: 600px;
+  }
+
+  .config-card {
+    padding: 24px 16px;
+
+    &__icon {
+      font-size: 36px;
+    }
+
+    &__label {
+      font-size: 15px;
+    }
   }
 }

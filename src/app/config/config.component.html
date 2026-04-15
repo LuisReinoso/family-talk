@@ -6,48 +6,49 @@
 <div class="container">
   <section class="config-options">
     <button
-      class="config-option config-player"
+      class="config-card"
       (click)="goToPlayersConfig()"
       eventName="go-to-players-config"
       data-testid="btn-config-players"
     >
-      <div class="config-option__title">{{ "config.players" | translate }}</div>
+      <span class="config-card__icon">👥</span>
+      <span class="config-card__label">{{ "config.players" | translate }}</span>
     </button>
     <button
-      class="config-option config-general"
+      class="config-card"
       (click)="goToGeneralConfig()"
       eventName="go-to-general-config"
       data-testid="btn-config-general"
     >
-      <div class="config-option__title">{{ "config.general" | translate }}</div>
+      <span class="config-card__icon">⚙️</span>
+      <span class="config-card__label">{{ "config.general" | translate }}</span>
     </button>
     <button
-      class="config-option config-language"
+      class="config-card"
       (click)="goToLanguageConfig()"
       eventName="go-to-language-config"
       data-testid="btn-config-language"
     >
-      <div class="config-option__title">
-        {{ "config.language" | translate }}
-      </div>
+      <span class="config-card__icon">🌐</span>
+      <span class="config-card__label">{{ "config.language" | translate }}</span>
     </button>
     <button
-      class="config-option config-questions"
+      class="config-card"
       (click)="goToQuestionsConfig()"
       eventName="go-to-questions-config"
       data-testid="btn-config-questions"
     >
-      <div class="config-option__title">
-        {{ "config.questions" | translate }}
-      </div>
+      <span class="config-card__icon">❓</span>
+      <span class="config-card__label">{{ "config.questions" | translate }}</span>
     </button>
     <button
-      class="config-option config-ai"
+      class="config-card"
       (click)="goToAiConfig()"
       eventName="go-to-ai-config"
       data-testid="btn-config-ai"
     >
-      <div class="config-option__title">{{ "config.ai" | translate }}</div>
+      <span class="config-card__icon">🤖</span>
+      <span class="config-card__label">{{ "config.ai" | translate }}</span>
     </button>
   </section>
 </div>
