@@ -1,4 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles — reset and shared utilities only */
+@import "./styles/colors.scss";
+@import "./styles/logo.scss";
+
 * {
   box-sizing: border-box;
 }
@@ -6,9 +9,12 @@
 html,
 body {
   box-sizing: border-box;
-  margin: 0px;
+  margin: 0;
   width: 100%;
   height: 100%;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
@@ -19,14 +25,6 @@ body {
   justify-content: center;
 }
 
-.footer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 12px;
-  gap: 8px;
-}
-
 .title {
   color: white;
   font-weight: bold;
@@ -34,44 +32,3 @@ body {
   width: 100%;
   text-align: center;
 }
-
-.options {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  overflow-y: auto;
-}
-
-.option {
-  margin: 10px;
-  width: 100%;
-  padding: 15px 15px !important;
-}
-
-@media screen and (min-width: 600px) {
-  .option {
-    width: 50%;
-  }
-  .options {
-    width: 80%;
-  }
-}
-
-@media screen and (min-width: 1400px) {
-  .option {
-    width: 25%;
-  }
-  .options {
-    width: 60%;
-  }
-}
-
-@import "./styles/colors.scss";
-@import "./styles/logo.scss";
-@import "./styles/input.scss";
-@import "./styles/alert.scss";
-@import "./styles/checkbox.scss";

@@ -1,24 +1,28 @@
 <ft-header [title]="'questions.configureQuestions' | translate"></ft-header>
 
-<div class="container">
-  <section class="options">
-    <ft-button
-      *ngFor="let category of categories"
-      variant="info"
-      [disabled]="numberQuestionsPerCategory[category.name] === 0"
-      (buttonClick)="setupQuestionCategory(category.name)"
-    >
-      <span class="topic">
-        {{ category.name | translate }} ({{
-          numberQuestionsPerCategory[category.name]
-        }})
-        <span class="check-icon" *ngIf="category.name === selectedCategory">✔️</span>
-      </span>
-      <img class="image" [src]="url + category.image" />
-    </ft-button>
-  </section>
+<div class="page-content">
+  <ft-card padding="lg">
+    <div class="option-list">
+      <button
+        *ngFor="let category of categories"
+        class="option-btn"
+        [class.option-btn--active]="category.name === selectedCategory"
+        [disabled]="numberQuestionsPerCategory[category.name] === 0"
+        (click)="setupQuestionCategory(category.name)"
+        eventName="change-category"
+        [eventPayload]="{ category: category.name }"
+        data-testid="btn-category"
+      >
+        <span class="option-btn__content">
+          {{ category.name | translate }} ({{ numberQuestionsPerCategory[category.name] }})
+          <span class="option-check" *ngIf="category.name === selectedCategory">✔️</span>
+        </span>
+        <img class="option-btn__image" [src]="url + category.image" alt="" />
+      </button>
+    </div>
+  </ft-card>
 </div>
 
-<div class="footer">
+<div class="page-footer">
   <ft-button variant="primary" (buttonClick)="backToGame()">{{ "common.return" | translate }}</ft-button>
 </div>

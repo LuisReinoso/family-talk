@@ -8,6 +8,7 @@ import { EventsDirective } from 'src/app/tracking/events.directive';
 import { environment } from 'src/environments/environment';
 import { FtHeaderComponent } from 'src/app/ft-ui/header/ft-header.component';
 import { FtButtonComponent } from 'src/app/ft-ui/button/ft-button.component';
+import { FtCardComponent } from 'src/app/ft-ui/card/ft-card.component';
 
 @Component({
   selector: 'app-questions',
@@ -15,7 +16,7 @@ import { FtButtonComponent } from 'src/app/ft-ui/button/ft-button.component';
   styleUrls: ['./questions.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, TranslateModule, EventsDirective, FtHeaderComponent, FtButtonComponent],
+  imports: [CommonModule, TranslateModule, EventsDirective, FtHeaderComponent, FtButtonComponent, FtCardComponent],
 })
 export class QuestionsComponent implements OnInit {
   selectedCategory: Category = Category.random;

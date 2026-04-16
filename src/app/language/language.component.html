@@ -1,18 +1,34 @@
 <ft-header [title]="'language.configureLanguage' | translate"></ft-header>
 
-<div class="container">
-  <section class="options">
-    <ft-button variant="info" (buttonClick)="setupSpanishAsLanguage()">
-      {{ "language.spanish" | translate }}
-      <span class="check-icon" *ngIf="currentLanguage === 'es'">✔️</span>
-    </ft-button>
-    <ft-button variant="info" (buttonClick)="setupEnglishAsLanguage()">
-      {{ "language.english" | translate }}
-      <span class="check-icon" *ngIf="currentLanguage === 'en'">✔️</span>
-    </ft-button>
-  </section>
+<div class="page-content">
+  <ft-card padding="lg">
+    <div class="option-list">
+      <button
+        class="option-btn"
+        [class.option-btn--active]="currentLanguage === 'es'"
+        (click)="setupSpanishAsLanguage()"
+        eventName="change-language"
+        [eventPayload]="{ language: 'es' }"
+        data-testid="btn-spanish"
+      >
+        {{ "language.spanish" | translate }}
+        <span class="option-check" *ngIf="currentLanguage === 'es'">✔️</span>
+      </button>
+      <button
+        class="option-btn"
+        [class.option-btn--active]="currentLanguage === 'en'"
+        (click)="setupEnglishAsLanguage()"
+        eventName="change-language"
+        [eventPayload]="{ language: 'en' }"
+        data-testid="btn-english"
+      >
+        {{ "language.english" | translate }}
+        <span class="option-check" *ngIf="currentLanguage === 'en'">✔️</span>
+      </button>
+    </div>
+  </ft-card>
 </div>
 
-<div class="footer">
+<div class="page-footer">
   <ft-button variant="primary" (buttonClick)="backToGame()">{{ "common.return" | translate }}</ft-button>
 </div>

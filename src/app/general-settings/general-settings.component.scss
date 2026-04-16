@@ -1,3 +1,5 @@
+@import '/src/app/ft-ui/tokens';
+
 :host {
   display: flex;
   width: 100%;
@@ -5,6 +7,23 @@
   flex-direction: column;
 }
 
-.check-icon {
-  margin-left: 10px;
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  padding: $ft-space-4;
+}
+
+.option-list {
+  display: flex;
+  flex-direction: column;
+  gap: $ft-space-3;
+  width: 100%;
+}
+
+.page-footer {
+  display: flex;
+  justify-content: center;
+  padding: $ft-space-3;
 }

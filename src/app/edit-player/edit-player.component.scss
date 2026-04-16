@@ -1,4 +1,4 @@
-@import "/src/styles";
+@import '/src/app/ft-ui/tokens';
 
 :host {
   display: flex;
@@ -8,7 +8,9 @@
 }
 
 .container {
-  padding: 1rem;
+  padding: $ft-space-4;
+  flex: 1;
+  overflow-y: auto;
 
   .players {
     display: flex;
@@ -23,7 +25,7 @@
 
 .player-card {
   cursor: pointer;
-  transition: transform 0.2s ease, opacity 0.3s ease;
+  transition: transform $ft-transition-normal, opacity $ft-transition-slow;
 
   &:hover {
     transform: translateY(-3px);
@@ -37,7 +39,7 @@
     transform: none;
 
     .player__selectable {
-      box-shadow: 0 0 0 3px $color-skyblue, 0 4px 8px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 0 0 3px $ft-skyblue, 0 4px 8px rgba(0, 0, 0, 0.2);
     }
   }
 }
@@ -45,23 +47,27 @@
 .player {
   &__selectable {
     border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    padding: 10px;
-    margin: 10px;
-    width: 180px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: $ft-radius-md;
+    padding: $ft-space-2;
+    margin: $ft-space-2;
+    width: 140px;
+    box-shadow: $ft-shadow-sm;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: box-shadow 0.2s ease;
+    transition: box-shadow $ft-transition-normal;
+
+    &:hover {
+      box-shadow: $ft-shadow-md;
+    }
   }
 
   &__avatar {
-    width: 125px;
+    width: 100px;
     height: auto;
-    border-radius: 50%;
-    border: 3px solid white;
-    transition: transform 0.2s ease;
+    border-radius: $ft-radius-full;
+    border: 3px solid $ft-white;
+    transition: transform $ft-transition-normal;
 
     &:hover {
       transform: scale(1.05);
@@ -69,17 +75,17 @@
   }
 
   &__name {
-    color: $color-white;
-    font-size: 22px;
-    background: $color-grey;
+    color: $ft-white;
+    font-size: $ft-font-lg;
+    background: $ft-gray-500;
     width: 100%;
     text-align: center;
   }
 
   &__time {
-    color: $color-white;
-    font-size: 20px;
-    font-weight: bold;
+    color: $ft-white;
+    font-size: $ft-font-base;
+    font-weight: $ft-weight-bold;
   }
 }
 
@@ -94,129 +100,85 @@
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  background: white;
-  padding: 0.75rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  z-index: 100;
-  margin-top: 0.5rem;
+  background: $ft-white;
+  padding: $ft-space-3;
+  border-radius: $ft-radius-md;
+  box-shadow: $ft-shadow-lg;
+  z-index: $ft-z-dropdown;
+  margin-top: $ft-space-1;
   width: 280px;
   max-height: 200px;
   overflow-y: auto;
 }
 
-.avatar-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 0.4rem;
-
-  .avatar-option {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: transform 0.2s ease, border-color 0.2s ease;
-    object-fit: cover;
-
-    &:hover {
-      transform: scale(1.15);
-    }
-
-    &.selected {
-      border-color: $color-green;
-    }
-  }
-}
-
 .form {
   width: 100%;
   text-align: center;
-  margin-top: 0.5rem;
+  margin-top: $ft-space-1;
 
   .name-input {
     width: 90%;
-    padding: 8px 12px;
-    border: 2px solid $color-border;
-    border-radius: 4px;
-    font-size: 14px;
+    padding: $ft-space-2 $ft-space-3;
+    border: 2px solid $ft-gray-300;
+    border-radius: $ft-radius-sm;
+    font-size: $ft-font-sm;
     text-align: center;
 
     &:focus {
       outline: none;
-      border-color: $color-purple;
+      border-color: $ft-brand-purple;
     }
   }
 
   .validation-message {
-    color: $color-red;
-    font-size: 0.75rem;
-    margin-top: 4px;
+    color: $ft-red;
+    font-size: $ft-font-xs;
+    margin-top: $ft-space-1;
   }
 }
 
 .add-player-section {
   width: 100%;
   max-width: 400px;
-  margin: 1rem auto;
-  padding: 1.5rem;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: $ft-space-4 auto;
+  padding: $ft-space-4;
+  background: $ft-white;
+  border-radius: $ft-radius-lg;
+  box-shadow: $ft-shadow-md;
 
   .add-player {
     width: 100%;
 
     .form-header {
-      font-size: 1.2rem;
-      font-weight: bold;
+      font-size: $ft-font-lg;
+      font-weight: $ft-weight-bold;
       text-align: center;
-      margin-bottom: 1rem;
-      color: $color-purple;
-    }
-
-    input[type="text"] {
-      width: 100%;
+      margin-bottom: $ft-space-4;
+      color: $ft-brand-purple;
     }
   }
 
   .color-section {
-    margin-top: 1rem;
+    margin-top: $ft-space-4;
 
     .section-label {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #666;
-      margin-bottom: 0.5rem;
-    }
-
-    .color-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 6px;
-
-      .color {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        cursor: pointer;
-        border: 2px solid transparent;
-        transition: transform 0.2s ease, border-color 0.2s ease;
-
-        &:hover {
-          transform: scale(1.15);
-        }
-
-        &.selected-color {
-          border-color: $color-skyblue;
-        }
-      }
+      font-size: $ft-font-sm;
+      font-weight: $ft-weight-semibold;
+      color: $ft-gray-600;
+      margin-bottom: $ft-space-2;
     }
   }
 }
 
-@media only screen and (min-width: 768px) {
+.page-footer {
+  display: flex;
+  justify-content: center;
+  gap: $ft-space-2;
+  padding: $ft-space-3;
+  border-top: 1px solid $ft-gray-200;
+}
+
+@media only screen and (min-width: $ft-breakpoint-md) {
   .container {
     .players {
       width: 50%;
@@ -226,9 +188,5 @@
 
   .avatar-options {
     width: 340px;
-  }
-
-  .avatar-grid {
-    grid-template-columns: repeat(8, 1fr);
   }
 }
