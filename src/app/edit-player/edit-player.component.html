@@ -10,7 +10,7 @@
       [class.player-card--dimmed]="!!selectedUserId && player.value.id !== selectedUserId"
       [style.--card-accent]="player.value.color"
       (click)="selectedUserId ? null : selectPlayer(player.key)"
-      [matTooltip]="'edit.clickToEdit' | translate"
+      [attr.title]="'edit.clickToEdit' | translate"
       data-testid="player-card-selectable"
     >
       <div class="player-card__body" [style.background]="player.value.color">

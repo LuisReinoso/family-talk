@@ -9,7 +9,6 @@ import { Player, playerTemplate } from 'src/app/models/player';
 import { PlayerService } from 'src/app/services/player.service';
 import { EventsDirective } from 'src/app/tracking/events.directive';
 import { environment } from 'src/environments/environment';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { generateId, generateAvatarPaths } from 'src/app/utils/id.utils';
 import { FtHeaderComponent } from 'src/app/ft-ui/header/ft-header.component';
 import { FtButtonComponent } from 'src/app/ft-ui/button/ft-button.component';
@@ -29,7 +28,6 @@ import { FtToastService } from 'src/app/ft-ui/toast/ft-toast.service';
     ReactiveFormsModule,
     TranslateModule,
     EventsDirective,
-    MatTooltipModule,
     FtHeaderComponent,
     FtButtonComponent,
     FtInputComponent,

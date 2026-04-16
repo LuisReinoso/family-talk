@@ -1,7 +1,6 @@
 import { enableProdMode, importProvidersFrom } from '@angular/core';
 import { environment } from './environments/environment';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { AppComponent } from 'src/app/app.component';
 import { provideRouter, Routes } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -75,7 +74,6 @@ if (environment.production) {
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
-    provideAnimations(),
     importProvidersFrom(
       ServiceWorkerModule.register('ngsw-worker.js', {
         enabled: environment.production,
