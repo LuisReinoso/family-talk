@@ -99,10 +99,15 @@ export class CountdownComponent implements OnInit, OnDestroy {
     this.clearCountdown();
     this.isTimerRunning = true;
     this.countdownIntervalId = setInterval(() => {
-      this.selectedPlayer.timeRemaining--;
+      this.selectedPlayer = {
+        ...this.selectedPlayer,
+        timeRemaining: this.selectedPlayer.timeRemaining - 1,
+      };
+      this.players[this.selectedUserId] = this.selectedPlayer;
       if (this.selectedPlayer.timeRemaining <= 0) {
         this.stopCountdown();
       }
+      this.cdr.markForCheck();
     }, 1000);
   }
 
