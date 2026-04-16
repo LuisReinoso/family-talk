@@ -17,6 +17,7 @@
   align-items: flex-start;
   overflow-y: auto;
   padding: $ft-space-1;
+  transition: padding $ft-transition-slow;
 
   @media (min-width: $ft-breakpoint-md) {
     width: 80%;
@@ -25,5 +26,16 @@
 
   @media (min-width: $ft-breakpoint-lg) {
     width: 70%;
+  }
+
+  &--compact {
+    flex-wrap: wrap;
+    padding: $ft-space-2 $ft-space-1;
+    gap: 2px;
+
+    @media (min-width: $ft-breakpoint-md) {
+      width: 100%;
+      max-width: 700px;
+    }
   }
 }

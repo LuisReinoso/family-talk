@@ -2,27 +2,38 @@
 
 .ft-player-card {
   cursor: pointer;
-  transition: transform $ft-transition-normal, opacity $ft-transition-slow;
+  transition: transform $ft-transition-normal, opacity $ft-transition-slow, filter $ft-transition-slow;
 
   &:hover {
     transform: translateY(-2px);
   }
 
   &--answered {
-    opacity: 0.6;
+    opacity: 0.55;
 
     .ft-player-card__body {
-      filter: grayscale(40%);
+      filter: grayscale(50%);
+    }
+
+    .ft-player-card__badge {
+      animation: ft-badge-pop 0.45s cubic-bezier(0.5, 1.8, 0.4, 1) both;
     }
   }
 
   &--selected {
-    transform: translateY(-2px);
+    transform: scale(1.12);
+    z-index: 2;
+    position: relative;
 
     .ft-player-card__body {
-      outline: 2px solid $ft-skyblue;
-      outline-offset: 2px;
-      box-shadow: $ft-shadow-lg;
+      box-shadow: 0 0 0 3px var(--card-accent, #{$ft-brand-purple}),
+        0 0 0 6px rgba(255, 255, 255, 0.85),
+        0 6px 18px rgba(0, 0, 0, 0.15);
+      animation: ft-selected-halo 1.6s ease-in-out infinite;
+    }
+
+    &:hover {
+      transform: scale(1.12);
     }
   }
 
@@ -30,85 +41,156 @@
     opacity: 0.5;
   }
 
-  &__body {
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: $ft-radius-md;
-    padding: $ft-space-2;
-    margin: $ft-space-1;
-    width: 100px;
-    box-shadow: $ft-shadow-sm;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: box-shadow $ft-transition-normal, filter $ft-transition-slow;
-    position: relative;
+  &--compact {
+    .ft-player-card__body {
+      width: 52px;
+      padding: 4px;
+      gap: 0;
+    }
+
+    .ft-player-card__avatar {
+      width: 40px;
+      height: 40px;
+      border-width: 1px;
+    }
+
+    .ft-player-card__name,
+    .ft-player-card__time {
+      display: none;
+    }
+
+    .ft-player-card__badge {
+      top: -2px;
+      right: -2px;
+      transform: scale(0.85);
+    }
 
     @media (min-width: $ft-breakpoint-md) {
-      width: 130px;
-      padding: $ft-space-2;
-
-      .ft-player-card__avatar {
+      .ft-player-card__body {
         width: 64px;
-        height: 64px;
       }
-
-      .ft-player-card__name {
-        font-size: $ft-font-sm;
-      }
-
-      .ft-player-card__time {
-        font-size: $ft-font-sm;
-      }
-    }
-
-    @media (min-width: $ft-breakpoint-lg) {
-      width: 150px;
 
       .ft-player-card__avatar {
-        width: 80px;
-        height: 80px;
-      }
-
-      .ft-player-card__name {
-        font-size: $ft-font-base;
-      }
-
-      .ft-player-card__time {
-        font-size: $ft-font-base;
+        width: 48px;
+        height: 48px;
       }
     }
   }
+}
 
-  &__avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: $ft-radius-full;
-    border: 2px solid $ft-white;
-    object-fit: cover;
+.ft-player-card__body {
+  border-radius: $ft-radius-md;
+  padding: $ft-space-2;
+  margin: $ft-space-1;
+  width: 76px;
+  box-shadow: $ft-shadow-sm;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: box-shadow $ft-transition-normal, filter $ft-transition-slow;
+  position: relative;
+  background: inherit;
+  gap: 4px;
+}
+
+.ft-player-card__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: $ft-radius-full;
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  object-fit: cover;
+}
+
+.ft-player-card__name {
+  color: $ft-white;
+  font-size: 11px;
+  font-weight: $ft-weight-semibold;
+  width: 100%;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  line-height: $ft-line-height-tight;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ft-player-card__time {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 10px;
+  font-weight: $ft-weight-bold;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  font-variant-numeric: tabular-nums;
+}
+
+.ft-player-card__badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+}
+
+@media (min-width: $ft-breakpoint-md) {
+  .ft-player-card__body {
+    width: 120px;
+    padding: $ft-space-2 $ft-space-3;
+
+    .ft-player-card__avatar {
+      width: 64px;
+      height: 64px;
+    }
+
+    .ft-player-card__name {
+      font-size: $ft-font-sm;
+    }
+
+    .ft-player-card__time {
+      font-size: $ft-font-xs;
+    }
   }
+}
 
-  &__name {
-    color: $ft-white;
-    font-size: $ft-font-xs;
-    background: $ft-gray-500;
-    width: 100%;
-    text-align: center;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    border-radius: 0 0 $ft-radius-sm $ft-radius-sm;
-    line-height: $ft-line-height-tight;
-    padding: $ft-space-1 0;
+@media (min-width: $ft-breakpoint-lg) {
+  .ft-player-card__body {
+    width: 140px;
+
+    .ft-player-card__avatar {
+      width: 76px;
+      height: 76px;
+    }
+
+    .ft-player-card__name {
+      font-size: $ft-font-base;
+    }
+
+    .ft-player-card__time {
+      font-size: $ft-font-sm;
+    }
   }
+}
 
-  &__time {
-    color: $ft-white;
-    font-size: $ft-font-xs;
-    font-weight: $ft-weight-bold;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+@keyframes ft-selected-halo {
+  0%, 100% {
+    box-shadow: 0 0 0 3px var(--card-accent, #{$ft-brand-purple}),
+      0 0 0 6px rgba(255, 255, 255, 0.85),
+      0 6px 18px rgba(0, 0, 0, 0.15);
   }
+  50% {
+    box-shadow: 0 0 0 3px var(--card-accent, #{$ft-brand-purple}),
+      0 0 0 10px rgba(255, 255, 255, 0.45),
+      0 6px 22px rgba(0, 0, 0, 0.2);
+  }
+}
 
-  &__badge {
-    position: absolute;
-    top: $ft-space-1;
-    right: $ft-space-1;
+@keyframes ft-badge-pop {
+  0% {
+    transform: scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.25) rotate(8deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0);
+    opacity: 1;
   }
 }

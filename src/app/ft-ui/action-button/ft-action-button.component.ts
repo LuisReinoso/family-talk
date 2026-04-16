@@ -7,7 +7,7 @@ import {
   Output,
 } from '@angular/core';
 
-export type ActionButtonVariant = 'ai' | 'question';
+export type ActionButtonVariant = 'ai' | 'question' | 'ghost';
 
 @Component({
   selector: 'ft-action-button',

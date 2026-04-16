@@ -15,26 +15,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 $ft-space-2;
+  justify-content: center;
+  padding: $ft-space-3 $ft-space-2;
+  gap: $ft-space-3;
 }
 
 .game-area {
   width: 100%;
-  max-width: 600px;
+  max-width: 560px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: $ft-space-3;
-  padding: $ft-space-3 0 $ft-space-2;
-}
-
-.empty-hint {
-  width: 100%;
-  text-align: center;
-  padding: $ft-space-2 $ft-space-4;
-  font-size: $ft-font-sm;
-  color: $ft-gray-600;
-  background: rgba(255, 255, 255, 0.6);
+  gap: $ft-space-4;
+  padding: $ft-space-2 0;
 }
 
 .reset-action {
@@ -42,6 +35,12 @@
   color: $ft-red;
   font-weight: $ft-weight-semibold;
   padding: $ft-space-2;
+  border-radius: $ft-radius-sm;
+  transition: background-color $ft-transition-fast;
+
+  &:hover {
+    background-color: rgba($ft-red, 0.08);
+  }
 }
 
 section.footer {
@@ -50,6 +49,29 @@ section.footer {
   align-items: center;
   padding: $ft-space-3 $ft-space-4;
   background: $ft-white;
+  border-top: 1px solid $ft-gray-200;
+}
+
+.footer__stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $ft-space-2;
+}
+
+.footer__hint {
+  font-size: $ft-font-sm;
+  color: $ft-gray-600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  &::after {
+    content: '↓';
+    color: $ft-color-primary;
+    font-weight: $ft-weight-bold;
+    animation: ft-hint-bounce 1.4s ease-in-out infinite;
+  }
 }
 
 @media only screen and (max-width: $ft-breakpoint-sm) {
@@ -57,20 +79,39 @@ section.footer {
     padding: $ft-space-2 $ft-space-3;
   }
 
-  .game-area {
+  .container {
+    padding: $ft-space-2;
     gap: $ft-space-2;
-    padding: $ft-space-2 0 $ft-space-1;
+  }
+
+  .game-area {
+    gap: $ft-space-3;
   }
 }
 
 @media only screen and (min-width: $ft-breakpoint-md) {
   .game-area {
-    max-width: 500px;
+    max-width: 640px;
   }
 }
 
-@media only screen and (min-width: $ft-breakpoint-lg) {
-  .game-area {
-    max-width: 560px;
+.alert {
+  border: 4px solid;
+  padding: $ft-space-3;
+  cursor: pointer;
+  border-radius: $ft-radius-md;
+
+  &.warn {
+    border-color: $ft-red;
+    background-color: $ft-orange;
+  }
+}
+
+@keyframes ft-hint-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(3px);
   }
 }

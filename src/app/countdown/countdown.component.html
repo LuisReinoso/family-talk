@@ -8,9 +8,6 @@
 <div class="container">
   <!-- No player selected -->
   <ng-container *ngIf="!selectedPlayer">
-    <div class="empty-hint">
-      {{ "countdown.pressOn" | translate }} 🔀 {{ "countdown.toStart" | translate }}
-    </div>
     <app-player-grid
       [players]="players"
       [selectedUserId]="selectedUserId"
@@ -18,7 +15,7 @@
     ></app-player-grid>
   </ng-container>
 
-  <!-- Player selected: question-centric -->
+  <!-- Player selected: question-centric, grid collapses to strip -->
   <ng-container *ngIf="selectedPlayer">
     <div class="game-area">
       <app-timer
@@ -51,9 +48,9 @@
           </ng-container>
           <ng-template #localQuestionsTemplate>
             <ft-action-button
-              icon="❓"
+              icon="↻"
               [text]="'countdown.changeQuestion' | translate"
-              variant="question"
+              variant="ghost"
               (actionClick)="selectRandomQuestion()"
             ></ft-action-button>
           </ng-template>
@@ -64,20 +61,26 @@
     <app-player-grid
       [players]="players"
       [selectedUserId]="selectedUserId"
+      [compact]="true"
       (playerClick)="showPlayerAlert = true"
     ></app-player-grid>
   </ng-container>
 </div>
 
 <section class="footer">
-  <ft-button
-    variant="primary"
-    size="lg"
-    icon="🔀"
-    (buttonClick)="selectRandomUserAndStart()"
-  >
-    {{ "countdown.selectPlayer" | translate }}
-  </ft-button>
+  <div class="footer__stack">
+    <div class="footer__hint" *ngIf="!selectedPlayer">
+      {{ "countdown.pressOn" | translate }} 🔀 {{ "countdown.toStart" | translate }}
+    </div>
+    <ft-button
+      variant="primary"
+      size="lg"
+      icon="🔀"
+      (buttonClick)="selectRandomUserAndStart()"
+    >
+      {{ "countdown.selectPlayer" | translate }}
+    </ft-button>
+  </div>
 </section>
 
 <ft-alert

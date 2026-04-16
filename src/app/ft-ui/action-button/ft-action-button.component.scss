@@ -61,6 +61,26 @@
       background-color: $ft-color-info-hover;
     }
   }
+
+  &--ghost {
+    background: transparent;
+    color: $ft-brand-purple;
+    padding: $ft-space-1 $ft-space-3;
+
+    &:hover:not(:disabled) {
+      background-color: $ft-brand-purple-bg;
+    }
+
+    .ft-action-btn__icon {
+      font-size: $ft-font-base;
+    }
+
+    .ft-action-btn__text {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+    }
+  }
 }
 
 @keyframes ft-action-spin {

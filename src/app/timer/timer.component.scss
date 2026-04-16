@@ -1,31 +1,154 @@
-@import "/src/styles";
+@import '/src/app/ft-ui/tokens';
 
-.selected-player {
-  height: 48px;
-  background-color: $color-purple;
-  color: $color-white;
-  text-align: center;
-  font-size: 18px;
-  padding: 0 16px;
-  font-weight: 600;
-  align-items: center;
-  justify-content: center;
+:host {
   display: flex;
-  gap: 12px;
-  border-radius: 8px;
+  justify-content: center;
+  width: 100%;
 }
 
-.pause,
-.resume {
-  background-color: rgba(255, 255, 255, 0.15);
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-  border-radius: 6px;
-  padding: 4px 8px;
-  line-height: 1;
+.timer {
+  --timer-accent: #{$ft-brand-purple};
+  --timer-progress-color: var(--timer-accent);
 
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $ft-space-3;
+
+  &__ring-wrap {
+    position: relative;
+    width: 160px;
+    height: 160px;
+  }
+
+  &__ring {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  &__ring-track {
+    stroke: $ft-gray-200;
+    stroke-width: 8;
+  }
+
+  &__ring-progress {
+    stroke: var(--timer-progress-color);
+    stroke-width: 10;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s linear, stroke 0.4s ease;
+  }
+
+  &__content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $ft-space-1;
+  }
+
+  &__name {
+    font-size: $ft-font-sm;
+    font-weight: $ft-weight-semibold;
+    color: $ft-gray-700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  &__time {
+    font-size: 36px;
+    font-weight: $ft-weight-bold;
+    color: $ft-gray-900;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  &__controls {
+    display: flex;
+    gap: $ft-space-2;
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: $ft-space-2;
+    padding: $ft-space-2 $ft-space-4;
+    background: transparent;
+    border: 1px solid $ft-gray-300;
+    border-radius: $ft-radius-full;
+    color: $ft-gray-700;
+    font-size: $ft-font-sm;
+    font-weight: $ft-weight-semibold;
+    cursor: pointer;
+    transition: background-color $ft-transition-fast, border-color $ft-transition-fast;
+
+    &:hover {
+      background: $ft-gray-100;
+      border-color: $ft-gray-400;
+    }
+  }
+
+  &__btn-icon {
+    font-size: $ft-font-base;
+    line-height: 1;
+  }
+
+  // ── Urgency states ──
+  &--warn {
+    --timer-progress-color: #{$ft-orange};
+
+    .timer__time {
+      color: $ft-orange;
+    }
+  }
+
+  &--critical {
+    --timer-progress-color: #{$ft-red};
+
+    .timer__time {
+      color: $ft-red;
+      animation: timer-pulse 0.8s ease-in-out infinite;
+    }
+
+    .timer__ring-progress {
+      animation: timer-ring-pulse 0.8s ease-in-out infinite;
+    }
+  }
+}
+
+@media (min-width: $ft-breakpoint-md) {
+  .timer {
+    &__ring-wrap {
+      width: 200px;
+      height: 200px;
+    }
+
+    &__time {
+      font-size: 44px;
+    }
+
+    &__name {
+      font-size: $ft-font-base;
+    }
+  }
+}
+
+@keyframes timer-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes timer-ring-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
   }
 }

@@ -1,5 +1,6 @@
 <section
   class="players"
+  [class.players--compact]="compact"
   (click)="playerClick.emit()"
   eventName="click-players-main-view"
   data-testid="players-section"
@@ -11,6 +12,7 @@
     [color]="entry.value.color"
     [timeRemaining]="entry.value.timeRemaining"
     [state]="getPlayerState(entry.value)"
+    [compact]="compact"
     (cardClick)="playerClick.emit()"
   ></ft-player-card>
 </section>

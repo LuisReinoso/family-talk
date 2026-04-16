@@ -7,52 +7,39 @@
   flex-direction: column;
 }
 
-.config-options {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: $ft-space-3;
-  padding: $ft-space-4;
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-// 5th card centered
-ft-config-card:nth-child(5) {
-  grid-column: 1 / -1;
-  max-width: 50%;
-  justify-self: center;
-}
-
 .container {
   width: 100%;
   flex: 1;
   overflow-y: auto;
   display: flex;
+  align-items: center;
   justify-content: center;
+  padding: $ft-space-5 $ft-space-4;
+}
+
+.config-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $ft-space-3;
+  width: 100%;
+  max-width: 360px;
 }
 
 .footer {
   display: flex;
   justify-content: center;
   padding: $ft-space-3;
+  border-top: 1px solid $ft-gray-200;
 }
 
 @media (min-width: $ft-breakpoint-md) {
-  .config-options {
-    grid-template-columns: repeat(3, 1fr);
-    max-width: 500px;
+  .container {
+    padding: $ft-space-8 $ft-space-6;
   }
 
-  ft-config-card:nth-child(5) {
-    grid-column: auto;
-    max-width: none;
-  }
-}
-
-@media (min-width: $ft-breakpoint-lg) {
   .config-options {
     grid-template-columns: repeat(5, 1fr);
-    max-width: 600px;
+    gap: $ft-space-4;
+    max-width: 880px;
   }
 }

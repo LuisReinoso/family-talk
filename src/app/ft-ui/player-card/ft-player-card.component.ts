@@ -16,13 +16,13 @@ export type PlayerCardState = 'available' | 'selected' | 'answered' | 'expired';
   template: `
     <div
       class="ft-player-card"
-      [ngClass]="'ft-player-card--' + state"
+      [ngClass]="['ft-player-card--' + state, compact ? 'ft-player-card--compact' : '']"
       (click)="cardClick.emit()"
     >
-      <div class="ft-player-card__body" [style.background]="color">
+      <div class="ft-player-card__body" [style.background]="color" [style.--card-accent]="color">
         <img class="ft-player-card__avatar" [src]="avatarUrl" [alt]="name + ' avatar'" />
         <div class="ft-player-card__name">{{ name }}</div>
-        <div class="ft-player-card__time">⏳: {{ timeRemaining | secondsToMinutes }}</div>
+        <div class="ft-player-card__time">{{ timeRemaining | secondsToMinutes }}</div>
         <ft-badge
           *ngIf="state === 'answered'"
           variant="success"
@@ -49,6 +49,7 @@ export class FtPlayerCardComponent {
   @Input() color = '';
   @Input() timeRemaining = 0;
   @Input() state: PlayerCardState = 'available';
+  @Input() compact = false;
 
   @Output() cardClick = new EventEmitter<void>();
 }

@@ -1,27 +1,54 @@
-<section class="selected-player" *ngIf="player" data-testid="selected-player">
+<section
+  class="timer"
+  *ngIf="player"
+  [ngClass]="'timer--' + urgency"
+  [style.--timer-accent]="player.color"
+  data-testid="selected-player"
+>
   <ng-container *ngIf="!isSelecting">
-    {{ player.name }} |
-    {{ player.timeRemaining | secondsToMinutes }}
+    <div class="timer__ring-wrap">
+      <svg class="timer__ring" viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="timer__ring-track" cx="60" cy="60" [attr.r]="radius" fill="none"></circle>
+        <circle
+          class="timer__ring-progress"
+          cx="60"
+          cy="60"
+          [attr.r]="radius"
+          fill="none"
+          [attr.stroke-dasharray]="circumference"
+          [attr.stroke-dashoffset]="progressOffset"
+        ></circle>
+      </svg>
 
-    <ng-container *ngIf="player.timeRemaining > 0">
+      <div class="timer__content">
+        <div class="timer__name">{{ player.name }}</div>
+        <div class="timer__time">{{ player.timeRemaining | secondsToMinutes }}</div>
+      </div>
+    </div>
+
+    <div class="timer__controls" *ngIf="player.timeRemaining > 0">
       <button
         *ngIf="isRunning"
-        class="pause"
+        class="timer__btn"
         (click)="pauseClick.emit()"
         eventName="pause-countdown"
         data-testid="btn-pause"
+        aria-label="Pause"
       >
-        ⏸️
+        <span class="timer__btn-icon">⏸</span>
+        <span class="timer__btn-text">Pausar</span>
       </button>
       <button
         *ngIf="!isRunning"
-        class="resume"
+        class="timer__btn"
         (click)="resumeClick.emit()"
         eventName="resume-countdown"
         data-testid="btn-resume"
+        aria-label="Resume"
       >
-        ⏯
+        <span class="timer__btn-icon">▶</span>
+        <span class="timer__btn-text">Reanudar</span>
       </button>
-    </ng-container>
+    </div>
   </ng-container>
 </section>

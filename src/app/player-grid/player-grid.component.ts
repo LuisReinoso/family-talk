@@ -15,6 +15,7 @@ import { FtPlayerCardComponent, PlayerCardState } from 'src/app/ft-ui/player-car
 export class PlayerGridComponent {
   @Input() players: { [key: string]: Player } = {};
   @Input() selectedUserId: string = '';
+  @Input() compact = false;
   @Output() playerClick = new EventEmitter<void>();
 
   url = environment.URL;
