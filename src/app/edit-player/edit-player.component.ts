@@ -38,6 +38,7 @@ import { FtAvatarPickerComponent } from 'src/app/ft-ui/avatar-picker/ft-avatar-p
   ],
 })
 export class EditPlayerComponent implements OnInit {
+  url = environment.URL;
   players: {
     [key: string]: Player;
   } = this.playerService.players;
@@ -51,7 +52,6 @@ export class EditPlayerComponent implements OnInit {
   hasToDisplayAddUser: boolean = false;
   colors = colors;
   selectedColor = '#dc0936';
-  url = environment.URL;
 
   constructor(
     private playerService: PlayerService,

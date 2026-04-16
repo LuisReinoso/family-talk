@@ -1,82 +1,83 @@
 <ft-header [title]="'edit.editPlayers' | translate"></ft-header>
 
 <div class="container">
-  <section class="players">
+  <section class="players" [class.players--selection-active]="!!selectedUserId">
     <div
-      *ngFor="let player of players | keyvalue; let i = index"
-      [ngClass]="{
-        'selected-player': player.value.id === selectedUserId
-      }"
+      *ngFor="let player of players | keyvalue"
       [id]="player.key"
       class="player-card"
+      [class.player-card--selected]="player.value.id === selectedUserId"
+      [class.player-card--dimmed]="!!selectedUserId && player.value.id !== selectedUserId"
+      [style.--card-accent]="player.value.color"
+      (click)="selectedUserId ? null : selectPlayer(player.key)"
+      [matTooltip]="'edit.clickToEdit' | translate"
+      data-testid="player-card-selectable"
     >
-      <div
-        class="player player__selectable"
-        [style.background]="player.value.color"
-        (click)="selectedUserId ? null : selectPlayer(player.key)"
-        [matTooltip]="'edit.clickToEdit' | translate"
-        data-testid="player-card-selectable"
-      >
-        <div class="avatar-container">
-          <img
-            class="player__avatar"
-            [src]="url + player.value.avatar"
-            [alt]="player.value.name + ' avatar'"
-            [matTooltip]="'edit.clickToChangeAvatar' | translate"
-            data-testid="player-avatar"
-          />
-          <div *ngIf="selectedUserId === player.value.id" class="avatar-options">
-            <ft-avatar-picker
-              [avatars]="avatarUrls"
-              [selectedAvatar]="player.value.avatar"
-              (avatarSelect)="selectAvatar($event, player.key)"
-            ></ft-avatar-picker>
-          </div>
-        </div>
-
-        <ng-container
-          *ngIf="
-            selectedUserId && selectedUserId === player.value.id;
-            else displayNameTemplate
-          "
-        >
-          <form class="form" [formGroup]="form">
-            <ft-input
-              formControlName="name"
-              [placeholder]="'edit.enterName' | translate"
-              [errorMessage]="getInputErrorMessage()"
-            ></ft-input>
-          </form>
-        </ng-container>
-        <ng-template #displayNameTemplate>
-          <div class="player__name">{{ player.value.name }}</div>
-        </ng-template>
+      <div class="player-card__body" [style.background]="player.value.color">
+        <img
+          class="player-card__avatar"
+          [src]="url + player.value.avatar"
+          [alt]="player.value.name + ' avatar'"
+        />
+        <div class="player-card__name">{{ player.value.name }}</div>
+        <div class="player-card__hint" aria-hidden="true">✏️</div>
       </div>
     </div>
   </section>
-</div>
 
-<section *ngIf="hasToDisplayAddUser" class="add-player-section">
-  <form class="add-player" [formGroup]="form">
-    <div class="form-header">{{ "edit.addNewPlayer" | translate }}</div>
-    <ft-input
-      formControlName="name"
-      [placeholder]="'edit.enterName' | translate"
-      [errorMessage]="getInputErrorMessage()"
-    ></ft-input>
+  <section *ngIf="!!selectedUserId" class="edit-panel" [style.--panel-accent]="players[selectedUserId].color">
+    <div class="edit-panel__header">
+      <img
+        class="edit-panel__avatar"
+        [src]="url + players[selectedUserId].avatar"
+        [alt]="players[selectedUserId].name + ' avatar'"
+      />
+      <div class="edit-panel__title">{{ players[selectedUserId].name }}</div>
+    </div>
 
-    <div class="color-section">
-      <div class="section-label">{{ "edit.chooseColor" | translate }}</div>
+    <form class="edit-panel__form" [formGroup]="form">
+      <label class="edit-panel__label">{{ 'edit.enterName' | translate }}</label>
+      <ft-input
+        formControlName="name"
+        [placeholder]="'edit.enterName' | translate"
+        [errorMessage]="getInputErrorMessage()"
+      ></ft-input>
+    </form>
+
+    <div class="edit-panel__section">
+      <label class="edit-panel__label">{{ 'edit.clickToChangeAvatar' | translate }}</label>
+      <ft-avatar-picker
+        [avatars]="avatarUrls"
+        [selectedAvatar]="url + players[selectedUserId].avatar"
+        (avatarSelect)="selectAvatar($event, selectedUserId)"
+      ></ft-avatar-picker>
+    </div>
+  </section>
+
+  <section *ngIf="hasToDisplayAddUser" class="edit-panel edit-panel--add" [style.--panel-accent]="selectedColor">
+    <div class="edit-panel__title edit-panel__title--solo">{{ 'edit.addNewPlayer' | translate }}</div>
+
+    <form class="edit-panel__form" [formGroup]="form">
+      <label class="edit-panel__label">{{ 'edit.enterName' | translate }}</label>
+      <ft-input
+        formControlName="name"
+        [placeholder]="'edit.enterName' | translate"
+        [errorMessage]="getInputErrorMessage()"
+      ></ft-input>
+    </form>
+
+    <div class="edit-panel__section">
+      <label class="edit-panel__label">{{ 'edit.chooseColor' | translate }}</label>
       <ft-color-picker
         [colors]="colors"
         [selectedColor]="selectedColor"
         (colorSelect)="selectColor($event)"
       ></ft-color-picker>
     </div>
-  </form>
-</section>
+  </section>
+</div>
 
-<div class="footer">
+<section class="footer">
   <ng-container *ngIf="!!selectedUserId; else backActionTemplate">
     <ft-button variant="primary" (buttonClick)="saveUser()">{{ "common.save" | translate }}</ft-button>
     <ft-button variant="danger" (buttonClick)="deleteUser()">{{ "common.delete" | translate }}</ft-button>
@@ -91,4 +92,4 @@
       <ft-button variant="info" (buttonClick)="cancelCreateUser()">{{ "common.cancel" | translate }}</ft-button>
     </ng-template>
   </ng-template>
-</div>
+</section>
