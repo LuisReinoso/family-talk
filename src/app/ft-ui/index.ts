@@ -6,6 +6,9 @@ export { FtInputComponent } from './input/ft-input.component';
 export { FtAlertComponent } from './alert/ft-alert.component';
 export { FtCheckboxComponent } from './checkbox/ft-checkbox.component';
 export { FtBadgeComponent } from './badge/ft-badge.component';
+export { FtToastContainerComponent } from './toast/ft-toast-container.component';
+export { FtToastService } from './toast/ft-toast.service';
+export type { FtToast, FtToastVariant, FtToastOptions } from './toast/ft-toast.service';
 
 // Composites
 export { FtPlayerCardComponent } from './player-card/ft-player-card.component';

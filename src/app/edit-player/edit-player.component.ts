@@ -1,21 +1,22 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { colors } from 'src/app/models/colors';
 import { Player, playerTemplate } from 'src/app/models/player';
 import { PlayerService } from 'src/app/services/player.service';
 import { EventsDirective } from 'src/app/tracking/events.directive';
 import { environment } from 'src/environments/environment';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { generateId, generateAvatarPaths } from 'src/app/utils/id.utils';
 import { FtHeaderComponent } from 'src/app/ft-ui/header/ft-header.component';
 import { FtButtonComponent } from 'src/app/ft-ui/button/ft-button.component';
 import { FtInputComponent } from 'src/app/ft-ui/input/ft-input.component';
 import { FtColorPickerComponent } from 'src/app/ft-ui/color-picker/ft-color-picker.component';
 import { FtAvatarPickerComponent } from 'src/app/ft-ui/avatar-picker/ft-avatar-picker.component';
+import { FtToastService } from 'src/app/ft-ui/toast/ft-toast.service';
 
 @Component({
   selector: 'app-edit-player',
@@ -29,7 +30,6 @@ import { FtAvatarPickerComponent } from 'src/app/ft-ui/avatar-picker/ft-avatar-p
     TranslateModule,
     EventsDirective,
     MatTooltipModule,
-    MatSnackBarModule,
     FtHeaderComponent,
     FtButtonComponent,
     FtInputComponent,
@@ -37,7 +37,7 @@ import { FtAvatarPickerComponent } from 'src/app/ft-ui/avatar-picker/ft-avatar-p
     FtAvatarPickerComponent,
   ],
 })
-export class EditPlayerComponent implements OnInit {
+export class EditPlayerComponent implements OnInit, OnDestroy {
   url = environment.URL;
   players: {
     [key: string]: Player;
@@ -53,12 +53,24 @@ export class EditPlayerComponent implements OnInit {
   colors = colors;
   selectedColor = '#dc0936';
 
+  private playersSub?: Subscription;
+
   constructor(
     private playerService: PlayerService,
     private fb: FormBuilder,
     private router: Router,
-    private snackBar: MatSnackBar
-  ) {}
+    private toast: FtToastService,
+    private cdr: ChangeDetectorRef,
+    private translate: TranslateService
+  ) {
+    // OnPush components don't re-render on service-side BehaviorSubject
+    // emissions unless we explicitly markForCheck(). Subscribe to players$
+    // so the grid reflects add/update/delete without a page reload.
+    this.playersSub = this.playerService.players$.subscribe((players) => {
+      this.players = players;
+      this.cdr.markForCheck();
+    });
+  }
 
   ngOnInit(): void {
     if (
@@ -67,6 +79,10 @@ export class EditPlayerComponent implements OnInit {
     ) {
       this.playerService.loadPlayers();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.playersSub?.unsubscribe();
   }
 
   selectPlayer(playerId: Player['id']): void {
@@ -154,17 +170,11 @@ export class EditPlayerComponent implements OnInit {
     return '';
   }
 
-  private showError(message: string): void {
-    this.snackBar.open(message, 'OK', {
-      duration: 3000,
-      panelClass: ['error-snackbar']
-    });
+  private showError(key: string): void {
+    this.toast.error(this.translate.instant(key));
   }
 
-  private showSuccess(message: string): void {
-    this.snackBar.open(message, 'OK', {
-      duration: 3000,
-      panelClass: ['success-snackbar']
-    });
+  private showSuccess(key: string): void {
+    this.toast.success(this.translate.instant(key));
   }
 }
