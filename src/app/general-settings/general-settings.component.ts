@@ -6,7 +6,6 @@ import { PlayerService } from 'src/app/services/player.service';
 import { EventsDirective } from 'src/app/tracking/events.directive';
 import { FtHeaderComponent } from 'src/app/ft-ui/header/ft-header.component';
 import { FtButtonComponent } from 'src/app/ft-ui/button/ft-button.component';
-import { FtCardComponent } from 'src/app/ft-ui/card/ft-card.component';
 
 @Component({
   selector: 'app-general-settings',
@@ -14,7 +13,7 @@ import { FtCardComponent } from 'src/app/ft-ui/card/ft-card.component';
   styleUrls: ['./general-settings.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, TranslateModule, EventsDirective, FtHeaderComponent, FtButtonComponent, FtCardComponent],
+  imports: [CommonModule, TranslateModule, EventsDirective, FtHeaderComponent, FtButtonComponent],
 })
 export class GeneralSettingsComponent {
   constructor(private playerService: PlayerService, private router: Router) {}

@@ -6,7 +6,6 @@ import { LanguageService } from 'src/app/services/language.service';
 import { EventsDirective } from 'src/app/tracking/events.directive';
 import { FtHeaderComponent } from 'src/app/ft-ui/header/ft-header.component';
 import { FtButtonComponent } from 'src/app/ft-ui/button/ft-button.component';
-import { FtCardComponent } from 'src/app/ft-ui/card/ft-card.component';
 
 @Component({
   selector: 'language-name',
@@ -14,7 +13,7 @@ import { FtCardComponent } from 'src/app/ft-ui/card/ft-card.component';
   styleUrls: ['./language.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, TranslateModule, EventsDirective, FtHeaderComponent, FtButtonComponent, FtCardComponent],
+  imports: [CommonModule, TranslateModule, EventsDirective, FtHeaderComponent, FtButtonComponent],
 })
 export class LanguageComponent implements OnInit {
   currentLanguage: string = 'es';

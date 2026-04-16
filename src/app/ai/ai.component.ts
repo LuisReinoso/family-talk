@@ -15,7 +15,6 @@ import { FtHeaderComponent } from 'src/app/ft-ui/header/ft-header.component';
 import { FtButtonComponent } from 'src/app/ft-ui/button/ft-button.component';
 import { FtCheckboxComponent } from 'src/app/ft-ui/checkbox/ft-checkbox.component';
 import { FtInputComponent } from 'src/app/ft-ui/input/ft-input.component';
-import { FtCardComponent } from 'src/app/ft-ui/card/ft-card.component';
 
 @Component({
   selector: 'app-ai',
@@ -32,7 +31,6 @@ import { FtCardComponent } from 'src/app/ft-ui/card/ft-card.component';
     FtButtonComponent,
     FtCheckboxComponent,
     FtInputComponent,
-    FtCardComponent,
   ],
 })
 export class AiComponent implements OnInit, OnDestroy {

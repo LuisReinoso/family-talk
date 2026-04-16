@@ -1,28 +1,28 @@
 <ft-header [title]="'questions.configureQuestions' | translate"></ft-header>
 
 <div class="page-content">
-  <ft-card padding="lg">
-    <div class="option-list">
-      <button
-        *ngFor="let category of categories"
-        class="option-btn"
-        [class.option-btn--active]="category.name === selectedCategory"
-        [disabled]="numberQuestionsPerCategory[category.name] === 0"
-        (click)="setupQuestionCategory(category.name)"
-        eventName="change-category"
-        [eventPayload]="{ category: category.name }"
-        data-testid="btn-category"
-      >
-        <span class="option-btn__content">
-          {{ category.name | translate }} ({{ numberQuestionsPerCategory[category.name] }})
-          <span class="option-check" *ngIf="category.name === selectedCategory">✔️</span>
-        </span>
-        <img class="option-btn__image" [src]="url + category.image" alt="" />
-      </button>
-    </div>
-  </ft-card>
+  <div class="category-grid">
+    <button
+      *ngFor="let category of categories"
+      class="category-card"
+      [class.category-card--active]="category.name === selectedCategory"
+      [class.category-card--empty]="numberQuestionsPerCategory[category.name] === 0"
+      [disabled]="numberQuestionsPerCategory[category.name] === 0"
+      (click)="setupQuestionCategory(category.name)"
+      eventName="change-category"
+      [eventPayload]="{ category: category.name }"
+      data-testid="btn-category"
+    >
+      <div class="category-card__media">
+        <img [src]="url + category.image" alt="" class="category-card__image" />
+        <span class="category-card__badge">{{ numberQuestionsPerCategory[category.name] }}</span>
+        <span class="category-card__check" *ngIf="category.name === selectedCategory" aria-hidden="true">✔</span>
+      </div>
+      <div class="category-card__title">{{ category.name | translate }}</div>
+    </button>
+  </div>
 </div>
 
-<div class="page-footer">
+<section class="footer">
   <ft-button variant="primary" (buttonClick)="backToGame()">{{ "common.return" | translate }}</ft-button>
-</div>
+</section>

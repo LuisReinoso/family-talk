@@ -1,25 +1,30 @@
 <ft-header [title]="'aiConfig.configQuestionGeneration' | translate"></ft-header>
 
 <div class="page-content">
-  <ft-card padding="lg">
-    <form [formGroup]="formGroup" class="ai-form">
+  <div class="ai-panel">
+    <div class="ai-panel__icon" aria-hidden="true">🤖</div>
+    <h2 class="ai-panel__title">{{ 'aiConfig.configQuestionGeneration' | translate }}</h2>
+    <p class="ai-panel__helper">{{ 'aiConfig.panelHelper' | translate }}</p>
+
+    <form [formGroup]="formGroup" class="ai-panel__form">
       <ft-checkbox
         [label]="'aiConfig.useAiGenerateQuestions' | translate"
         formControlName="hasToUseAi"
       ></ft-checkbox>
 
-      <div class="form-field">
+      <div class="ai-panel__token" [class.ai-panel__token--disabled]="!formGroup.controls['hasToUseAi'].value">
         <ft-input
           label="OpenAi Token"
           formControlName="openAiToken"
           placeholder="sk-..."
           [errorMessage]="formGroup.controls['openAiToken'].errors ? 'OpenAi Token ' + ('common.isRequired' | translate) : ''"
         ></ft-input>
+        <p class="ai-panel__hint">{{ 'aiConfig.tokenHint' | translate }}</p>
       </div>
     </form>
-  </ft-card>
+  </div>
 </div>
 
-<div class="page-footer">
+<section class="footer">
   <ft-button variant="primary" (buttonClick)="backToGame()">{{ "common.return" | translate }}</ft-button>
-</div>
+</section>

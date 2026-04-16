@@ -18,6 +18,7 @@
     "return": "Regresar",
     "add": "Agregar",
     "cancel": "Cancelar",
+    "reset": "Reiniciar",
     "isRequired": "es requerido"
   },
   "edit": {
@@ -57,11 +58,14 @@
     "english": "Ingles"
   },
   "aiConfig": {
-    "configQuestionGeneration": "Configurar generador de preguntas",
-    "useAiGenerateQuestions": "Usar inteligencia artificial para generar preguntas?"
+    "configQuestionGeneration": "Generador de preguntas con IA",
+    "useAiGenerateQuestions": "Usar inteligencia artificial para generar preguntas?",
+    "panelHelper": "Activa la IA para generar preguntas nuevas cuando se agoten las de una categoria.",
+    "tokenHint": "Tu token se guarda solo en este dispositivo. Obtenlo en platform.openai.com."
   },
   "generalSettings": {
     "resetPlayersTimer": "Reiniciar tiempo para hablar de los jugadores",
+    "resetPlayersTimerHelper": "Devuelve a todos los jugadores el tiempo disponible para hablar en su turno.",
     "generalSettings": "Configuracion General"
   },
   "Aleatorio": "Aleatorio",

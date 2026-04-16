@@ -1,34 +1,37 @@
 <ft-header [title]="'language.configureLanguage' | translate"></ft-header>
 
 <div class="page-content">
-  <ft-card padding="lg">
-    <div class="option-list">
-      <button
-        class="option-btn"
-        [class.option-btn--active]="currentLanguage === 'es'"
-        (click)="setupSpanishAsLanguage()"
-        eventName="change-language"
-        [eventPayload]="{ language: 'es' }"
-        data-testid="btn-spanish"
-      >
-        {{ "language.spanish" | translate }}
-        <span class="option-check" *ngIf="currentLanguage === 'es'">✔️</span>
-      </button>
-      <button
-        class="option-btn"
-        [class.option-btn--active]="currentLanguage === 'en'"
-        (click)="setupEnglishAsLanguage()"
-        eventName="change-language"
-        [eventPayload]="{ language: 'en' }"
-        data-testid="btn-english"
-      >
-        {{ "language.english" | translate }}
-        <span class="option-check" *ngIf="currentLanguage === 'en'">✔️</span>
-      </button>
-    </div>
-  </ft-card>
+  <div class="lang-grid">
+    <button
+      class="lang-card"
+      [class.lang-card--active]="currentLanguage === 'es'"
+      (click)="setupSpanishAsLanguage()"
+      eventName="change-language"
+      [eventPayload]="{ language: 'es' }"
+      data-testid="btn-spanish"
+    >
+      <span class="lang-card__flag" aria-hidden="true">🇪🇸</span>
+      <span class="lang-card__name">Español</span>
+      <span class="lang-card__sub">{{ "language.spanish" | translate }}</span>
+      <span class="lang-card__check" *ngIf="currentLanguage === 'es'" aria-hidden="true">✔</span>
+    </button>
+
+    <button
+      class="lang-card"
+      [class.lang-card--active]="currentLanguage === 'en'"
+      (click)="setupEnglishAsLanguage()"
+      eventName="change-language"
+      [eventPayload]="{ language: 'en' }"
+      data-testid="btn-english"
+    >
+      <span class="lang-card__flag" aria-hidden="true">🇺🇸</span>
+      <span class="lang-card__name">English</span>
+      <span class="lang-card__sub">{{ "language.english" | translate }}</span>
+      <span class="lang-card__check" *ngIf="currentLanguage === 'en'" aria-hidden="true">✔</span>
+    </button>
+  </div>
 </div>
 
-<div class="page-footer">
+<section class="footer">
   <ft-button variant="primary" (buttonClick)="backToGame()">{{ "common.return" | translate }}</ft-button>
-</div>
+</section>

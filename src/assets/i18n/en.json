@@ -18,6 +18,7 @@
     "return": "Return",
     "add": "Add",
     "cancel": "Cancel",
+    "reset": "Reset",
     "isRequired": "is required"
   },
   "edit": {
@@ -57,11 +58,14 @@
     "english": "English"
   },
   "aiConfig": {
-    "configQuestionGeneration": "Configure question generator",
-    "useAiGenerateQuestions": "Use artificial intelligence to generate questions?"
+    "configQuestionGeneration": "AI question generator",
+    "useAiGenerateQuestions": "Use artificial intelligence to generate questions?",
+    "panelHelper": "Enable AI to generate new questions when a category runs out.",
+    "tokenHint": "Your token is stored only on this device. Get one at platform.openai.com."
   },
   "generalSettings": {
     "resetPlayersTimer": "Reset players timer to speak",
+    "resetPlayersTimerHelper": "Restores each player's talking time back to the full amount for the next turn.",
     "generalSettings": "General Settings"
   },
   "Aleatorio": "Random",
