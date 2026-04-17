@@ -31,7 +31,11 @@ export class QuestionsService {
   private roundCounterSubject = new BehaviorSubject<number>(0);
   roundCounter$ = this.roundCounterSubject.asObservable();
 
+  /** Bump this when the question pool changes to invalidate cached copies. */
+  private static readonly QUESTIONS_VERSION = 2;
+
   private localStorageKey = 'questions';
+  private versionKey = 'questionsVersion';
   private categoryLocalStorageKey = 'category';
 
   constructor(private localStorageService: LocalStorageService) {
@@ -67,6 +71,18 @@ export class QuestionsService {
   }
 
   loadQuestions(): void {
+    const storedVersion = this.localStorageService.getRaw(this.versionKey);
+    const currentVersion = String(QuestionsService.QUESTIONS_VERSION);
+
+    // If the stored version doesn't match, discard cached questions
+    // so users get the updated pool.
+    if (storedVersion !== currentVersion) {
+      this.localStorageService.set(this.versionKey, currentVersion);
+      this.localStorageService.set(this.localStorageKey, null);
+      this.questionsSubject.next(questions);
+      return;
+    }
+
     const questionsFromLocalStorage = this.localStorageService.get<{ [key: string]: Question }>(this.localStorageKey);
 
     if (!questionsFromLocalStorage || Object.keys(questionsFromLocalStorage).length === 0) {
