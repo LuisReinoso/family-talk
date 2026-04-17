@@ -1,7 +1,12 @@
 :host {
-  display: block;
-  height: 100vh; /* fallback for older browsers */
-  height: 100dvh; /* dynamic viewport height — excludes mobile browser chrome */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   width: 100%;
   overflow: hidden;
+}
+
+:host > *:not(ft-toast-container) {
+  flex: 1;
+  min-height: 0;
 }
