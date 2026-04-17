@@ -29,6 +29,8 @@
       <ft-question-card
         [questionText]="selectedQuestion$ | async"
         [label]="'countdown.question' | translate"
+        [depth]="currentDepth"
+        [appreciation]="isAppreciation"
       >
         <div *ngIf="!(selectedQuestion$ | async)" class="reset-action"
           (click)="resetLocalStorage()"

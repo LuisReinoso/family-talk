@@ -27,6 +27,9 @@ import {
 import {
   selectRandomQuestion,
   getQuestionText,
+  depthForRound,
+  isAppreciationRound,
+  selectAppreciationPrompt,
 } from 'src/app/utils/question.utils';
 
 @Component({
@@ -168,11 +171,33 @@ export class CountdownComponent implements OnInit, OnDestroy {
     this.players[this.selectedUserId].hasAnswer = true;
   }
 
+  /** Whether the current question is an appreciation prompt (affects UI). */
+  isAppreciation = false;
+  /** Current depth level for UI indicator. */
+  currentDepth: 1 | 2 | 3 = 1;
+
   selectRandomQuestion() {
+    const lang = this.translateService.currentLang || 'es';
+    this.questionsService.advanceRound();
+    const round = this.questionsService.roundCounter;
+
+    // Gottman appreciation injection: every 5th question
+    if (isAppreciationRound(round)) {
+      this.isAppreciation = true;
+      this.currentDepth = 3;
+      this.selectedQuestion$.next(selectAppreciationPrompt(lang));
+      return;
+    }
+
+    this.isAppreciation = false;
+    const maxDepth = depthForRound(round);
+    this.currentDepth = maxDepth;
+
     const result = selectRandomQuestion(
       this.questionsService.questions,
       this.questionsService.currentCategory,
-      this.translateService.currentLang || 'es'
+      lang,
+      maxDepth
     );
 
     if (!result) {
@@ -180,7 +205,8 @@ export class CountdownComponent implements OnInit, OnDestroy {
       const retry = selectRandomQuestion(
         this.questionsService.questions,
         this.questionsService.currentCategory,
-        this.translateService.currentLang || 'es'
+        lang,
+        maxDepth
       );
       if (retry) {
         this.selectedQuestion$.next(retry.questionText);

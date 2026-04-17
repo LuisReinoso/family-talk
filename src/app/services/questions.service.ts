@@ -25,6 +25,12 @@ export class QuestionsService {
   private questionCounterSubject = new BehaviorSubject<{ [key: string]: number }>(defaultQuestionCounter);
   numberQuestionsPerCategory$ = this.questionCounterSubject.asObservable();
 
+  /** Tracks how many questions have been asked this session (resets on
+   *  page reload). Used for Aron-style depth escalation and Gottman
+   *  appreciation injection. */
+  private roundCounterSubject = new BehaviorSubject<number>(0);
+  roundCounter$ = this.roundCounterSubject.asObservable();
+
   private localStorageKey = 'questions';
   private categoryLocalStorageKey = 'category';
 
@@ -46,6 +52,18 @@ export class QuestionsService {
 
   get numberQuestionsPerCategory(): { [key: string]: number } {
     return this.questionCounterSubject.getValue();
+  }
+
+  get roundCounter(): number {
+    return this.roundCounterSubject.getValue();
+  }
+
+  advanceRound(): void {
+    this.roundCounterSubject.next(this.roundCounter + 1);
+  }
+
+  resetRounds(): void {
+    this.roundCounterSubject.next(0);
   }
 
   loadQuestions(): void {

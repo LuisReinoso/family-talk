@@ -20,13 +20,42 @@
     background: $ft-gray-50;
   }
 
+  &--appreciation {
+    border-left-color: #f0a030;
+    background: linear-gradient(135deg, rgba(240, 160, 48, 0.10), rgba(255, 220, 120, 0.08));
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $ft-space-2;
+    margin-bottom: $ft-space-2;
+  }
+
   &__label {
     font-size: $ft-font-xs;
     text-transform: uppercase;
     letter-spacing: 1px;
     color: $ft-brand-purple;
-    margin-bottom: $ft-space-2;
     font-weight: $ft-weight-semibold;
+  }
+
+  &__depth {
+    display: flex;
+    gap: 3px;
+  }
+
+  &__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: $ft-radius-full;
+    background: $ft-gray-300;
+    transition: background 0.2s;
+
+    &--active {
+      background: $ft-brand-purple;
+    }
   }
 
   &__text {

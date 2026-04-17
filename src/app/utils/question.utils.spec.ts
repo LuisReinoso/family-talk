@@ -1,6 +1,10 @@
 import { Category, Question } from 'src/app/models/questions';
 import {
   filterQuestionsByCategory,
+  filterQuestionsByDepth,
+  depthForRound,
+  isAppreciationRound,
+  selectAppreciationPrompt,
   removeQuestion,
   calcQuestionsPerCategory,
   selectRandomQuestion,
@@ -116,6 +120,93 @@ describe('question.utils', () => {
 
       expect(result).not.toBeNull();
       expect(result!.questionText).toBe('¿Pregunta de prueba?');
+    });
+  });
+
+  describe('depthForRound', () => {
+    it('should return 1 for rounds 1-3', () => {
+      expect(depthForRound(1)).toBe(1);
+      expect(depthForRound(3)).toBe(1);
+    });
+
+    it('should return 2 for rounds 4-6', () => {
+      expect(depthForRound(4)).toBe(2);
+      expect(depthForRound(6)).toBe(2);
+    });
+
+    it('should return 3 for rounds 7+', () => {
+      expect(depthForRound(7)).toBe(3);
+      expect(depthForRound(100)).toBe(3);
+    });
+  });
+
+  describe('isAppreciationRound', () => {
+    it('should return true for every 5th round', () => {
+      expect(isAppreciationRound(5)).toBe(true);
+      expect(isAppreciationRound(10)).toBe(true);
+      expect(isAppreciationRound(15)).toBe(true);
+    });
+
+    it('should return false for non-5th rounds', () => {
+      expect(isAppreciationRound(0)).toBe(false);
+      expect(isAppreciationRound(1)).toBe(false);
+      expect(isAppreciationRound(4)).toBe(false);
+      expect(isAppreciationRound(6)).toBe(false);
+    });
+  });
+
+  describe('selectAppreciationPrompt', () => {
+    it('should return a Spanish prompt for es lang', () => {
+      const prompt = selectAppreciationPrompt('es');
+      expect(prompt).toBeTruthy();
+      expect(typeof prompt).toBe('string');
+    });
+
+    it('should return an English prompt for en lang', () => {
+      const prompt = selectAppreciationPrompt('en');
+      expect(prompt).toBeTruthy();
+    });
+  });
+
+  describe('filterQuestionsByDepth', () => {
+    const q1: Question = { ...mockQuestion, id: 'd1', depth: 1 };
+    const q2: Question = { ...mockQuestion2, id: 'd2', depth: 2 };
+    const q3: Question = { ...mockQuestion, id: 'd3', depth: 3 };
+
+    it('should filter to depth 1 only', () => {
+      expect(filterQuestionsByDepth([q1, q2, q3], 1).length).toBe(1);
+    });
+
+    it('should filter to depth <= 2', () => {
+      expect(filterQuestionsByDepth([q1, q2, q3], 2).length).toBe(2);
+    });
+
+    it('should include all for depth 3', () => {
+      expect(filterQuestionsByDepth([q1, q2, q3], 3).length).toBe(3);
+    });
+
+    it('should treat missing depth as 1', () => {
+      const noDepth: Question = { ...mockQuestion, id: 'nd' };
+      expect(filterQuestionsByDepth([noDepth], 1).length).toBe(1);
+    });
+  });
+
+  describe('selectRandomQuestion with depth', () => {
+    const q1: Question = { id: 'dq1', question: 'Ligera', translationUS: 'Light', category: Category.goals, depth: 1 };
+    const q3: Question = { id: 'dq3', question: 'Profunda', translationUS: 'Deep', category: Category.goals, depth: 3 };
+
+    it('should only return depth-1 questions when maxDepth is 1', () => {
+      const all = { dq1: q1, dq3: q3 };
+      const result = selectRandomQuestion(all, Category.random, 'es', 1);
+      expect(result).not.toBeNull();
+      expect(result!.questionText).toBe('Ligera');
+    });
+
+    it('should fall back when no questions match depth', () => {
+      const all = { dq3: q3 };
+      const result = selectRandomQuestion(all, Category.random, 'es', 1);
+      expect(result).not.toBeNull();
+      expect(result!.questionText).toBe('Profunda');
     });
   });
 
