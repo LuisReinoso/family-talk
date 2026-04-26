@@ -55,6 +55,67 @@ Every gameplay decision traces back to a paper:
 - **Firebase Hosting** for deployment
 - **Service Worker** for PWA + offline support
 
+## Architecture
+
+Module-less, standalone-first, organized by feature with a shared design system layer:
+
+```
+            ┌─────────────────────────────────────────┐
+            │       Pages (smart components)          │
+            │  countdown · edit-player · questions    │
+            │   ai · language · config · settings     │
+            └──────┬──────────────────────────┬───────┘
+                   │ inject                   │ use
+            ┌──────▼──────────────┐    ┌──────▼─────────┐
+            │  Services (state)   │    │  ft-ui (dumb)  │
+            │  Player, Questions, │    │ button, input, │
+            │  Ai, Language,      │    │ card, toast,   │
+            │  LocalStorage,      │    │ avatar-picker… │
+            │  Toast              │    │  pure inputs / │
+            │  BehaviorSubject<T> │    │  outputs only  │
+            └──────┬──────────────┘    └────────────────┘
+                   │ delegate to
+            ┌──────▼──────────────────┐
+            │  Pure utils             │
+            │  question.utils,        │
+            │  player.utils,          │
+            │  id.utils               │
+            │  (zero side effects)    │
+            └─────────────────────────┘
+```
+
+### Patterns we use
+
+- **Smart vs presentational** — pages own state and orchestration; `ft-ui` primitives accept inputs and emit outputs, nothing else. Easy to drop into Storybook.
+- **Reactive state via `BehaviorSubject`** — every service exposes a `state$` observable plus a synchronous getter for imperative reads. The component subscribes once and calls `markForCheck()` on emissions; `OnPush` does the rest.
+- **Pure utility layer** — `question.utils.ts`, `player.utils.ts` are pure functions taking immutable input and returning new state. Trivially unit-testable, no service mocking.
+- **Generic typed storage** — `LocalStorageService.get<T>(key)` and `set<T>(key, value)`. Single boundary for serialization, type-safe at every call site.
+- **Atomic design system** — `ft-ui/` holds primitives, composed into composites (`ft-player-card`, `ft-question-card`), then assembled into pages. Tokens (`_tokens.scss`) as the single source of color/spacing/radius truth.
+- **Versioned cache invalidation** — `QUESTIONS_VERSION` constant drives a localStorage migration on load. Bump the number, all clients rehydrate on next visit.
+- **Module-less / standalone everything** — `bootstrapApplication()` + `provideRouter()`. No `NgModule` ceremony. Lazy routes use `loadComponent`.
+
+### Patterns we deliberately did *not* use
+
+- **NgRx / Redux** — overkill for a single-user client-side app. Three `BehaviorSubject`s do the job.
+- **Facade pattern** — services are already small and single-purpose; a facade would just be an extra hop.
+- **Repository pattern** — there is one persistence target (localStorage); `LocalStorageService` is the only data adapter we need.
+- **NgModules** — Angular 14 standalone makes them unnecessary. Skipping them removes a whole category of boilerplate.
+- **Backend / API layer** — by design. State stays on the device; nothing leaves except the optional OpenAI call the user opts into.
+
+### Laws of UX applied
+
+The 2026 visual overhaul was driven by a checklist of UX laws, not aesthetic taste:
+
+| Law | Where it shows up |
+|---|---|
+| **Hick's Law** | Config menu trimmed to a 2-column grid of icons; no nested menus |
+| **Fitts's Law** | Primary CTAs are large, bottom-anchored, in the thumb zone |
+| **Doherty Threshold** | All interactions return feedback under 400 ms; toasts confirm state changes |
+| **Jakob's Law** | Bottom-nav patterns match what users already know from mobile apps |
+| **Miller's Law** | 16 categories chunked into a scrollable grid, never a long list |
+| **Aesthetic-Usability Effect** | Polished `ft-ui` components, custom illustrations, motion on hover/select |
+| **Goal-Gradient Effect** | Round counter + depth dots show progress toward deeper questions |
+
 ## What's interesting under the hood
 
 - **Custom toast system** (`ft-toast`) — replaced Angular Material entirely after diagnosing 18px phantom-scroll bugs caused by unstyled CDK overlays
