@@ -3,7 +3,8 @@ import { environment } from './environments/environment';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from 'src/app/app.component';
 import { provideRouter, Routes } from '@angular/router';
-import { ServiceWorkerModule } from '@angular/service-worker';
+import { ServiceWorkerModule, SwUpdate } from '@angular/service-worker';
+import { APP_INITIALIZER } from '@angular/core';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -77,11 +78,31 @@ bootstrapApplication(AppComponent, {
     importProvidersFrom(
       ServiceWorkerModule.register('ngsw-worker.js', {
         enabled: environment.production,
-        // Register the ServiceWorker as soon as the application is stable
-        // or after 30 seconds (whichever comes first).
-        registrationStrategy: 'registerWhenStable:30000',
+        // Check for new versions as soon as possible so users on the PWA
+        // pick up deploys without manual cache clearing.
+        registrationStrategy: 'registerImmediately',
       })
     ),
+    {
+      // When the SW reports a new version is ready, reload the page so
+      // users get the new bundle without having to clear site data.
+      provide: APP_INITIALIZER,
+      multi: true,
+      useFactory: (swUpdate: SwUpdate) => () => {
+        if (!swUpdate.isEnabled) return;
+        swUpdate.versionUpdates.subscribe((evt) => {
+          if (evt.type === 'VERSION_READY') {
+            // Activate the new SW and reload — small reload jank is
+            // preferable to silent staleness.
+            swUpdate.activateUpdate().then(() => document.location.reload());
+          }
+        });
+        // Poll every 60s while the tab is open so long-lived sessions
+        // don't miss updates.
+        setInterval(() => swUpdate.checkForUpdate().catch(() => undefined), 60_000);
+      },
+      deps: [SwUpdate],
+    },
     importProvidersFrom(HttpClientModule), // or provideHttpClient() in Angular v15
     importProvidersFrom(
       TranslateModule.forRoot({
