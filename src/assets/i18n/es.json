@@ -19,7 +19,12 @@
     "wrong": "Incorrecto",
     "next": "Siguiente pregunta",
     "noQuestions": "No hay más preguntas, vuelve a empezar.",
-    "switchToConversation": "Volver a conversación"
+    "switchToConversation": "Volver a conversación",
+    "turnLabel": "Turno de",
+    "speedBonus": "Bonus de velocidad",
+    "podiumTitle": "¡Resultados finales!",
+    "podiumEmpty": "Nadie sumó puntos todavía.",
+    "restart": "Empezar de nuevo"
   },
   "common": {
     "save": "Guardar",

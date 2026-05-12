@@ -9,20 +9,27 @@ import {
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Player } from 'src/app/models/player';
-import { TriviaCategory } from 'src/app/models/trivia';
 import { GameModeService } from 'src/app/services/game-mode.service';
 import { PlayerService } from 'src/app/services/player.service';
-import { TriviaService } from 'src/app/services/trivia.service';
+import { TriviaScores, TriviaService } from 'src/app/services/trivia.service';
 import { FtButtonComponent } from 'src/app/ft-ui/button/ft-button.component';
 import { FtHeaderComponent } from 'src/app/ft-ui/header/ft-header.component';
-import { PlayerGridComponent } from 'src/app/player-grid/player-grid.component';
 
 interface OptionState {
   text: string;
   selected: boolean;
   /** Only assigned after a guess: correct → true, wrong → false. */
   correct?: boolean;
+}
+
+interface ScoreRow {
+  id: string;
+  name: string;
+  avatarUrl: string;
+  color: string;
+  score: number;
 }
 
 @Component({
@@ -36,7 +43,6 @@ interface OptionState {
     TranslateModule,
     FtHeaderComponent,
     FtButtonComponent,
-    PlayerGridComponent,
   ],
 })
 export class TriviaComponent implements OnInit, OnDestroy {
@@ -46,13 +52,29 @@ export class TriviaComponent implements OnInit, OnDestroy {
   options: OptionState[] = [];
   /** Correct answer for the active question. */
   private answer: string | null = null;
-  /** Locks options after a guess is committed so a player can't change. */
+  /** Locks options after a guess is committed. */
   locked = false;
+  /** Whether the most recent answer was correct (drives feedback styles). */
+  lastGuessCorrect = false;
+  /** Points awarded by the most recent guess (for the "+15!" toast). */
+  lastPointsEarned = 0;
+  /** Whether the last guess hit the speed bonus. */
+  lastSpeedBonus = false;
+  /** True when the question pool runs out — shows the podium. */
+  finished = false;
 
-  /** Player chosen for this round (for show, not enforced). */
-  players: { [key: string]: Player } = this.playerService.players;
-  selectedPlayer: Player | null = null;
+  /** Player whose turn it is to answer. */
+  currentPlayer: Player | null = null;
+  /** Elapsed milliseconds on the current question (updates every 100ms). */
+  elapsedMs = 0;
+  /** Scoreboard rows ordered by score desc — recomputed when scores change. */
+  scoreboard: ScoreRow[] = [];
+  /** Top-3 podium ordering shown when the session finishes. */
+  podium: ScoreRow[] = [];
 
+  private players: { [key: string]: Player } = {};
+  private startMs = 0;
+  private timerId: ReturnType<typeof setInterval> | null = null;
   private subs: Subscription[] = [];
 
   constructor(
@@ -65,36 +87,63 @@ export class TriviaComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Ensure mode is trivia (in case user navigated directly via URL)
     this.gameMode.set('trivia');
+    this.players = this.playerService.players;
+
+    this.subs.push(
+      this.trivia.scores$.subscribe((scores) => {
+        this.rebuildScoreboard(scores);
+        this.cdr.markForCheck();
+      }),
+    );
+
     this.next();
   }
 
   ngOnDestroy(): void {
+    this.stopTimer();
     this.subs.forEach((s) => s.unsubscribe());
     this.subs = [];
   }
 
-  /** Pick the next question. */
+  /** Pick the next question and a new random player. */
   next(): void {
     const lang = this.translate.currentLang || 'es';
     const result = this.trivia.pickRandom(lang);
+
     if (!result) {
-      this.question = null;
+      // No more questions — show podium
+      this.finished = true;
+      this.podium = [...this.scoreboard].slice(0, 3);
+      this.stopTimer();
+      this.cdr.markForCheck();
       return;
     }
+
+    this.finished = false;
     this.question = result.question;
     this.answer = result.answer;
     this.options = result.options.map((text) => ({ text, selected: false }));
     this.locked = false;
+    this.lastGuessCorrect = false;
+    this.lastPointsEarned = 0;
+    this.lastSpeedBonus = false;
+    this.currentPlayer = this.pickRandomPlayer();
+
+    this.startTimer();
     this.cdr.markForCheck();
   }
 
   /** User selected an option. */
   selectOption(opt: OptionState): void {
-    if (this.locked) return;
+    if (this.locked || !this.currentPlayer) return;
+
+    this.stopTimer();
     opt.selected = true;
     this.locked = true;
+
+    const correct = opt.text === this.answer;
+    this.lastGuessCorrect = correct;
 
     // Annotate every option as correct/incorrect so the UI can color them
     this.options = this.options.map((o) => ({
@@ -102,7 +151,17 @@ export class TriviaComponent implements OnInit, OnDestroy {
       correct: o.text === this.answer,
     }));
 
+    const awarded = this.trivia.awardGuess(this.currentPlayer.id, correct, this.elapsedMs);
+    this.lastPointsEarned = awarded.earned;
+    this.lastSpeedBonus = awarded.speedBonus;
+
     this.cdr.markForCheck();
+  }
+
+  /** Reset scores and questions, then start over. */
+  restart(): void {
+    this.trivia.restart();
+    this.next();
   }
 
   /** Switch back to conversation mode and navigate home. */
@@ -111,9 +170,46 @@ export class TriviaComponent implements OnInit, OnDestroy {
     this.router.navigate(['']);
   }
 
-  /** Quick helper used by template to know if the locked answer was correct. */
-  get lastGuessCorrect(): boolean {
-    if (!this.locked) return false;
-    return this.options.some((o) => o.selected && o.correct);
+  avatarUrl(player: Player): string {
+    return environment.URL + player.avatar;
+  }
+
+  private pickRandomPlayer(): Player | null {
+    const list = Object.values(this.players);
+    if (list.length === 0) return null;
+    return list[Math.floor(Math.random() * list.length)];
+  }
+
+  private startTimer(): void {
+    this.stopTimer();
+    this.startMs = Date.now();
+    this.elapsedMs = 0;
+    this.timerId = setInterval(() => {
+      this.elapsedMs = Date.now() - this.startMs;
+      this.cdr.markForCheck();
+    }, 100);
+  }
+
+  private stopTimer(): void {
+    if (this.timerId !== null) {
+      clearInterval(this.timerId);
+      this.timerId = null;
+    }
+  }
+
+  private rebuildScoreboard(scores: TriviaScores): void {
+    this.scoreboard = Object.values(this.players)
+      .map((p) => ({
+        id: p.id,
+        name: p.name,
+        avatarUrl: environment.URL + p.avatar,
+        color: p.color,
+        score: scores[p.id] ?? 0,
+      }))
+      .sort((a, b) => b.score - a.score);
+
+    if (this.finished) {
+      this.podium = [...this.scoreboard].slice(0, 3);
+    }
   }
 }

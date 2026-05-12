@@ -1,61 +1,139 @@
-<ft-header
-  [title]="'trivia.title' | translate"
-></ft-header>
+<ft-header [title]="'trivia.title' | translate"></ft-header>
 
 <div class="trivia">
-  <div class="trivia__category" *ngIf="trivia.currentCategory$ | async as cat">
-    <span class="trivia__chip">🧠 {{ cat }}</span>
-  </div>
 
-  <section class="trivia__card" *ngIf="question; else emptyTemplate">
-    <div class="trivia__question">{{ question }}</div>
-
-    <div class="trivia__options" [class.trivia__options--locked]="locked">
-      <button
-        *ngFor="let opt of options"
-        type="button"
-        class="trivia__option"
-        [class.trivia__option--selected]="opt.selected"
-        [class.trivia__option--correct]="locked && opt.correct"
-        [class.trivia__option--wrong]="locked && opt.selected && !opt.correct"
-        [disabled]="locked"
-        (click)="selectOption(opt)"
-      >
-        {{ opt.text }}
-      </button>
-    </div>
-
-    <div class="trivia__feedback" *ngIf="locked">
-      <span *ngIf="lastGuessCorrect" class="trivia__feedback--correct">
-        ✅ {{ 'trivia.correct' | translate }}
-      </span>
-      <span *ngIf="!lastGuessCorrect" class="trivia__feedback--wrong">
-        ❌ {{ 'trivia.wrong' | translate }}
-      </span>
+  <!-- Scoreboard strip -->
+  <section class="trivia__scoreboard" *ngIf="scoreboard.length">
+    <div
+      *ngFor="let row of scoreboard"
+      class="trivia__score"
+      [class.trivia__score--current]="currentPlayer?.id === row.id"
+      [style.--score-accent]="row.color"
+    >
+      <img class="trivia__score-avatar" [src]="row.avatarUrl" [alt]="row.name + ' avatar'">
+      <div class="trivia__score-name">{{ row.name }}</div>
+      <div class="trivia__score-points">{{ row.score }}</div>
     </div>
   </section>
 
-  <ng-template #emptyTemplate>
-    <div class="trivia__empty">
-      {{ 'trivia.noQuestions' | translate }}
+  <!-- Active game -->
+  <ng-container *ngIf="!finished && question; else finishedTemplate">
+
+    <!-- Current player + timer -->
+    <section class="trivia__turn" *ngIf="currentPlayer">
+      <img class="trivia__turn-avatar" [src]="avatarUrl(currentPlayer)" [alt]="currentPlayer.name">
+      <div class="trivia__turn-info">
+        <div class="trivia__turn-label">{{ 'trivia.turnLabel' | translate }}</div>
+        <div class="trivia__turn-name">{{ currentPlayer.name }}</div>
+      </div>
+      <div class="trivia__timer" [class.trivia__timer--bonus]="elapsedMs < 5000 && !locked">
+        ⏱ {{ (elapsedMs / 1000) | number:'1.1-1' }}s
+      </div>
+    </section>
+
+    <!-- Category chip -->
+    <div class="trivia__category" *ngIf="trivia.currentCategory$ | async as cat">
+      <span class="trivia__chip">🧠 {{ cat }}</span>
     </div>
+
+    <!-- Question + options -->
+    <section class="trivia__card">
+      <div class="trivia__question">{{ question }}</div>
+
+      <div class="trivia__options" [class.trivia__options--locked]="locked">
+        <button
+          *ngFor="let opt of options"
+          type="button"
+          class="trivia__option"
+          [class.trivia__option--selected]="opt.selected"
+          [class.trivia__option--correct]="locked && opt.correct"
+          [class.trivia__option--wrong]="locked && opt.selected && !opt.correct"
+          [disabled]="locked"
+          (click)="selectOption(opt)"
+        >
+          {{ opt.text }}
+        </button>
+      </div>
+
+      <div class="trivia__feedback" *ngIf="locked">
+        <ng-container *ngIf="lastGuessCorrect; else wrongFeedback">
+          <span class="trivia__feedback-text trivia__feedback-text--correct">
+            ✅ {{ 'trivia.correct' | translate }}
+          </span>
+          <span class="trivia__points">
+            +{{ lastPointsEarned }}
+            <span class="trivia__bonus" *ngIf="lastSpeedBonus">⚡ {{ 'trivia.speedBonus' | translate }}</span>
+          </span>
+        </ng-container>
+        <ng-template #wrongFeedback>
+          <span class="trivia__feedback-text trivia__feedback-text--wrong">
+            ❌ {{ 'trivia.wrong' | translate }}
+          </span>
+        </ng-template>
+      </div>
+    </section>
+  </ng-container>
+
+  <!-- Finished: podium -->
+  <ng-template #finishedTemplate>
+    <section class="trivia__podium">
+      <h2 class="trivia__podium-title">🏆 {{ 'trivia.podiumTitle' | translate }}</h2>
+      <div class="trivia__podium-list" *ngIf="podium.length; else noScores">
+        <div
+          *ngFor="let row of podium; let i = index"
+          class="trivia__podium-row"
+          [class.trivia__podium-row--first]="i === 0"
+          [class.trivia__podium-row--second]="i === 1"
+          [class.trivia__podium-row--third]="i === 2"
+        >
+          <div class="trivia__podium-medal">
+            {{ i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉' }}
+          </div>
+          <img class="trivia__podium-avatar" [src]="row.avatarUrl" [alt]="row.name">
+          <div class="trivia__podium-name">{{ row.name }}</div>
+          <div class="trivia__podium-score">{{ row.score }} pts</div>
+        </div>
+      </div>
+      <ng-template #noScores>
+        <p class="trivia__podium-empty">{{ 'trivia.podiumEmpty' | translate }}</p>
+      </ng-template>
+    </section>
   </ng-template>
 </div>
 
 <section class="footer">
-  <ft-button
-    variant="primary"
-    size="lg"
-    icon="↻"
-    [disabled]="!locked"
-    (buttonClick)="next()"
-  >
-    {{ 'trivia.next' | translate }}
-  </ft-button>
-  <ft-button
-    variant="info"
-    (buttonClick)="switchToConversation()"
-  >
-    💬 {{ 'trivia.switchToConversation' | translate }}
-  </ft-button>
+  <ng-container *ngIf="!finished">
+    <ft-button
+      variant="primary"
+      size="lg"
+      icon="↻"
+      [disabled]="!locked"
+      (buttonClick)="next()"
+    >
+      {{ 'trivia.next' | translate }}
+    </ft-button>
+    <ft-button
+      variant="info"
+      (buttonClick)="switchToConversation()"
+    >
+      💬 {{ 'trivia.switchToConversation' | translate }}
+    </ft-button>
+  </ng-container>
+
+  <ng-container *ngIf="finished">
+    <ft-button
+      variant="primary"
+      size="lg"
+      icon="🔄"
+      (buttonClick)="restart()"
+    >
+      {{ 'trivia.restart' | translate }}
+    </ft-button>
+    <ft-button
+      variant="info"
+      (buttonClick)="switchToConversation()"
+    >
+      💬 {{ 'trivia.switchToConversation' | translate }}
+    </ft-button>
+  </ng-container>
 </section>

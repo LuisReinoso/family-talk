@@ -19,7 +19,12 @@
     "wrong": "Wrong",
     "next": "Next question",
     "noQuestions": "No more questions, start again.",
-    "switchToConversation": "Back to conversation"
+    "switchToConversation": "Back to conversation",
+    "turnLabel": "Turn for",
+    "speedBonus": "Speed bonus",
+    "podiumTitle": "Final results!",
+    "podiumEmpty": "No one scored yet.",
+    "restart": "Start over"
   },
   "common": {
     "save": "Save",

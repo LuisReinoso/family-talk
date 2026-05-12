@@ -9,16 +9,26 @@ import {
 } from 'src/app/models/trivia';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 
+/** Per-player accumulated score for the current trivia session. */
+export type TriviaScores = { [playerId: string]: number };
+
+/** Base points awarded for a correct answer. */
+const BASE_POINTS = 10;
+/** Extra bonus awarded if the answer comes in under SPEED_BONUS_MS. */
+const SPEED_BONUS_POINTS = 5;
+const SPEED_BONUS_MS = 5_000;
+
 /**
  * Holds trivia game state: which subcategory is active, which questions
- * remain in the current session, and the current pick. Mirrors the
- * shape of QuestionsService but kept fully separate — trivia and
- * conversation share no state.
+ * remain in the current session, per-player scores, and the current pick.
+ * Mirrors the shape of QuestionsService but kept fully separate — trivia
+ * and conversation share no state.
  */
 @Injectable({ providedIn: 'root' })
 export class TriviaService {
   private static readonly QUESTIONS_KEY = 'triviaQuestions';
   private static readonly CATEGORY_KEY = 'triviaCategory';
+  private static readonly SCORES_KEY = 'triviaScores';
 
   private readonly questionsSubject = new BehaviorSubject<TriviaQuestion[]>(triviaQuestions);
   readonly questions$ = this.questionsSubject.asObservable();
@@ -26,9 +36,13 @@ export class TriviaService {
   private readonly categorySubject = new BehaviorSubject<TriviaCategory>(TriviaCategory.random);
   readonly currentCategory$ = this.categorySubject.asObservable();
 
+  private readonly scoresSubject = new BehaviorSubject<TriviaScores>({});
+  readonly scores$ = this.scoresSubject.asObservable();
+
   constructor(private localStorage: LocalStorageService) {
     this.loadCategory();
     this.loadQuestions();
+    this.loadScores();
   }
 
   get currentCategory(): TriviaCategory {
@@ -39,6 +53,10 @@ export class TriviaService {
     return this.questionsSubject.getValue();
   }
 
+  get scores(): TriviaScores {
+    return this.scoresSubject.getValue();
+  }
+
   setCategory(category: TriviaCategory): void {
     this.categorySubject.next(category);
     this.localStorage.set(TriviaService.CATEGORY_KEY, category);
@@ -47,8 +65,8 @@ export class TriviaService {
   /**
    * Pick a random question from the current category that hasn't been
    * asked yet this session. Returns the question with its options shuffled
-   * (so the correct answer isn't always first). If the pool runs out it
-   * resets back to the full set.
+   * (so the correct answer isn't always first). Returns null when the pool
+   * is empty — caller decides whether to reset or show a "finished" UI.
    */
   pickRandom(lang: string): {
     question: string;
@@ -56,13 +74,7 @@ export class TriviaService {
     answer: string;
     questionId: string;
   } | null {
-    let pool = filterTrivia(this.questions, this.currentCategory);
-
-    if (pool.length === 0) {
-      // Reset and try again
-      this.restore();
-      pool = filterTrivia(this.questions, this.currentCategory);
-    }
+    const pool = filterTrivia(this.questions, this.currentCategory);
 
     if (pool.length === 0) return null;
 
@@ -84,8 +96,40 @@ export class TriviaService {
     };
   }
 
-  /** Restore the full question pool (e.g. when "all questions used"). */
-  restore(): void {
+  /**
+   * Compute points for a guess and credit them to the player. Returns the
+   * detail so the UI can render a "+15!" toast.
+   */
+  awardGuess(
+    playerId: string,
+    correct: boolean,
+    elapsedMs: number,
+  ): { earned: number; speedBonus: boolean } {
+    if (!correct) return { earned: 0, speedBonus: false };
+
+    const speedBonus = elapsedMs < SPEED_BONUS_MS;
+    const earned = BASE_POINTS + (speedBonus ? SPEED_BONUS_POINTS : 0);
+
+    const updated: TriviaScores = {
+      ...this.scores,
+      [playerId]: (this.scores[playerId] ?? 0) + earned,
+    };
+    this.scoresSubject.next(updated);
+    this.localStorage.set(TriviaService.SCORES_KEY, updated);
+
+    return { earned, speedBonus };
+  }
+
+  /** Reset all scores AND restore the full question pool. */
+  restart(): void {
+    this.scoresSubject.next({});
+    this.questionsSubject.next(triviaQuestions);
+    this.localStorage.set(TriviaService.SCORES_KEY, {});
+    this.save();
+  }
+
+  /** Restore only the question pool (keeps scores). */
+  restoreQuestions(): void {
     this.questionsSubject.next(triviaQuestions);
     this.save();
   }
@@ -109,5 +153,10 @@ export class TriviaService {
     if (stored && Object.values(TriviaCategory).includes(stored)) {
       this.categorySubject.next(stored);
     }
+  }
+
+  private loadScores(): void {
+    const stored = this.localStorage.get<TriviaScores>(TriviaService.SCORES_KEY);
+    this.scoresSubject.next(stored ?? {});
   }
 }
