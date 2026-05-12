@@ -15,6 +15,12 @@ export interface Question {
    *  backward compat with questions stored in localStorage before this
    *  field existed — defaults to 1 when missing. */
   depth?: QuestionDepth;
+  /** Correct answer for trivia questions (Spanish). When present, the UI
+   *  shows a "Reveal answer" button and Aron depth + Gottman appreciation
+   *  mechanics are skipped (different game mode). */
+  answer?: string;
+  /** Correct answer in English. */
+  answerUS?: string;
 }
 
 export enum Category {
@@ -35,6 +41,13 @@ export enum Category {
   spirituality = 'Espiritualidad y fe',
   freeTime = 'Planificación y organización del tiempo libre.',
   familyStories = 'Historias familiares',
+  // ── Trivia categories (with answer field) ──
+  triviaCountries = 'Trivia · Países',
+  triviaCities = 'Trivia · Ciudades',
+  triviaMusic = 'Trivia · Música',
+  triviaFruits = 'Trivia · Frutas',
+  triviaFootball = 'Trivia · Fútbol',
+  triviaColors = 'Trivia · Colores',
 }
 
 export const defaultCategory = {
@@ -106,6 +119,30 @@ export const defaultCategory = {
     name: Category.familyStories,
     image: '/assets/categories/familyStories.png',
   },
+  [Category.triviaCountries]: {
+    name: Category.triviaCountries,
+    image: '/assets/categories/triviaCountries.png',
+  },
+  [Category.triviaCities]: {
+    name: Category.triviaCities,
+    image: '/assets/categories/triviaCities.png',
+  },
+  [Category.triviaMusic]: {
+    name: Category.triviaMusic,
+    image: '/assets/categories/triviaMusic.png',
+  },
+  [Category.triviaFruits]: {
+    name: Category.triviaFruits,
+    image: '/assets/categories/triviaFruits.png',
+  },
+  [Category.triviaFootball]: {
+    name: Category.triviaFootball,
+    image: '/assets/categories/triviaFootball.png',
+  },
+  [Category.triviaColors]: {
+    name: Category.triviaColors,
+    image: '/assets/categories/triviaColors.png',
+  },
 };
 
 export const defaultQuestionCounter = {
@@ -126,6 +163,12 @@ export const defaultQuestionCounter = {
   [Category.spirituality]: 0,
   [Category.freeTime]: 0,
   [Category.familyStories]: 0,
+  [Category.triviaCountries]: 0,
+  [Category.triviaCities]: 0,
+  [Category.triviaMusic]: 0,
+  [Category.triviaFruits]: 0,
+  [Category.triviaFootball]: 0,
+  [Category.triviaColors]: 0,
 };
 
 // Questions rewritten with research-backed principles (Aron et al. 1997,
@@ -1289,6 +1332,78 @@ export const questions: { [key: string]: Question } = {
     category: Category.familyStories,
     depth: 3,
   },
+
+  // ── Trivia · Países ──────────────────────────────────────────────
+  trivia_country_01: { id: 'trivia_country_01', question: '¿Cuál es la capital de Australia?', translationUS: 'What is the capital of Australia?', category: Category.triviaCountries, answer: 'Canberra', answerUS: 'Canberra' },
+  trivia_country_02: { id: 'trivia_country_02', question: '¿En qué continente está Egipto?', translationUS: 'What continent is Egypt in?', category: Category.triviaCountries, answer: 'África', answerUS: 'Africa' },
+  trivia_country_03: { id: 'trivia_country_03', question: '¿Cuál es el país más grande del mundo en territorio?', translationUS: "What is the world's largest country by area?", category: Category.triviaCountries, answer: 'Rusia', answerUS: 'Russia' },
+  trivia_country_04: { id: 'trivia_country_04', question: '¿Qué país tiene forma de bota?', translationUS: 'Which country is shaped like a boot?', category: Category.triviaCountries, answer: 'Italia', answerUS: 'Italy' },
+  trivia_country_05: { id: 'trivia_country_05', question: '¿Cuál es la capital de Japón?', translationUS: 'What is the capital of Japan?', category: Category.triviaCountries, answer: 'Tokio', answerUS: 'Tokyo' },
+  trivia_country_06: { id: 'trivia_country_06', question: '¿En qué país está la Torre Eiffel?', translationUS: 'In which country is the Eiffel Tower?', category: Category.triviaCountries, answer: 'Francia', answerUS: 'France' },
+  trivia_country_07: { id: 'trivia_country_07', question: '¿Qué idioma se habla oficialmente en Brasil?', translationUS: "What's the official language of Brazil?", category: Category.triviaCountries, answer: 'Portugués', answerUS: 'Portuguese' },
+  trivia_country_08: { id: 'trivia_country_08', question: '¿Cuál es la capital de Argentina?', translationUS: 'What is the capital of Argentina?', category: Category.triviaCountries, answer: 'Buenos Aires', answerUS: 'Buenos Aires' },
+  trivia_country_09: { id: 'trivia_country_09', question: '¿Qué océano separa América de Europa?', translationUS: 'Which ocean separates America from Europe?', category: Category.triviaCountries, answer: 'Atlántico', answerUS: 'Atlantic' },
+  trivia_country_10: { id: 'trivia_country_10', question: '¿Cuál es el país más pequeño del mundo?', translationUS: "What is the world's smallest country?", category: Category.triviaCountries, answer: 'Vaticano', answerUS: 'Vatican City' },
+
+  // ── Trivia · Ciudades ────────────────────────────────────────────
+  trivia_city_01: { id: 'trivia_city_01', question: '¿En qué ciudad está la Estatua de la Libertad?', translationUS: 'In which city is the Statue of Liberty?', category: Category.triviaCities, answer: 'Nueva York', answerUS: 'New York' },
+  trivia_city_02: { id: 'trivia_city_02', question: '¿En qué ciudad está el Coliseo Romano?', translationUS: 'In which city is the Roman Colosseum?', category: Category.triviaCities, answer: 'Roma', answerUS: 'Rome' },
+  trivia_city_03: { id: 'trivia_city_03', question: '¿Cuál es la capital de España?', translationUS: 'What is the capital of Spain?', category: Category.triviaCities, answer: 'Madrid', answerUS: 'Madrid' },
+  trivia_city_04: { id: 'trivia_city_04', question: '¿En qué ciudad está la Sagrada Familia?', translationUS: 'In which city is the Sagrada Familia?', category: Category.triviaCities, answer: 'Barcelona', answerUS: 'Barcelona' },
+  trivia_city_05: { id: 'trivia_city_05', question: '¿Cuál es la capital de México?', translationUS: 'What is the capital of Mexico?', category: Category.triviaCities, answer: 'Ciudad de México', answerUS: 'Mexico City' },
+  trivia_city_06: { id: 'trivia_city_06', question: '¿En qué ciudad nacieron los Beatles?', translationUS: 'In which city were the Beatles born?', category: Category.triviaCities, answer: 'Liverpool', answerUS: 'Liverpool' },
+  trivia_city_07: { id: 'trivia_city_07', question: '¿Cuál es la capital de Colombia?', translationUS: 'What is the capital of Colombia?', category: Category.triviaCities, answer: 'Bogotá', answerUS: 'Bogotá' },
+  trivia_city_08: { id: 'trivia_city_08', question: '¿En qué ciudad está la Torre de Pisa?', translationUS: 'In which city is the Leaning Tower?', category: Category.triviaCities, answer: 'Pisa', answerUS: 'Pisa' },
+  trivia_city_09: { id: 'trivia_city_09', question: '¿Cuál es la capital de Ecuador?', translationUS: 'What is the capital of Ecuador?', category: Category.triviaCities, answer: 'Quito', answerUS: 'Quito' },
+  trivia_city_10: { id: 'trivia_city_10', question: '¿En qué ciudad está el Cristo Redentor?', translationUS: 'In which city is the Christ the Redeemer statue?', category: Category.triviaCities, answer: 'Río de Janeiro', answerUS: 'Rio de Janeiro' },
+
+  // ── Trivia · Música ──────────────────────────────────────────────
+  trivia_music_01: { id: 'trivia_music_01', question: '¿Quién compuso "Las cuatro estaciones"?', translationUS: 'Who composed "The Four Seasons"?', category: Category.triviaMusic, answer: 'Antonio Vivaldi', answerUS: 'Antonio Vivaldi' },
+  trivia_music_02: { id: 'trivia_music_02', question: '¿De qué banda era John Lennon?', translationUS: 'Which band was John Lennon part of?', category: Category.triviaMusic, answer: 'The Beatles', answerUS: 'The Beatles' },
+  trivia_music_03: { id: 'trivia_music_03', question: '¿Cuántas cuerdas tiene una guitarra estándar?', translationUS: 'How many strings does a standard guitar have?', category: Category.triviaMusic, answer: '6', answerUS: '6' },
+  trivia_music_04: { id: 'trivia_music_04', question: '¿Quién canta "Despacito"?', translationUS: 'Who sings "Despacito"?', category: Category.triviaMusic, answer: 'Luis Fonsi (con Daddy Yankee)', answerUS: 'Luis Fonsi (feat. Daddy Yankee)' },
+  trivia_music_05: { id: 'trivia_music_05', question: '¿Quién compuso la Novena Sinfonía?', translationUS: 'Who composed the Ninth Symphony?', category: Category.triviaMusic, answer: 'Ludwig van Beethoven', answerUS: 'Ludwig van Beethoven' },
+  trivia_music_06: { id: 'trivia_music_06', question: '¿Quién es conocida como la "Reina del Pop"?', translationUS: 'Who is known as the "Queen of Pop"?', category: Category.triviaMusic, answer: 'Madonna', answerUS: 'Madonna' },
+  trivia_music_07: { id: 'trivia_music_07', question: '¿Cuántas notas musicales hay en la escala básica?', translationUS: 'How many notes are there in the basic musical scale?', category: Category.triviaMusic, answer: '7', answerUS: '7' },
+  trivia_music_08: { id: 'trivia_music_08', question: '¿Qué género musical hace famoso a Bad Bunny?', translationUS: 'What genre made Bad Bunny famous?', category: Category.triviaMusic, answer: 'Reggaetón', answerUS: 'Reggaeton' },
+  trivia_music_09: { id: 'trivia_music_09', question: '¿Qué instrumento toca un pianista?', translationUS: 'What instrument does a pianist play?', category: Category.triviaMusic, answer: 'Piano', answerUS: 'Piano' },
+  trivia_music_10: { id: 'trivia_music_10', question: '¿Quién es el "Rey del Pop"?', translationUS: 'Who is the "King of Pop"?', category: Category.triviaMusic, answer: 'Michael Jackson', answerUS: 'Michael Jackson' },
+
+  // ── Trivia · Frutas ──────────────────────────────────────────────
+  trivia_fruit_01: { id: 'trivia_fruit_01', question: '¿Qué fruta es famosa por su alto contenido de vitamina C?', translationUS: 'Which fruit is famous for its high vitamin C?', category: Category.triviaFruits, answer: 'Naranja (también limón, kiwi, guayaba)', answerUS: 'Orange (also lemon, kiwi, guava)' },
+  trivia_fruit_02: { id: 'trivia_fruit_02', question: '¿Qué fruta amarilla y curvada comen los monos en los dibujos?', translationUS: 'What yellow curved fruit do cartoon monkeys eat?', category: Category.triviaFruits, answer: 'Plátano', answerUS: 'Banana' },
+  trivia_fruit_03: { id: 'trivia_fruit_03', question: '¿Qué fruta tiene sus semillas por fuera?', translationUS: 'Which fruit has its seeds on the outside?', category: Category.triviaFruits, answer: 'Fresa', answerUS: 'Strawberry' },
+  trivia_fruit_04: { id: 'trivia_fruit_04', question: '¿Qué fruta es verde por fuera y roja por dentro?', translationUS: 'Which fruit is green outside and red inside?', category: Category.triviaFruits, answer: 'Sandía', answerUS: 'Watermelon' },
+  trivia_fruit_05: { id: 'trivia_fruit_05', question: '¿Con qué fruta se hace el vino?', translationUS: 'What fruit is wine made from?', category: Category.triviaFruits, answer: 'Uva', answerUS: 'Grape' },
+  trivia_fruit_06: { id: 'trivia_fruit_06', question: '¿Qué fruta está cubierta de pelos finos y es marrón por fuera?', translationUS: 'Which fruit is covered in fuzzy hair and brown on the outside?', category: Category.triviaFruits, answer: 'Kiwi', answerUS: 'Kiwi' },
+  trivia_fruit_07: { id: 'trivia_fruit_07', question: '¿Qué fruta tropical tiene una corona de hojas?', translationUS: 'Which tropical fruit has a crown of leaves on top?', category: Category.triviaFruits, answer: 'Piña', answerUS: 'Pineapple' },
+  trivia_fruit_08: { id: 'trivia_fruit_08', question: '¿Qué fruta roja con tallo verde tiene un solo hueso por dentro?', translationUS: 'Which red fruit with a green stem has one pit inside?', category: Category.triviaFruits, answer: 'Cereza', answerUS: 'Cherry' },
+  trivia_fruit_09: { id: 'trivia_fruit_09', question: '¿Qué fruta morada parecida a la uva se usa para hacer mermelada?', translationUS: 'Which purple grape-like fruit is often made into jam?', category: Category.triviaFruits, answer: 'Mora', answerUS: 'Blackberry' },
+  trivia_fruit_10: { id: 'trivia_fruit_10', question: '¿Qué fruta amarilla y ácida se exprime para limonada?', translationUS: 'Which sour yellow fruit is squeezed for lemonade?', category: Category.triviaFruits, answer: 'Limón', answerUS: 'Lemon' },
+
+  // ── Trivia · Fútbol ──────────────────────────────────────────────
+  trivia_football_01: { id: 'trivia_football_01', question: '¿Cuántos jugadores tiene un equipo de fútbol en la cancha?', translationUS: 'How many players does a soccer team have on the field?', category: Category.triviaFootball, answer: '11', answerUS: '11' },
+  trivia_football_02: { id: 'trivia_football_02', question: '¿Qué país ganó el Mundial 2022?', translationUS: 'Which country won the 2022 World Cup?', category: Category.triviaFootball, answer: 'Argentina', answerUS: 'Argentina' },
+  trivia_football_03: { id: 'trivia_football_03', question: '¿De qué país es Lionel Messi?', translationUS: 'What country is Lionel Messi from?', category: Category.triviaFootball, answer: 'Argentina', answerUS: 'Argentina' },
+  trivia_football_04: { id: 'trivia_football_04', question: '¿Cuántos minutos dura un partido de fútbol estándar?', translationUS: 'How many minutes does a standard soccer match last?', category: Category.triviaFootball, answer: '90', answerUS: '90' },
+  trivia_football_05: { id: 'trivia_football_05', question: '¿En qué país nació el fútbol moderno?', translationUS: 'In which country was modern soccer born?', category: Category.triviaFootball, answer: 'Inglaterra', answerUS: 'England' },
+  trivia_football_06: { id: 'trivia_football_06', question: '¿De qué país es Cristiano Ronaldo?', translationUS: 'What country is Cristiano Ronaldo from?', category: Category.triviaFootball, answer: 'Portugal', answerUS: 'Portugal' },
+  trivia_football_07: { id: 'trivia_football_07', question: '¿De qué color es la tarjeta que expulsa a un jugador?', translationUS: 'What color is the card that sends a player off?', category: Category.triviaFootball, answer: 'Roja', answerUS: 'Red' },
+  trivia_football_08: { id: 'trivia_football_08', question: '¿Cada cuántos años se juega el Mundial de Fútbol?', translationUS: 'How often is the World Cup held?', category: Category.triviaFootball, answer: 'Cada 4 años', answerUS: 'Every 4 years' },
+  trivia_football_09: { id: 'trivia_football_09', question: '¿Cuántos puntos suma una victoria en un torneo?', translationUS: 'How many points does a win count in a league?', category: Category.triviaFootball, answer: '3', answerUS: '3' },
+  trivia_football_10: { id: 'trivia_football_10', question: '¿Qué jugador es apodado "La Pulga"?', translationUS: 'Which player is nicknamed "The Flea"?', category: Category.triviaFootball, answer: 'Lionel Messi', answerUS: 'Lionel Messi' },
+
+  // ── Trivia · Colores ─────────────────────────────────────────────
+  trivia_color_01: { id: 'trivia_color_01', question: '¿Qué color resulta de mezclar amarillo y azul?', translationUS: 'What color do you get mixing yellow and blue?', category: Category.triviaColors, answer: 'Verde', answerUS: 'Green' },
+  trivia_color_02: { id: 'trivia_color_02', question: '¿De qué color es el cielo en un día despejado?', translationUS: 'What color is the sky on a clear day?', category: Category.triviaColors, answer: 'Azul', answerUS: 'Blue' },
+  trivia_color_03: { id: 'trivia_color_03', question: '¿Qué dos colores forman el púrpura?', translationUS: 'Which two colors make purple?', category: Category.triviaColors, answer: 'Rojo y azul', answerUS: 'Red and blue' },
+  trivia_color_04: { id: 'trivia_color_04', question: '¿Cuántos colores tiene el arcoíris?', translationUS: 'How many colors does the rainbow have?', category: Category.triviaColors, answer: '7', answerUS: '7' },
+  trivia_color_05: { id: 'trivia_color_05', question: '¿Qué color se obtiene al mezclar rojo y amarillo?', translationUS: 'What color do you get mixing red and yellow?', category: Category.triviaColors, answer: 'Naranja', answerUS: 'Orange' },
+  trivia_color_06: { id: 'trivia_color_06', question: '¿Cuáles son los tres colores primarios?', translationUS: 'What are the three primary colors?', category: Category.triviaColors, answer: 'Rojo, azul y amarillo', answerUS: 'Red, blue and yellow' },
+  trivia_color_07: { id: 'trivia_color_07', question: '¿Qué color es complementario del rojo?', translationUS: 'What color is complementary to red?', category: Category.triviaColors, answer: 'Verde', answerUS: 'Green' },
+  trivia_color_08: { id: 'trivia_color_08', question: '¿De qué color es la nieve?', translationUS: 'What color is snow?', category: Category.triviaColors, answer: 'Blanco', answerUS: 'White' },
+  trivia_color_09: { id: 'trivia_color_09', question: '¿Qué color tiene el sol en los dibujos infantiles?', translationUS: "What color is the sun in children's drawings?", category: Category.triviaColors, answer: 'Amarillo', answerUS: 'Yellow' },
+  trivia_color_10: { id: 'trivia_color_10', question: '¿De qué color es el césped sano?', translationUS: 'What color is healthy grass?', category: Category.triviaColors, answer: 'Verde', answerUS: 'Green' },
 };
 
 // ── Appreciation prompts (Gottman fondness & admiration system) ──────

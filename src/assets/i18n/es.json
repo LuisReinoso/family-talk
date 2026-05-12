@@ -10,7 +10,9 @@
     "pressOn": "Presiona en",
     "toStart": "para empezar",
     "resetData": "Algo salio mal, click para resetear datos",
-    "aiTokenError": "Algo esta mal con el OpenAi Token, cambia el token e intenta de nuevo"
+    "aiTokenError": "Algo esta mal con el OpenAi Token, cambia el token e intenta de nuevo",
+    "revealAnswer": "Mostrar respuesta",
+    "answerLabel": "Respuesta:"
   },
   "common": {
     "save": "Guardar",

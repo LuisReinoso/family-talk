@@ -29,6 +29,7 @@ import {
   getQuestionText,
   depthForRound,
   isAppreciationRound,
+  isTriviaCategory,
   selectAppreciationPrompt,
 } from 'src/app/utils/question.utils';
 
@@ -175,14 +176,23 @@ export class CountdownComponent implements OnInit, OnDestroy {
   isAppreciation = false;
   /** Current depth level for UI indicator. */
   currentDepth: 1 | 2 | 3 = 1;
+  /** Trivia answer (if applicable). Reset every time a question is picked. */
+  currentAnswer: string | null = null;
+  /** Whether trivia answer has been revealed. */
+  answerRevealed = false;
 
   selectRandomQuestion() {
     const lang = this.translateService.currentLang || 'es';
+    const category = this.questionsService.currentCategory;
     this.questionsService.advanceRound();
     const round = this.questionsService.roundCounter;
 
-    // Gottman appreciation injection: every 5th question
-    if (isAppreciationRound(round)) {
+    // Reset trivia state on every new question
+    this.currentAnswer = null;
+    this.answerRevealed = false;
+
+    // Gottman appreciation injection: every 5th question (skip in trivia)
+    if (isAppreciationRound(round, category)) {
       this.isAppreciation = true;
       this.currentDepth = 3;
       this.selectedQuestion$.next(selectAppreciationPrompt(lang));
@@ -190,12 +200,13 @@ export class CountdownComponent implements OnInit, OnDestroy {
     }
 
     this.isAppreciation = false;
-    const maxDepth = depthForRound(round);
+    const isTrivia = isTriviaCategory(category);
+    const maxDepth = isTrivia ? 1 : depthForRound(round);
     this.currentDepth = maxDepth;
 
     const result = selectRandomQuestion(
       this.questionsService.questions,
-      this.questionsService.currentCategory,
+      category,
       lang,
       maxDepth
     );
@@ -204,21 +215,27 @@ export class CountdownComponent implements OnInit, OnDestroy {
       this.questionsService.restoreQuestions();
       const retry = selectRandomQuestion(
         this.questionsService.questions,
-        this.questionsService.currentCategory,
+        category,
         lang,
         maxDepth
       );
       if (retry) {
         this.selectedQuestion$.next(retry.questionText);
+        this.currentAnswer = retry.answerText;
         this.questionsService.questions = retry.remaining;
       }
       return;
     }
 
     this.selectedQuestion$.next(result.questionText);
+    this.currentAnswer = result.answerText;
     this.questionsService.questions = result.remaining;
     this.savePlayers();
     this.questionsService.saveQuestions();
+  }
+
+  revealAnswer(): void {
+    this.answerRevealed = true;
   }
 
   async generateRandomQuestion(): Promise<void> {

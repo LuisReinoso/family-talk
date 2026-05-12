@@ -25,6 +25,57 @@
     background: linear-gradient(135deg, rgba(240, 160, 48, 0.10), rgba(255, 220, 120, 0.08));
   }
 
+  &--trivia {
+    border-left-color: $ft-skyblue;
+    background: linear-gradient(135deg, rgba(22, 158, 216, 0.08), rgba(29, 97, 172, 0.06));
+  }
+
+  &__reveal {
+    margin-top: $ft-space-3;
+    padding: $ft-space-2 $ft-space-4;
+    background: $ft-skyblue;
+    color: $ft-white;
+    border: none;
+    border-radius: $ft-radius-md;
+    font-weight: $ft-weight-semibold;
+    font-size: $ft-font-sm;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+
+    &:hover {
+      background: $ft-blue;
+    }
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+
+  &__answer {
+    margin-top: $ft-space-3;
+    padding: $ft-space-3 $ft-space-4;
+    background: rgba(22, 158, 216, 0.12);
+    border-left: 3px solid $ft-skyblue;
+    border-radius: $ft-radius-sm;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    animation: ft-answer-reveal 0.25s ease-out;
+  }
+
+  &__answer-label {
+    font-size: $ft-font-xs;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: $ft-blue;
+    font-weight: $ft-weight-semibold;
+  }
+
+  &__answer-text {
+    font-size: $ft-font-base;
+    font-weight: $ft-weight-semibold;
+    color: $ft-gray-800;
+  }
+
   &__header {
     display: flex;
     align-items: center;
@@ -76,4 +127,8 @@
     flex-wrap: wrap;
     margin-top: $ft-space-3;
   }
+}
+@keyframes ft-answer-reveal {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
