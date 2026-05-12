@@ -11,8 +11,15 @@
     "toStart": "para empezar",
     "resetData": "Algo salio mal, click para resetear datos",
     "aiTokenError": "Algo esta mal con el OpenAi Token, cambia el token e intenta de nuevo",
-    "revealAnswer": "Mostrar respuesta",
-    "answerLabel": "Respuesta:"
+    "switchToTrivia": "Jugar trivia"
+  },
+  "trivia": {
+    "title": "Trivia familiar",
+    "correct": "¡Correcto!",
+    "wrong": "Incorrecto",
+    "next": "Siguiente pregunta",
+    "noQuestions": "No hay más preguntas, vuelve a empezar.",
+    "switchToConversation": "Volver a conversación"
   },
   "common": {
     "save": "Guardar",

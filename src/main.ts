@@ -63,6 +63,11 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'trivia',
+    loadComponent: () =>
+      import('./app/trivia/trivia.component').then((m) => m.TriviaComponent),
+  },
+  {
     path: '**',
     redirectTo: '',
   },

@@ -31,11 +31,6 @@
         [label]="'countdown.question' | translate"
         [depth]="currentDepth"
         [appreciation]="isAppreciation"
-        [answer]="currentAnswer"
-        [answerRevealed]="answerRevealed"
-        [revealLabel]="'countdown.revealAnswer' | translate"
-        [answerLabel]="'countdown.answerLabel' | translate"
-        (reveal)="revealAnswer()"
       >
         <div *ngIf="!(selectedQuestion$ | async)" class="reset-action"
           (click)="resetLocalStorage()"
@@ -86,6 +81,13 @@
       (buttonClick)="selectRandomUserAndStart()"
     >
       {{ "countdown.selectPlayer" | translate }}
+    </ft-button>
+    <ft-button
+      *ngIf="!selectedPlayer"
+      variant="info"
+      (buttonClick)="switchToTrivia()"
+    >
+      🧠 {{ 'countdown.switchToTrivia' | translate }}
     </ft-button>
   </div>
 </section>

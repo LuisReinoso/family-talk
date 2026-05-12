@@ -6,46 +6,12 @@ import {
   appreciationPrompts,
 } from 'src/app/models/questions';
 
-/**
- * Trivia categories — questions with a correct answer. The game UI shows
- * a "Reveal answer" button and skips Aron depth + Gottman appreciation
- * (different game mode).
- */
-const TRIVIA_SUBCATEGORIES: ReadonlySet<Category> = new Set([
-  Category.triviaCountries,
-  Category.triviaCities,
-  Category.triviaMusic,
-  Category.triviaFruits,
-  Category.triviaFootball,
-  Category.triviaColors,
-]);
-
-/**
- * True for any trivia category, including the `triviaRandom` meta-category
- * that mixes all trivia subcategories.
- */
-export function isTriviaCategory(category: Category): boolean {
-  return category === Category.triviaRandom || TRIVIA_SUBCATEGORIES.has(category);
-}
-
-/**
- * True only for concrete trivia subcategories (Countries, Music, ...).
- * Excludes the `triviaRandom` meta-category.
- */
-function isTriviaSubcategory(category: Category): boolean {
-  return TRIVIA_SUBCATEGORIES.has(category);
-}
-
 export function filterQuestionsByCategory(
   questions: { [key: string]: Question },
   category: Category
 ): Question[] {
   const all = Object.values(questions);
   if (category === Category.random) return all;
-  // Trivia · Todas mixes questions from every trivia subcategory
-  if (category === Category.triviaRandom) {
-    return all.filter((q) => isTriviaSubcategory(q.category));
-  }
   return all.filter((q) => q.category === category);
 }
 
@@ -72,10 +38,8 @@ export function depthForRound(round: number): QuestionDepth {
 /**
  * Returns true when the current round should be an appreciation prompt
  * instead of a normal question (every 5th question starting at round 5).
- * Appreciation prompts are skipped in trivia mode — they break the flow.
  */
-export function isAppreciationRound(round: number, category?: Category): boolean {
-  if (category && isTriviaCategory(category)) return false;
+export function isAppreciationRound(round: number): boolean {
   return round > 0 && round % 5 === 0;
 }
 
@@ -103,13 +67,9 @@ export function calcQuestionsPerCategory(
     ...defaultQuestionCounter,
     [Category.random]: Object.values(questions).length,
   };
-  let triviaTotal = 0;
   Object.values(questions).forEach((question) => {
     result[question.category] = (result[question.category] || 0) + 1;
-    if (isTriviaSubcategory(question.category)) triviaTotal += 1;
   });
-  // Meta-category: sum of all trivia subcategories
-  result[Category.triviaRandom] = triviaTotal;
   return result;
 }
 
@@ -124,36 +84,20 @@ export function selectRandomQuestion(
   category: Category,
   lang: string,
   maxDepth: QuestionDepth = 3
-): {
-  questionText: string;
-  answerText: string | null;
-  remaining: { [key: string]: Question };
-} | null {
-  let filtered = filterQuestionsByCategory(questions, category);
+): { questionText: string; remaining: { [key: string]: Question } } | null {
+  const filtered = filterQuestionsByCategory(questions, category);
 
-  // Try depth-constrained first (trivia ignores depth — all have depth undefined)
-  let pool = isTriviaCategory(category)
-    ? filtered
-    : filterQuestionsByDepth(filtered, maxDepth);
-
-  // Fallback: any depth in the same category
+  let pool = filterQuestionsByDepth(filtered, maxDepth);
   if (pool.length === 0) pool = filtered;
-
-  // Fallback: any question at all
   if (pool.length === 0) pool = Object.values(questions);
 
   if (pool.length === 0) return null;
 
   const selected = pool[Math.floor(Math.random() * pool.length)];
   const questionText = lang === 'en' ? selected.translationUS : selected.question;
-  const answerText = selected.answer
-    ? lang === 'en'
-      ? selected.answerUS ?? selected.answer
-      : selected.answer
-    : null;
   const remaining = removeQuestion(questions, selected.id);
 
-  return { questionText, answerText, remaining };
+  return { questionText, remaining };
 }
 
 export function getQuestionText(question: Question, lang: string): string {

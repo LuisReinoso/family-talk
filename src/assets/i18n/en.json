@@ -11,8 +11,15 @@
     "toStart": "to start",
     "resetData": "Something's wrong, click to reset the data",
     "aiTokenError": "Something is wrong with the OpenAi Token, change the token and try again",
-    "revealAnswer": "Reveal answer",
-    "answerLabel": "Answer:"
+    "switchToTrivia": "Play trivia"
+  },
+  "trivia": {
+    "title": "Family Trivia",
+    "correct": "Correct!",
+    "wrong": "Wrong",
+    "next": "Next question",
+    "noQuestions": "No more questions, start again.",
+    "switchToConversation": "Back to conversation"
   },
   "common": {
     "save": "Save",
