@@ -42,6 +42,7 @@ export enum Category {
   freeTime = 'Planificación y organización del tiempo libre.',
   familyStories = 'Historias familiares',
   // ── Trivia categories (with answer field) ──
+  triviaRandom = 'Trivia · Todas',
   triviaCountries = 'Trivia · Países',
   triviaCities = 'Trivia · Ciudades',
   triviaMusic = 'Trivia · Música',
@@ -119,6 +120,10 @@ export const defaultCategory = {
     name: Category.familyStories,
     image: '/assets/categories/familyStories.png',
   },
+  [Category.triviaRandom]: {
+    name: Category.triviaRandom,
+    image: '/assets/categories/triviaRandom.png',
+  },
   [Category.triviaCountries]: {
     name: Category.triviaCountries,
     image: '/assets/categories/triviaCountries.png',
@@ -163,6 +168,7 @@ export const defaultQuestionCounter = {
   [Category.spirituality]: 0,
   [Category.freeTime]: 0,
   [Category.familyStories]: 0,
+  [Category.triviaRandom]: 0,
   [Category.triviaCountries]: 0,
   [Category.triviaCities]: 0,
   [Category.triviaMusic]: 0,

@@ -11,7 +11,7 @@ import {
  * a "Reveal answer" button and skips Aron depth + Gottman appreciation
  * (different game mode).
  */
-const TRIVIA_CATEGORIES: ReadonlySet<Category> = new Set([
+const TRIVIA_SUBCATEGORIES: ReadonlySet<Category> = new Set([
   Category.triviaCountries,
   Category.triviaCities,
   Category.triviaMusic,
@@ -20,8 +20,20 @@ const TRIVIA_CATEGORIES: ReadonlySet<Category> = new Set([
   Category.triviaColors,
 ]);
 
+/**
+ * True for any trivia category, including the `triviaRandom` meta-category
+ * that mixes all trivia subcategories.
+ */
 export function isTriviaCategory(category: Category): boolean {
-  return TRIVIA_CATEGORIES.has(category);
+  return category === Category.triviaRandom || TRIVIA_SUBCATEGORIES.has(category);
+}
+
+/**
+ * True only for concrete trivia subcategories (Countries, Music, ...).
+ * Excludes the `triviaRandom` meta-category.
+ */
+function isTriviaSubcategory(category: Category): boolean {
+  return TRIVIA_SUBCATEGORIES.has(category);
 }
 
 export function filterQuestionsByCategory(
@@ -30,6 +42,10 @@ export function filterQuestionsByCategory(
 ): Question[] {
   const all = Object.values(questions);
   if (category === Category.random) return all;
+  // Trivia · Todas mixes questions from every trivia subcategory
+  if (category === Category.triviaRandom) {
+    return all.filter((q) => isTriviaSubcategory(q.category));
+  }
   return all.filter((q) => q.category === category);
 }
 
@@ -87,9 +103,13 @@ export function calcQuestionsPerCategory(
     ...defaultQuestionCounter,
     [Category.random]: Object.values(questions).length,
   };
+  let triviaTotal = 0;
   Object.values(questions).forEach((question) => {
     result[question.category] = (result[question.category] || 0) + 1;
+    if (isTriviaSubcategory(question.category)) triviaTotal += 1;
   });
+  // Meta-category: sum of all trivia subcategories
+  result[Category.triviaRandom] = triviaTotal;
   return result;
 }
 

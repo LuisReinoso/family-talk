@@ -32,7 +32,7 @@ export class QuestionsService {
   roundCounter$ = this.roundCounterSubject.asObservable();
 
   /** Bump this when the question pool changes to invalidate cached copies. */
-  private static readonly QUESTIONS_VERSION = 3;
+  private static readonly QUESTIONS_VERSION = 4;
 
   private localStorageKey = 'questions';
   private versionKey = 'questionsVersion';
