@@ -63,7 +63,8 @@
     "configQuestionGeneration": "AI question generator",
     "useAiGenerateQuestions": "Use artificial intelligence to generate questions?",
     "panelHelper": "Enable AI to generate new questions when a category runs out.",
-    "tokenHint": "Your token is stored only on this device. Get one at platform.openai.com."
+    "tokenHint": "Your token is stored only on this device. Get one at platform.openai.com.",
+    "ollamaHint": "Your API key is stored only on this device. Get one at ollama.com/settings/keys."
   },
   "generalSettings": {
     "resetPlayersTimer": "Reset players timer to speak",

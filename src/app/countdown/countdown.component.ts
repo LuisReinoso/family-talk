@@ -69,7 +69,10 @@ export class CountdownComponent implements OnInit, OnDestroy {
   showAiErrorAlert: boolean = false;
   showPlayerAlert: boolean = false;
 
-  openAiToken = this.aiService.openAiToken;
+  /** Token currently configured for the active AI provider (OpenAI or Ollama). */
+  get aiToken(): string | null {
+    return this.aiService.activeToken;
+  }
   isLoadingQuestion: boolean = false;
   isMobile = this.userAgentService.isMobile();
   hasToUseAi$ = this.aiService.hasToUseAi$;

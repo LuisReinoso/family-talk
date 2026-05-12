@@ -45,7 +45,7 @@
         <ng-container slot="actions">
           <ng-container *ngIf="hasToUseAi$ | async; else localQuestionsTemplate">
             <ft-action-button
-              *ngIf="openAiToken"
+              *ngIf="aiToken"
               icon="🤖"
               [text]="'countdown.generateQuestionWithAi' | translate"
               variant="ai"

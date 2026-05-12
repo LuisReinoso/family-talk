@@ -6,6 +6,29 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { parseAiQuestionResponse } from 'src/app/utils/question.utils';
 import { environment } from 'src/environments/environment';
 
+/**
+ * Supported AI providers. Both expose an OpenAI-compatible
+ * `/v1/chat/completions` endpoint, so only the base URL, the model name,
+ * and the API key change between them.
+ */
+export type AiProvider = 'openai' | 'ollama';
+
+interface ProviderConfig {
+  baseUrl: string;
+  defaultModel: string;
+}
+
+const PROVIDER_CONFIG: Record<AiProvider, ProviderConfig> = {
+  openai: {
+    baseUrl: environment.openApiUrl, // https://api.openai.com
+    defaultModel: 'gpt-3.5-turbo',
+  },
+  ollama: {
+    baseUrl: 'https://ollama.com',
+    defaultModel: 'gpt-oss:120b',
+  },
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -14,14 +37,16 @@ export class AiService {
   public hasToUseAi$ = this.hasToUseAi.asObservable();
 
   openAiToken: string | null = null;
-
-  private apiUrl = environment.openApiUrl;
+  ollamaToken: string | null = null;
+  aiProvider: AiProvider = 'openai';
 
   constructor(
     private http: HttpClient,
     private localStorageService: LocalStorageService
   ) {
+    this.loadAiProvider();
     this.loadOpenAiToken();
+    this.loadOllamaToken();
     this.loadHasToUseAi();
   }
 
@@ -35,15 +60,55 @@ export class AiService {
     this.hasToUseAi.next(value ?? false);
   }
 
+  saveAiProvider(provider: AiProvider): void {
+    this.aiProvider = provider;
+    this.localStorageService.set('aiProvider', provider);
+  }
+
+  loadAiProvider(): void {
+    const value = this.localStorageService.get<AiProvider>('aiProvider');
+    this.aiProvider = value === 'ollama' ? 'ollama' : 'openai';
+  }
+
+  saveOpenAiToken(token: string): void {
+    this.openAiToken = token;
+    this.localStorageService.set('openAiToken', token);
+  }
+
+  loadOpenAiToken(): void {
+    this.openAiToken = this.localStorageService.get<string>('openAiToken') || null;
+  }
+
+  saveOllamaToken(token: string): void {
+    this.ollamaToken = token;
+    this.localStorageService.set('ollamaToken', token);
+  }
+
+  loadOllamaToken(): void {
+    this.ollamaToken = this.localStorageService.get<string>('ollamaToken') || null;
+  }
+
+  /** Token currently selected based on the active provider. */
+  get activeToken(): string | null {
+    return this.aiProvider === 'ollama' ? this.ollamaToken : this.openAiToken;
+  }
+
   generateRandomQuestion(currentCategory: Category): Observable<Question | null> {
+    // Refresh provider + token from storage in case settings changed
+    this.loadAiProvider();
     this.loadOpenAiToken();
+    this.loadOllamaToken();
+
+    const config = PROVIDER_CONFIG[this.aiProvider];
+    const token = this.activeToken;
+
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${this.openAiToken}`,
+      Authorization: `Bearer ${token}`,
     });
 
     const body = {
-      model: 'gpt-3.5-turbo',
+      model: config.defaultModel,
       messages: [
         {
           role: 'system',
@@ -61,19 +126,14 @@ export class AiService {
     };
 
     return this.http
-      .post<{ choices: { message: { content: string } }[] }>(`${this.apiUrl}/v1/chat/completions`, body, { headers })
+      .post<{ choices: { message: { content: string } }[] }>(
+        `${config.baseUrl}/v1/chat/completions`,
+        body,
+        { headers }
+      )
       .pipe(
         map((response) => response.choices[0].message.content),
         map((text: string) => parseAiQuestionResponse(text))
       );
-  }
-
-  saveOpenAiToken(openAiToken: string) {
-    this.openAiToken = openAiToken;
-    this.localStorageService.set('openAiToken', openAiToken);
-  }
-
-  loadOpenAiToken() {
-    this.openAiToken = this.localStorageService.get<string>('openAiToken') || null;
   }
 }

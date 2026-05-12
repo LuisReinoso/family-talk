@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -8,8 +8,8 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { Subscription, take } from 'rxjs';
-import { AiService } from 'src/app/services/ai.service';
+import { Subscription } from 'rxjs';
+import { AiProvider, AiService } from 'src/app/services/ai.service';
 import { EventsDirective } from 'src/app/tracking/events.directive';
 import { FtHeaderComponent } from 'src/app/ft-ui/header/ft-header.component';
 import { FtButtonComponent } from 'src/app/ft-ui/button/ft-button.component';
@@ -35,73 +35,104 @@ import { FtInputComponent } from 'src/app/ft-ui/input/ft-input.component';
 })
 export class AiComponent implements OnInit, OnDestroy {
   formGroup: FormGroup = this.fb.group({
+    aiProvider: 'openai' as AiProvider,
     openAiToken: { value: '', updateOn: 'blur' },
+    ollamaToken: { value: '', updateOn: 'blur' },
     hasToUseAi: false,
   });
-  openAiTokenSub!: Subscription | null;
-  hasToUseAiSub!: Subscription | null;
+
+  private subs: Subscription[] = [];
 
   constructor(
     private fb: FormBuilder,
     private aiService: AiService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
+    this.aiService.loadAiProvider();
     this.aiService.loadOpenAiToken();
-    this.formGroup.controls['openAiToken'].setValue(this.aiService.openAiToken);
-
+    this.aiService.loadOllamaToken();
     this.aiService.loadHasToUseAi();
-    this.formGroup.controls['hasToUseAi'].setValue(
-      this.aiService.hasToUseAi.value
-    );
 
-    this.updateValidationOpenAiToken(this.aiService.hasToUseAi.value);
-    this.watchOpenAiToken();
-    this.watchHasToUseAi();
+    this.formGroup.patchValue({
+      aiProvider: this.aiService.aiProvider,
+      openAiToken: this.aiService.openAiToken,
+      ollamaToken: this.aiService.ollamaToken,
+      hasToUseAi: this.aiService.hasToUseAi.value,
+    });
+
+    this.updateTokenValidation();
+
+    this.subs.push(
+      this.formGroup.controls['openAiToken'].valueChanges.subscribe((v: string) => {
+        this.aiService.saveOpenAiToken(v);
+      }),
+      this.formGroup.controls['ollamaToken'].valueChanges.subscribe((v: string) => {
+        this.aiService.saveOllamaToken(v);
+      }),
+      this.formGroup.controls['aiProvider'].valueChanges.subscribe((p: AiProvider) => {
+        this.aiService.saveAiProvider(p);
+        this.updateTokenValidation();
+        this.cdr.markForCheck();
+      }),
+      this.formGroup.controls['hasToUseAi'].valueChanges.subscribe((v: boolean) => {
+        this.aiService.saveHasToUseAi(v);
+        this.updateTokenValidation();
+        this.cdr.markForCheck();
+      })
+    );
   }
 
   ngOnDestroy(): void {
-    if (!!this.openAiTokenSub) {
-      this.openAiTokenSub.unsubscribe();
-      this.openAiTokenSub = null;
-    }
-
-    if (!!this.hasToUseAiSub) {
-      this.hasToUseAiSub.unsubscribe();
-      this.hasToUseAiSub = null;
-    }
+    this.subs.forEach((s) => s.unsubscribe());
+    this.subs = [];
   }
 
-  private watchOpenAiToken() {
-    this.openAiTokenSub = this.formGroup.controls[
-      'openAiToken'
-    ].valueChanges.subscribe((openAiToken) => {
-      this.aiService.saveOpenAiToken(openAiToken);
-    });
+  get isProviderOllama(): boolean {
+    return this.formGroup.controls['aiProvider'].value === 'ollama';
   }
 
-  private watchHasToUseAi() {
-    this.hasToUseAiSub = this.formGroup.controls[
-      'hasToUseAi'
-    ].valueChanges.subscribe((hasToUseAi) => {
-      this.updateValidationOpenAiToken(hasToUseAi);
-      this.aiService.saveHasToUseAi(hasToUseAi);
-    });
+  get isProviderOpenAi(): boolean {
+    return this.formGroup.controls['aiProvider'].value === 'openai';
   }
 
-  private updateValidationOpenAiToken(hasToUseAi: any) {
-    if (hasToUseAi) {
-      this.formGroup.controls['openAiToken'].addValidators(Validators.required);
-    } else {
-      this.formGroup.controls['openAiToken'].clearValidators();
+  selectProvider(provider: AiProvider): void {
+    this.formGroup.controls['aiProvider'].setValue(provider);
+  }
+
+  /**
+   * Required only on the field of the currently selected provider, and
+   * only when the AI feature is enabled.
+   */
+  private updateTokenValidation(): void {
+    const useAi = !!this.formGroup.controls['hasToUseAi'].value;
+    const provider: AiProvider = this.formGroup.controls['aiProvider'].value;
+
+    const openAi = this.formGroup.controls['openAiToken'];
+    const ollama = this.formGroup.controls['ollamaToken'];
+
+    openAi.clearValidators();
+    ollama.clearValidators();
+
+    if (useAi) {
+      if (provider === 'openai') openAi.addValidators(Validators.required);
+      else ollama.addValidators(Validators.required);
     }
-    this.formGroup.controls['openAiToken'].updateValueAndValidity();
+
+    openAi.updateValueAndValidity({ emitEvent: false });
+    ollama.updateValueAndValidity({ emitEvent: false });
   }
 
   backToGame(): void {
-    if (this.formGroup.controls['openAiToken'].invalid) {
-      this.formGroup.controls['openAiToken'].markAsTouched();
+    const provider: AiProvider = this.formGroup.controls['aiProvider'].value;
+    const tokenCtrl = provider === 'openai'
+      ? this.formGroup.controls['openAiToken']
+      : this.formGroup.controls['ollamaToken'];
+
+    if (tokenCtrl.invalid) {
+      tokenCtrl.markAsTouched();
       return;
     }
     this.router.navigate(['']);

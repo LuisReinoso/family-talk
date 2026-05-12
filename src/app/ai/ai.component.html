@@ -12,14 +12,56 @@
         formControlName="hasToUseAi"
       ></ft-checkbox>
 
-      <div class="ai-panel__token" [class.ai-panel__token--disabled]="!formGroup.controls['hasToUseAi'].value">
+      <div
+        class="ai-panel__providers"
+        [class.ai-panel__providers--disabled]="!formGroup.controls['hasToUseAi'].value"
+      >
+        <button
+          type="button"
+          class="ai-panel__provider"
+          [class.ai-panel__provider--active]="isProviderOpenAi"
+          (click)="selectProvider('openai')"
+        >
+          <span class="ai-panel__provider-icon">⚡</span>
+          <span class="ai-panel__provider-name">OpenAI</span>
+        </button>
+        <button
+          type="button"
+          class="ai-panel__provider"
+          [class.ai-panel__provider--active]="isProviderOllama"
+          (click)="selectProvider('ollama')"
+        >
+          <span class="ai-panel__provider-icon">🦙</span>
+          <span class="ai-panel__provider-name">Ollama Cloud</span>
+        </button>
+      </div>
+
+      <div
+        *ngIf="isProviderOpenAi"
+        class="ai-panel__token"
+        [class.ai-panel__token--disabled]="!formGroup.controls['hasToUseAi'].value"
+      >
         <ft-input
-          label="OpenAi Token"
+          label="OpenAI Token"
           formControlName="openAiToken"
           placeholder="sk-..."
-          [errorMessage]="formGroup.controls['openAiToken'].errors ? 'OpenAi Token ' + ('common.isRequired' | translate) : ''"
+          [errorMessage]="formGroup.controls['openAiToken'].errors && formGroup.controls['openAiToken'].touched ? 'OpenAI Token ' + ('common.isRequired' | translate) : ''"
         ></ft-input>
         <p class="ai-panel__hint">{{ 'aiConfig.tokenHint' | translate }}</p>
+      </div>
+
+      <div
+        *ngIf="isProviderOllama"
+        class="ai-panel__token"
+        [class.ai-panel__token--disabled]="!formGroup.controls['hasToUseAi'].value"
+      >
+        <ft-input
+          label="Ollama API Key"
+          formControlName="ollamaToken"
+          placeholder="ollama_..."
+          [errorMessage]="formGroup.controls['ollamaToken'].errors && formGroup.controls['ollamaToken'].touched ? 'Ollama API Key ' + ('common.isRequired' | translate) : ''"
+        ></ft-input>
+        <p class="ai-panel__hint">{{ 'aiConfig.ollamaHint' | translate }}</p>
       </div>
     </form>
   </div>

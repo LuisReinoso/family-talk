@@ -63,7 +63,8 @@
     "configQuestionGeneration": "Generador de preguntas con IA",
     "useAiGenerateQuestions": "Usar inteligencia artificial para generar preguntas?",
     "panelHelper": "Activa la IA para generar preguntas nuevas cuando se agoten las de una categoria.",
-    "tokenHint": "Tu token se guarda solo en este dispositivo. Obtenlo en platform.openai.com."
+    "tokenHint": "Tu token se guarda solo en este dispositivo. Obtenlo en platform.openai.com.",
+    "ollamaHint": "Tu API key se guarda solo en este dispositivo. Obtenla en ollama.com/settings/keys."
   },
   "generalSettings": {
     "resetPlayersTimer": "Reiniciar tiempo para hablar de los jugadores",
